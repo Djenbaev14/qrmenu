@@ -27,7 +27,8 @@ class ProComCamResource extends JsonResource
             'telegram'=>$this->telegram,
             'instagram'=>$this->instagram,
             'address'=>$this->address,
-            'categories'=>CategoryResource::collection(Category::where('company_id',$this->id)->where('main_category_id',null)->where('deleted_at',null)->orderBy('id','desc')->get())
+            'categories'=>$this->category
+            // 'categories'=>CategoryResource::collection(Category::where('company_id',$this->id)->where('main_category_id',null)->where('deleted_at',null)->orderBy('id','desc')->get())
         ];
     }
 }

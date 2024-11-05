@@ -17,15 +17,13 @@ class ProductController extends Controller
     public function index($company_slug,$category_slug,$product_slug)
     {
         
-        // return ProComCamResource::collection(Company::where('slug',$company_slug)->where('deleted_at',null)->whereHas('category', function (Builder $query) use($category_slug){
-        //     $query->where('slug', $category_slug);
-        // })->orderBy('id','desc')->get());
-        
-        return ProComCamResource::collection(Company::where('slug',$company_slug)->where('deleted_at',null)->whereHas('category', function (Builder $query) use($category_slug,$product_slug){
-            $query->where('slug', $category_slug)->whereHas('product', function (Builder $query) use($product_slug){
-                $query->where('slug', $product_slug);
-            });
-        })->orderBy('id','desc')->get());
+        return new ProComCamResource(Company::where('slug',$company_slug)->where('deleted_at',null)
+        ->with(['category' => function ($query) use($category_slug,$product_slug) {
+            $query->where('slug', $category_slug)->with(['product' => function ($query) use($product_slug) {
+                $query->where('slug',$product_slug)->orderBy('id','desc');
+            }]);
+        }])
+        ->orderBy('id','desc')->first());
     }
 
     /**
