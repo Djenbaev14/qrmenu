@@ -17,15 +17,14 @@ class CategoryResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'=>$this->id,
-            'company_id'=>$this->company_id,
-            // 'main_category_id'=>new CategoryResource(Category::find($this->main_category_id)),
-            'slug'=>$this->slug,
-            'name_uz'=>$this->name_uz,
-            'name_ru'=>$this->name_ru,
-            'name_kr'=>$this->name_kr,
-            'photo'=>$this->photo,
-            'products'=>ProductResource::collection(Product::where('id',$this->id)->where('deleted_at',null)->orderBy('id','desc')->get())
+            'id'=>$this[0]->id,
+            'company_id'=>$this[0]->company_id,
+            'slug'=>$this[0]->slug,
+            'name_uz'=>$this[0]->name_uz,
+            'name_ru'=>$this[0]->name_ru,
+            'name_kr'=>$this[0]->name_kr,
+            'photo'=>$this[0]->photo,
+            'products'=>ProductResource::collection(Product::where('category_id',$this[0]->id)->where('is_active',1)->where('deleted_at',null)->orderBy('id','desc')->get())
         ];
     }
 }

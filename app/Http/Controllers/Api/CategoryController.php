@@ -18,9 +18,10 @@ class CategoryController extends Controller
      */
     public function index($company_slug,$category_slug)
     {
-        return CompCamProductsResource::collection(Company::where('slug',$company_slug)->where('deleted_at',null)->whereHas('category', function (Builder $query) use($category_slug){
+        return new CompCamProductsResource(Company::where('slug',$company_slug)->where('deleted_at',null)->with(['category' => function ($query) use($category_slug) {
             $query->where('slug', $category_slug);
-        })->orderBy('id','desc')->get());
+        }])
+        ->orderBy('id','desc')->get());
     }
 
     /**

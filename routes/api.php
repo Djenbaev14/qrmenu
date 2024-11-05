@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +27,10 @@ Route::prefix('companies/{company_slug}')->group(function () {
     Route::apiResource('/',CompanyController::class);
     // prefix
     Route::prefix('{category_slug}')->group(function () {
-        Route::apiResource('/',CategoryController::class);
+        Route::apiResource('/',controller: CategoryController::class);
+        Route::prefix('{product_slug}')->group(function () {
+            Route::apiResource('/',ProductController::class);
+        });
     });
 });
 
