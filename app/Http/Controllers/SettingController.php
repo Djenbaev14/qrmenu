@@ -37,7 +37,6 @@ class SettingController extends Controller
         $request->validate([
             'name' => 'required',
             'telephones' => 'required|array',
-            'address'=>'required'
         ]);
             
             $file = $request->file('logo');
