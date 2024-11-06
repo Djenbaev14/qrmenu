@@ -50,7 +50,6 @@ class ProductController extends Controller
         $slug = Str::slug($request->name_uz);
         $count = Product::where('company_id',auth()->user()->company->first()->id)->where('slug', 'LIKE', "{$slug}%")->count();
         $slug = $count ? "{$slug}-{$count}" : $slug;
-        // product create
         Product::create([
             'user_id'=>auth()->user()->id,
             'company_id'=>Company::where('user_id',auth()->user()->id)->first()->id,
@@ -64,7 +63,7 @@ class ProductController extends Controller
             'slug'=>$slug,
             'price'=>$request->price,
             'unit_id'=>is_numeric($request->unit_id) ? $request->unit_id : null , 
-            'photos'=>json_encode($photos)
+            'photos'=>$photos
             ]);
         return redirect()->route('products.index')
             ->with('success', 'The product was successfully created');
@@ -84,7 +83,10 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $product = Product::find($id);
+        $categories = Category::where('deleted_at',null)->orderBy('id', 'DESC')->get();
+        $units=Unit::all();
+        return view('pages.products.edit',compact('product','categories','units'));
     }
 
     /**

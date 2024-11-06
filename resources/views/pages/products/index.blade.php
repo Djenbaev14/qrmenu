@@ -14,10 +14,11 @@
                 <div class="card-header">
                     <h4 class="fw-bold mb-3">Maxsulotlar ro'yxati</h4>
                     <div class="row  justify-content-between p-2" style="background-color: #F9F9FC;border-radius:10px;" >
-                      <div class="col-4">
+                      <div class="col-5 ">
                         <form action="{{ url('/products') }}" class="d-flex" method="GET">
                           <input type="search" class="form-control"  name="search" value="{{ request('search') }}" placeholder="Maxsulot nomini qidirish"/>
                           <button type="submit" class="btn btn-primary mx-2">Izlash</button>
+                          <a href="{{route('products.index')}}" class="btn btn-success mx-2">Tozalash</a>
                       </form>
                       </div>
                       <div class="col-3 ">
@@ -44,131 +45,26 @@
                             <tbody>
                               @foreach ($products as $product)
                                   <tr class="align-middle">
-                                    <td><img src="{{asset('images/products/'.json_decode($product->photos)[0])}}" class="rounded" width="70px" height="40px" alt="">&nbsp;&nbsp;{{$product->name_uz}}</td>
+                                    <td><img src="{{asset('images/products/'.$product->photos[0])}}" class="rounded" width="70px" height="40px" alt="">&nbsp;&nbsp;{{$product->name_uz}}</td>
                                     <td><?=($product->price) ? number_format($product->price)." сум" : ''?></td>
                                     <td>{{$product->created_at->format('Y.m.d , H:i')}}</td>
                                     <td>
                                       <div class="form-check form-switch ">
-                                        <!-- Size of the default switch will increase 1.8 times -->
-                                        <input class="form-check-input " 
+                                        <input class="form-check-input is-active-checkbox" 
                                               type="checkbox" 
                                               role="switch" 
-                                              style="transform: scale(1.8);cursor: pointer;" id="isActiveCheckbox" data-id="{{ $product->id }}" {{ $product->is_active ? 'checked' : '' }}>
+                                              style="transform: scale(1.8);cursor: pointer;" data-id="{{ $product->id }}" {{ $product->is_active ? 'checked' : '' }}>
                                       </div>
                                     </td>
                                     <td>
-                                      <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target=".bs-example-modal-{{$product->id}}">
-                                        <i data-feather="edit"></i></button>
-                                      {{-- <a href="{{route('categories.destroy',$category->id)}}" class="btn btn-sm btn-danger"><i data-feather="trash"></i></a> --}}
+                                      {{-- <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target=".bs-example-modal-{{$product->id}}">
+                                        <i data-feather="edit"></i></button> --}}
+                                        <a href="{{route('products.edit',$product->id)}}" class="btn btn-sm btn-success" ><i data-feather="edit"></i></button></a>
                                       <form class="d-inline-block" action="{{ route('products.destroy', $product->id) }}" method="POST">
                                         @csrf
                                         @method("DELETE")
                                         <button class="btn btn-sm btn-danger"><i data-feather="trash"></i></button>
                                       </form>
-                                      {{-- <div class="modal fade bs-example-modal-{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                                          <div class="modal-dialog modal-lg">
-                                              <div class="modal-content">
-                                                  <div class="modal-header">
-                                                      <h5 class="modal-title" id="myLargeModalLabel">Mahsulotni o'zgartirish
-                                                      </h5>
-                                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                                      </button>
-                                                  </div>
-                                                  <div class="modal-body">
-                                                    <div class="row">
-                                                      <div class="col-12">
-                                                        <form action="{{route('products.store')}}" method="POST" enctype="multipart/form-data">
-                                                          @csrf
-                                
-                                                        <div class="wrap-custom-file" >
-                                                            <input type="file" name="photos[]" id="image1" accept=".gif, .jpg, .png" />
-                                                            <label  for="image1" class="custom-label-1"><i data-feather="camera" class="fa"></i></label>
-                                                        </div>
-                                                        
-                                                        <div class="wrap-custom-file">
-                                                            <input type="file" name="photos[]" id="image2" accept=".gif, .jpg, .png" />
-                                                            <label  for="image2" class="custom-label-1"><i data-feather="camera" class="fa"></i></label>
-                                                        </div>
-                                                        
-                                                        <div class="wrap-custom-file">
-                                                            <input type="file" name="photos[]" id="image3" accept=".gif, .jpg, .png" />
-                                                            <label  for="image3" class="custom-label-1"><i data-feather="camera" class="fa"></i></label>
-                                                        </div>
-                                                        
-                                                        <div class="wrap-custom-file">
-                                                            <input type="file" name="photos[]" id="image4" accept=".gif, .jpg, .png" />
-                                                            <label  for="image4" class="custom-label-1"><i data-feather="camera" class="fa"></i></label>
-                                                        </div>
-                                                            <ul class="nav nav-pills nav-justified bg-light mt-3" role="tablist">
-                                                              @foreach (config('app.languages') as $i => $item)
-                                                                  <li class="nav-item" role="presentation">
-                                                                      <a class="nav-link <?=($i==0) ? 'active' : '';?>" data-bs-toggle="tab" href="#tab_{{$item['code']}}" role="tab">
-                                                                          <span class="d-flex justify-content-center align-items-center">
-                                                                              <img src="{{asset('images/flags/'.$item['code'].'.'.$item['format'])}}" width="20px"> 
-                                                                              &nbsp;&nbsp;{{$item['name']}}</span> 
-                                                                      </a>
-                                                                  </li>
-                                                              @endforeach
-                                                          </ul>
-                                                          
-                                                          <div class="tab-content pt-3 text-muted mb-3">
-                                                            @foreach (config('app.languages') as $i => $item)
-                                                            <div class="tab-pane <?=($i==0) ? 'show active' : '';?>" id="tab_{{$item['code']}}" role="tabpanel">
-                                                              <div class="mb-3">
-                                                                <label for="">Mahsulot nomi ({{$item['name']}})</label>
-                                                                <input type="text" value="{{old('name_'.$item['code'])}}" name="name_{{$item['code']}}" class="form-control" placeholder="Kategoriyaning nomini kiriting">
-                                                              </div>
-                                                              <div class="mb-3">
-                                                                <label for="">Ta'rif ({{$item['name']}})</label>
-                                                                <?php
-                                                                    $desc='description_'.$item['code'];
-                                                                ?>
-                                                                <textarea class="form-control" id="description_{{$item['code']}}" name="description_{{$item['code']}}" rows="10" placeholder="Введите текст">{{old('description_'.$item['code'])}}</textarea>
-                                                              </div>
-                                                            </div>
-                                                            @endforeach
-                                                          </div>
-                                                          
-                                                          <div class="mb-3">
-                                                            <label for="">Kategoriya</label>
-                                                            <select name="category_id" class="form-select">
-                                                              <option hidden value="none">Kategoriyani tanlang</option>
-                                                              @foreach ($categories as $category)
-                                                                  <option value="{{$category->id}}">{{$category->name_uz}}</option>
-                                                              @endforeach
-                                                            </select>
-                                                          </div>
-                                                          <div class=" mb-3">
-                                                              <div class="form-check">
-                                                                  <input type="checkbox" id="checkbox" class="form-check-input" id="checkmeout0">
-                                                                  <label class="form-check-label" for="checkmeout0">Narx belgilash</label>
-                                                              </div>
-                                                          </div>
-                                                          <div class="justify-content-between mb-3" style="display: none" id="show_price">
-                                                            <div class="col-5">
-                                                              <label for="" style="cursor: pointer">Narx</label>
-                                                              <input type="number" id="price" name="price" class="form-control" value="{{old('price')}}" placeholder="Narxni kiriting">
-                                                            </div>
-                                                            <div class="col-5">
-                                                              <label for="">O'lchov Birligi</label>
-                                                              <select name="unit_id" id="unit_id" class="form-control">
-                                                                <option value="null">O'lchov birligi kiriting</option>
-                                                                @foreach ($units as $unit)
-                                                                    <option value="{{$unit->id}}">{{$unit->name}}</option>
-                                                                @endforeach
-                                                              </select>
-                                                            </div>
-                                                          </div>
-                                                          <div class="d-flex align-items-center justify-content-end">
-                                                              <input type="submit" value="Qo'shish" class="btn btn-primary">
-                                                          </div>
-                                                        </form>
-                                                      </div>
-                                                    </div>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                      </div> --}}
                                       <!-- /.modal -->
                                 
                                     </td>
@@ -264,7 +160,7 @@
                             <div class="tab-pane <?=($i==0) ? 'show active' : '';?>" id="tab_{{$item['code']}}" role="tabpanel">
                               <div class="mb-3">
                                 <label for="">Mahsulot nomi ({{$item['name']}})</label>
-                                <input type="text" value="{{old('name_'.$item['code'])}}" name="name_{{$item['code']}}" class="form-control" placeholder="Kategoriyaning nomini kiriting">
+                                <input type="text" value="{{old('name_'.$item['code'])}}" name="name_{{$item['code']}}" class="form-control" placeholder="Mahsulotning nomini kiriting">
                               </div>
                               <div class="mb-3">
                                 <label for="">Ta'rif ({{$item['name']}})</label>
@@ -273,7 +169,7 @@
                                 <?php
                                     $desc='description_'.$item['code'];
                                 ?>
-                                <textarea class="form-control" id="description_{{$item['code']}}" name="description_{{$item['code']}}" rows="10" placeholder="Введите текст">{{old('description_'.$item['code'])}}</textarea>
+                                {{-- <textarea class="form-control" id="description_{{$item['code']}}" name="description_{{$item['code']}}" rows="10" placeholder="Введите текст">{{old('description_'.$item['code'])}}</textarea> --}}
                               </div>
                             </div>
                             @endforeach
@@ -326,99 +222,6 @@
 
 @push('css')
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
-    <style>
-    /*** GENERAL STYLES ***/
-    * {
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    }
-
-    /*** CUSTOM FILE INPUT STYE ***/
-    .wrap-custom-file {
-    position: relative;
-    display: inline-block;
-    width: 150px;
-    height: 150px;
-    margin: 0 1rem 0 0;
-    text-align: center;
-    }
-    .wrap-custom-file input[type="file"] {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 2px;
-    height: 2px;
-    overflow: hidden;
-    opacity: 0;
-    }
-    .wrap-custom-file label {
-    z-index: 1;
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    overflow: hidden;
-    padding: 0 0.5rem;
-    cursor: pointer;
-    background-color: #eee;
-    border-radius: 4px;
-    -webkit-transition: -webkit-transform 0.4s;
-    transition: -webkit-transform 0.4s;
-    transition: transform 0.4s;
-    transition: transform 0.4s, -webkit-transform 0.4s;
-    }
-    /* .wrap-custom-file label span {
-    display: block;
-    margin-top: 2rem;
-    font-size: 1.4rem;
-    color: #777;
-    -webkit-transition: color 0.4s;
-    transition: color 0.4s;
-    } */
-    .wrap-custom-file label .fa {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    -webkit-transform: translatex(-50%);
-    transform: translatex(-50%);
-    font-size: 2rem;
-    color: #777;
-    -webkit-transition: color 0.4s;
-    transition: color 0.4s;
-    }
-    .wrap-custom-file label:hover {
-    -webkit-transform: translateY(-1rem);
-    transform: translateY(-1rem);
-    }
-    .wrap-custom-file label:hover span, .wrap-custom-file label:hover .fa {
-    color: #333;
-    }
-    .wrap-custom-file label.file-ok {
-    background-size: cover;
-    background-position: center;
-    }
-    .wrap-custom-file label.file-ok span {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 0.3rem;
-    font-size: 1.1rem;
-    color: #000;
-    background-color: rgba(255, 255, 255, 0.7);
-    }
-    .wrap-custom-file label.file-ok .fa {
-    display: none;
-    }
-    canvas.drawing,
-    canvas.drawingBuffer {
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-    </style>
 @endpush
 
 @push('js')
@@ -486,12 +289,13 @@
             }
         });
     </script>
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         $(document).ready(function() {
-            $('#isActiveCheckbox').on('change', function() {
+            $('.is-active-checkbox').on('change', function() {
                 var isChecked = $(this).is(':checked');
                 var productId = $(this).data('id');
     
@@ -504,6 +308,7 @@
                         is_active: isChecked ? 1 : 0
                     },
                     success: function(response) {
+                      
                       const Toast = Swal.mixin({
                       toast: true,
                       position: "top-end",

@@ -14,10 +14,11 @@
                   <div class="card-header">
                       <h4 class="fw-bold mb-3">Kategoriyalar ro'yxati</h4>
                       <div class="row  justify-content-between p-2" style="background-color: #F9F9FC;border-radius:10px;" >
-                        <div class="col-4">
+                        <div class="col-5">
                           <form action="{{ url('/categories') }}" class="d-flex" method="GET">
                             <input type="search" class="form-control"  name="search" value="{{ request('search') }}" placeholder="Kategoriya nomini qidirish"/>
                             <button type="submit" class="btn btn-primary mx-2">Izlash</button>
+                            <a href="{{route('categories.index')}}" class="btn btn-success mx-2">Tozalash</a>
                         </form>
                         </div>
                         <div class="col-3 ">

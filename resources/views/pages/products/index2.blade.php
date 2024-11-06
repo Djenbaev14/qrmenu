@@ -57,20 +57,31 @@
 <body>
 
 <h2>YUKLANGAN RASMLAR</h2>
-<div class="container" id="imageContainer">
-    <!-- Yuklangan rasmlar joylashadi -->
-    <div class="add-image-box" onclick="document.getElementById('fileInput').click()">+</div>
-</div>
-<input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
-<button onclick="uploadImages()">Yuklash</button>
+<form action="{{route('products.store')}}" method="post" enctype="multipart/form-data">
+    @csrf
+    <div class="container" id="imageContainer">
+        <!-- Yuklangan rasmlar joylashadi -->
+        <div class="add-image-box" onclick="document.getElementById('fileInput').click()">+</div>
+    </div>
+    <input type="file" id="fileInput" name="photos[]" multiple  style="display: none;">
+    <input type="file" id="fileImage" name="images[]" multiple  >
+    {{-- <button onclick="uploadFiles()">Yuklash</button> --}}
+    <button>add</button>
+</form>
+
+{{-- <button onclick="uploadImages()">Yuklash</button> --}}
 
 <script>
     const imageContainer = document.getElementById('imageContainer');
     const fileInput = document.getElementById('fileInput');
+    const fileImage = document.getElementById('fileImage');
     let images = [];
-
+    const a={};
+    
     fileInput.addEventListener('change', (event) => {
         const files = event.target.files;
+        
+        
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
             const reader = new FileReader();
@@ -96,24 +107,28 @@
             };
             reader.readAsDataURL(file);
         }
+        fileImage.files=files;
     });
-
-    function uploadImages() {
+    
+    function uploadFiles() {
         const formData = new FormData();
         images.forEach((image, index) => {
             formData.append('images[]', image, `image-${index}.jpg`);
         });
+        console.log(formData);
         
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
         fetch('/products', {
             method: 'POST',
             headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                'X-CSRF-TOKEN': csrfToken // CSRF tokenni headerga qo'shamiz
             },
             body: formData
         })
         .then(response => response.json())
         .then(data => {
-          console.log(formData);
+          console.log(data);
           
             alert('Rasmlar muvaffaqiyatli yuklandi');
             

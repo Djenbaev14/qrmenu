@@ -12,6 +12,9 @@ class Product extends Model
     use SoftDeletes;
     protected $guarded = ['id'];
     
+    protected $casts = [
+        'photos' => 'array', // JSON maydonni array sifatida olish
+    ];
     public function images()
     {
         return $this->morphMany(Attachment::class, 'attachment');

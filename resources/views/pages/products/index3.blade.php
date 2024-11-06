@@ -1,344 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Multiple File Input With preview</title>
-    <link rel="stylesheet" href="./style.css">
+    <title>Document</title>
     <style>
-      body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
-      }
-
-      .btcd-f-input {
-          display: inline-block;
-          width: 340px;
-          position: relative;
-          overflow: hidden;
-      }
-
-      .btcd-f-input > div > input::-webkit-file-upload-button {
-          cursor: pointer;
-      }
-
-      .btcd-f-wrp {
-          cursor: pointer;
-      }
-
-      .btcd-f-wrp > small {
-          color: gray;
-      }
-
-      .btcd-f-wrp > button {
-          cursor: pointer;
-          background: #f3f3f3;
-          padding: 5px;
-          display: inline-block;
-          border-radius: 9px;
-          border: none;
-          margin-right: 8px;
-          height: 35px;
-      }
-
-      .btcd-f-wrp > button > img {
-          width: 24px;
-      }
-
-      .btcd-f-wrp > button > span,
-      .btcd-f-wrp > span,
-      .btcd-f-wrp > small {
-          vertical-align: super;
-      }
-
-      .btcd-f-input > .btcd-f-wrp > input {
-          z-index: 100;
-          width: 100%;
-          position: absolute;
-          opacity: 0;
-          left: 0;
-          height: 37px;
-          cursor: pointer;
-      }
-
-      .btcd-f-wrp:hover {
-          background: #fafafa;
-          border-radius: 10px;
-      }
-
-      .btcd-files > div {
-          display: flex;
-          align-items: center;
-          background: #f8f8f8;
-          border-radius: 10px;
-          margin-left: 30px;
-          width: 91%;
-          margin-top: 10px;
-          height: 40px;
-      }
-
-      .btcd-files > div > div {
-          display: inline-block;
-          width: 73%;
-      }
-
-      .btcd-files > div > div > small {
-          color: gray;
-      }
-
-      .btcd-files > div > img {
-          width: 40px;
-          height: 40px;
-          margin-right: 10px;
-          border-radius: 10px;
-      }
-
-      .btcd-files > div > div > span {
-          display: inline-block;
-          width: 100%;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          white-space: nowrap;
-      }
-
-      .btcd-files > div > button {
-          background: #e8e8e8;
-          border: none;
-          border-radius: 50px;
-          width: 25px;
-          height: 25px;
-          font-size: 20px;
-          margin-right: 6px;
-          padding: 0;
-      }
-
-      .btcd-files > div > button:hover {
-          background: #bbbbbb;
-      }
-
-    </style>
+    /* Create the look of a generic thumbnail */
+        .thumbnail {
+          position:relative;
+          display:inline-block;
+          width:6em;
+          height:6em;
+          border-radius:0.6em;
+          border:0.25em solid white;
+          vertical-align:middle;
+          box-shadow:0 0.15em 0.35em 0.1em rgba(0,0,0,0.2);
+          margin:0.5em;
+          
+          background-position:center;
+          background-size:cover;
+        }
+        
+        
+        
+        /* This will hide the file input */
+        .imagepicker input {
+          display:none;
+        }
+        .imagepicker {
+          cursor:pointer;
+          color:white;
+          background-color:rgba(0,0,0,0.3);
+        }
+        /* This will add the floating plus symbol to the imagepicker */
+        .imagepicker:before {
+          content:'+';
+          position:absolute;
+          font-size:3em;
+          vertical-align:middle;
+          top:50%;
+          left:50%;
+          transform:translate(-50%,-50%);
+        }
+        /* This will hide the plus symbol behind the background of the imagepicker if the class "picked" is added to the element */
+        .imagepicker.picked:before {
+          z-index:-1;
+        }
+        </style>
 </head>
-
 <body>
-
-    <form action="{{route('products.store')}}" method="post" enctype="multipart/form-data">
-      @csrf
-
-        <div class="btcd-f-input">
-          <small>Multiple Upload</small>
-            <div class="btcd-f-wrp">
-                <button class="btcd-inpBtn" type="button"> <img src="" alt=""> <span> Attach File</span></button>
-                <span class="btcd-f-title">No File Chosen</span>
-                <small class="f-max"> (Max c MB)</small>
-                <input multiple type="file" name="multiple[]" id="">
-            </div>
-            <div class="btcd-files">
-            </div>
-        </div>
-        <button>add</button>
-    </form>
-
-    <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
-    <script src="https://unpkg.com/create-file-list@1.0.1/dist/create-file-list.min.js"></script>
-    <script src="./script.js"></script>
-    <script>
-      const fInputs = document.querySelectorAll('.btcd-f-input>div>input')
-
-function getFileSize(size) {
-    let _size = size
-    let unt = ['Bytes', 'KB', 'MB', 'GB'],
-        i = 0; while (_size > 900) { _size /= 1024; i++; }
-    return (Math.round(_size * 100) / 100) + ' ' + unt[i];
-}
-
-function delItem(el) {
-    fileList = { files: [] }
-    let fInp = el.parentNode.parentNode.parentNode.querySelector('input[type="file"]')
-    for (let i = 0; i < fInp.files.length; i++) {
-        fileList.files.push(fInp.files[i])
-    }
-    fileList.files.splice(el.getAttribute('data-index'), 1)
-
-    fInp.files = createFileList(...fileList.files)
-    if (fInp.files.length > 0) {
-        el.parentNode.parentNode.parentNode.querySelector('.btcd-f-title').innerHTML = `${fInp.files.length} File Selected`
-    } else {
-        el.parentNode.parentNode.parentNode.querySelector('.btcd-f-title').innerHTML = 'No File Chosen'
-    }
-    el.parentNode.remove()
-}
-
-function fade(element) {
-    let op = 1;  // initial opacity
-    let timer = setInterval(function () {
-        if (op <= 0.1) {
-            clearInterval(timer);
-            element.style.display = 'none';
+    
+  
+  <form enctype="multipart/form-data" method="POST" action="{{route('products.store')}}">
+    @csrf
+    <div>
+      <label class="imagepicker imagepicker-add thumbnail">
+        <input type='file' id="imagepicker2" name="photos[]"  multiple="multiple" >
+      </label>
+    </div>
+    <button>add</button>
+  </form>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+            // This function just works and can be used for many file types.
+        // It will accept multiple files, and will only fire the callback once for each file.
+        // Don't try to reinvent this
+        function readFiles(files, callback, index = 0) {
+        if (files && files[0]) {
+            let file = files[index++],
+            reader = new FileReader();
+            reader.onload = function (e) {
+            callback(e);
+            if (index < files.length) readFiles(files, callback, index);
+            };
+            reader.readAsDataURL(file);
         }
-        element.style.opacity = op;
-        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
-        op -= op * 0.1;
-    }, 50);
-}
-
-function unfade(element) {
-    let op = 0.01;  // initial opacity
-    element.style.opacity = op;
-    element.style.display = 'flex';
-    let timer = setInterval(function () {
-        if (op >= 1) {
-            clearInterval(timer);
         }
-        element.style.opacity = op;
-        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
-        op += op * 0.1;
-    }, 13);
-}
 
-function get_browser() {
-    let ua = navigator.userAgent, tem, M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
-    if (/trident/i.test(M[1])) {
-        tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
-        return { name: 'IE', version: (tem[1] || '') };
-    }
-    if (M[1] === 'Chrome') {
-        tem = ua.match(/\bOPR|Edge\/(\d+)/)
-        if (tem != null) { return { name: 'Opera', version: tem[1] }; }
-    }
-    M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
-    if ((tem = ua.match(/version\/(\d+)/i)) != null) { M.splice(1, 1, tem[1]); }
-    return {
-        name: M[0],
-        version: M[1]
-    };
-}
+        // Create a selector for an input and then do whatever you want using the callback function.
+        $("body").on("change", ".imagepicker-replace input", function () {
+        // store the current "this" into a variable
+        var imagepicker = this;
+        readFiles(this.files, function (e) {
+            // "this" will be different in the callback function
+            $(imagepicker)
+            .parent()
+            .addClass("picked")
+            .css({ "background-image": "url(" + e.target.result + ")" });
+        });
+        });
 
-for (let inp of fInputs) {
-    inp.parentNode.querySelector('.btcd-inpBtn>img').src = 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDY0IDY0IiB3aWR0aD0iNTEyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxnIGlkPSJDbGlwIj48cGF0aCBkPSJtMTIuMDggNTcuNzQ5YTkgOSAwIDAgMCAxMi43MjggMGwzMS4xMTItMzEuMTEzYTEzIDEzIDAgMSAwIC0xOC4zODQtMTguMzg1bC0yMC41MDcgMjAuNTA2IDEuNDE1IDEuNDE1IDIwLjUwNi0yMC41MDZhMTEgMTEgMCAxIDEgMTUuNTU2IDE1LjU1NmwtMzEuMTEyIDMxLjExMmE3IDcgMCAwIDEgLTkuOS05LjlsMjYuODctMjYuODdhMyAzIDAgMCAxIDQuMjQyIDQuMjQzbC0xNi4yNjMgMTYuMjY0IDEuNDE0IDEuNDE0IDE2LjI2NC0xNi4yNjNhNSA1IDAgMCAwIC03LjA3MS03LjA3MWwtMjYuODcgMjYuODdhOSA5IDAgMCAwIDAgMTIuNzI4eiIvPjwvZz48L3N2Zz4='
-    inp.addEventListener('mousedown', function (e) { setPrevData(e) })
-    inp.addEventListener('change', function (e) { handleFile(e) })
-}
+        // This example will add a new thumbnail each time
+        $("body").on("change", ".imagepicker-add input", function () {
+        var imagepicker = this;
+        readFiles(this.files, function (e) {
+            $(imagepicker)
+            .parent()
+            .before(
+                "<div class='thumbnail' style='background-image:url(" +
+                e.target.result +
+                ")'></div>"
+            );
+        });
+        });
 
-let fileList = { files: [] }
-let fName = null
-let mxSiz = nullx
-
-function setPrevData(e) {
-    if (e.target.hasAttribute('multiple') && fName !== e.target.name) {
-        console.log('multiple')
-        fName = e.target.name
-        fileList = fileList = { files: [] }
-        if (e.target.files.length > 0) {
-            for (let i = 0; i < e.target.files.length; i += 1) {
-                console.log(e.target.files[i])
-                fileList.files.push(e.target.files[i])
-            }
-        }
-    }
-}
-
-function handleFile(e) {
-    let err = []
-    const fLen = e.target.files.length;
-    mxSiz = e.target.parentNode.querySelector('.f-max')
-    mxSiz = mxSiz != null && (Number(mxSiz.innerHTML.replace(/\D/g, '')) * Math.pow(1024, 2))
-
-    if (e.target.hasAttribute('multiple')) {
-        for (let i = 0; i < fLen; i += 1) {
-            fileList.files.push(e.target.files[i])
-        }
-    } else {
-        fileList.files.push(e.target.files[0])
-    }
-
-    //type validate
-    if (e.target.hasAttribute('accept')) {
-        let tmpf = []
-        let type = new RegExp(e.target.getAttribute('accept').split(",").join("$|") + '$', 'gi')
-        for (let i = 0; i < fileList.files.length; i += 1) {
-            if (fileList.files[i].name.match(type)) {
-                tmpf.push(fileList.files[i])
-            } else {
-                err.push('Wrong File Type Selected')
-            }
-        }
-        fileList.files = tmpf
-    }
-
-    // size validate
-    if (mxSiz > 0) {
-        let tmpf = []
-        for (let i = 0; i < fileList.files.length; i += 1) {
-            if (fileList.files[i].size < mxSiz) {
-                tmpf.push(fileList.files[i])
-                mxSiz -= fileList.files[i].size
-            } else {
-                console.log('rejected', i, fileList.files[i].size)
-                err.push('Max Upload Size Exceeded')
-            }
-        }
-        fileList.files = tmpf
-    }
-
-    if (e.target.hasAttribute('multiple')) {
-        e.target.files = createFileList(...fileList.files)
-    } else {
-        e.target.files = createFileList(fileList.files[fileList.files.length - 1])
-        fileList = { files: [] }
-    }
-
-    // set File list view
-    if (e.target.files.length > 0) {
-        e.target.parentNode.querySelector('.btcd-f-title').innerHTML = e.target.files.length + ' File Selected'
-        e.target.parentNode.parentNode.querySelector('.btcd-files').innerHTML = ''
-        for (let i = 0; i < e.target.files.length; i += 1) {
-            let img = null
-            if (e.target.files[i].type.match(/image-*/)) {
-                img = window.URL.createObjectURL(e.target.files[i])
-            }
-            else {
-                img = 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAyMi4wLjEsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iTGF5ZXJfMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiDQoJIHZpZXdCb3g9IjAgMCAzNTIgNDI5LjEiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDM1MiA0MjkuMTsiIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4NCgkuc3Qwe2ZpbGw6IzAwNEJCNzt9DQo8L3N0eWxlPg0KPHBhdGggZD0iTTQwOC44LDY2Ljh2MzI3LjRjMCwyNy40LDIyLjgsNDkuOCw1MC4zLDQ5LjhoMjM5LjNjMjcuNSwwLDQ5LjgtMjIuMyw0OS44LTQ5LjhWMTE2Yy0wLjEtMi42LTEuMi01LjItMy4xLTdsLTg4LjktODkuMQ0KCWMtMS45LTEuOS00LjQtMi45LTcuMS0yLjloLTE5MEM0MzEuNiwxNyw0MDguOCwzOS40LDQwOC44LDY2Ljh6IE03MTMuOCwxMDUuOUg2ODNjLTYuMywwLTEyLjQtMi41LTE2LjgtNi45DQoJYy00LjUtNC41LTctMTAuNS02LjktMTYuOHYtMzFMNzEzLjgsMTA1Ljl6IE00MjguOCw2Ni44YzAtMTYuNSwxMy45LTI5LjgsMzAuMy0yOS44aDE4MC4ydjQ1LjFjMCwxMS42LDQuNiwyMi43LDEyLjgsMzENCgljOC4yLDguMiwxOS4zLDEyLjgsMzAuOSwxMi44aDQ1LjF2MjY4LjVjMCwxNi41LTEzLjksMjkuOC0zMC4zLDI5LjhINDU5LjFjLTE2LjYsMC0zMC4zLTEzLjQtMzAuMy0yOS44VjY2Ljh6Ii8+DQo8cGF0aCBjbGFzcz0ic3QwIiBkPSJNMjc3LjIsMTY2LjlIMTMwLjZjLTUuMSwwLTkuMiw0LjEtOS4yLDkuMnM0LjEsOS4yLDkuMiw5LjJoMTQ2LjVjNS4xLDAsOS4yLTQuMSw5LjItOS4xDQoJQzI4Ni40LDE3MSwyODIuMywxNjYuOSwyNzcuMiwxNjYuOXoiLz4NCjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik05My41LDE2Ni45SDY2LjRjLTUuMSwwLTkuMiw0LjEtOS4yLDkuMnM0LjEsOS4yLDkuMiw5LjJoMjcuMWM1LjEsMCw5LjItNC4xLDkuMi05LjJTOTguNiwxNjYuOSw5My41LDE2Ni45eiINCgkvPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTI3Ny4yLDI0MC4zSDEzMC42Yy01LjEsMC05LjIsNC4xLTkuMiw5LjJjMCw1LjEsNC4xLDkuMiw5LjIsOS4yaDE0Ni41YzUuMSwwLDkuMi00LjEsOS4yLTkuMQ0KCVMyODIuMywyNDAuNCwyNzcuMiwyNDAuM3oiLz4NCjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik05My41LDI0MC4zSDY2LjRjLTUuMSwwLTkuMiw0LjEtOS4yLDkuMmMwLDUuMSw0LjEsOS4yLDkuMiw5LjJoMjcuMWM1LjEsMCw5LjItNC4xLDkuMi05LjINCglDMTAyLjcsMjQ0LjQsOTguNiwyNDAuMyw5My41LDI0MC4zeiIvPg0KPHBhdGggY2xhc3M9InN0MCIgZD0iTTI3Ny4yLDMxMy44SDEzMC42Yy01LjEsMC05LjIsNC4xLTkuMiw5LjJjMCw1LjEsNC4xLDkuMiw5LjIsOS4yaDE0Ni41YzUuMSwwLDkuMi00LjEsOS4yLTkuMQ0KCUMyODYuNCwzMTgsMjgyLjMsMzEzLjgsMjc3LjIsMzEzLjh6Ii8+DQo8cGF0aCBjbGFzcz0ic3QwIiBkPSJNOTMuNSwzMTMuOEg2Ni40Yy01LjEsMC05LjIsNC4xLTkuMiw5LjJjMCw1LjEsNC4xLDkuMiw5LjIsOS4yaDI3LjFjNS4xLDAsOS4yLTQuMSw5LjItOS4yDQoJQzEwMi43LDMxNy45LDk4LjYsMzEzLjgsOTMuNSwzMTMuOHoiLz4NCjxnPg0KCTxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik0yNjMsNDEyLjFIODljLTQxLjQsMC03NS0zMy42LTc1LTc1di0yNDVjMC00MS40LDMzLjYtNzUsNzUtNzVoMTQ3LjVjOCwwLDE1LjcsMywyMS42LDguNWw2OSw2My42DQoJCWM2LjksNi4zLDEwLjgsMTUuMywxMC44LDI0Ljd2MjIzLjJDMzM4LDM3OC40LDMwNC40LDQxMi4xLDI2Myw0MTIuMXogTTg5LDM3LjNjLTMwLjIsMC01NC43LDI0LjYtNTQuNyw1NC43djI0NQ0KCQljMCwzMC4yLDI0LjYsNTQuNyw1NC43LDU0LjdoMTc0YzMwLjIsMCw1NC43LTI0LjYsNTQuNy01NC43VjExMy44YzAtMy43LTEuNi03LjMtNC4zLTkuOGwtNjktNjMuNmMtMi4yLTItNS0zLjEtNy45LTMuMUg4OXoiLz4NCjwvZz4NCjwvc3ZnPg0K'
-            }
-            e.target.parentNode.parentNode.querySelector('.btcd-files').insertAdjacentHTML('beforeend', `<div>
-                    <img src="${img}" alt="img"  title="${e.target.files[i].name}">
-                    <div>
-                        <span title="${e.target.files[i].name}">${e.target.files[i].name}</span>
-                        <br/>
-                        <small>${getFileSize(e.target.files[i].size)}</small>
-                    </div>
-                    <button type="button" onclick="delItem(this)" data-index="${i}" title="Remove This File"><span>&times;</span></button>
-                </div>`)
-
-        }
-    }
-
-    // set eror
-    if (err.length > 0) {
-        for (let i = 0; i < err.length; i += 1) {
-            e.target.parentNode.parentNode.querySelector('.btcd-files').insertAdjacentHTML('afterbegin', `
-            <div style="background: #fff2f2;color: darkred;display:none" class="btcd-f-err">
-                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjg2LjA1NCIgaGVpZ2h0PSIyODYuMDU0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoKIDxnPgogIDx0aXRsZT5iYWNrZ3JvdW5kPC90aXRsZT4KICA8cmVjdCBmaWxsPSJub25lIiBpZD0iY2FudmFzX2JhY2tncm91bmQiIGhlaWdodD0iNDAyIiB3aWR0aD0iNTgyIiB5PSItMSIgeD0iLTEiLz4KIDwvZz4KIDxnPgogIDx0aXRsZT5MYXllciAxPC90aXRsZT4KICA8ZyBzdHJva2U9Im51bGwiIGlkPSJzdmdfMSI+CiAgIDxwYXRoIHN0cm9rZT0ibnVsbCIgaWQ9InN2Z18yIiBmaWxsPSIjOTEwNjAxIiBkPSJtMTQzLjAyNjk5Nyw1Ni4wMDAwMDVjLTQ4LjA2MDg2NSwwIC04Ny4wMjY5OTcsMzguOTY2MTMxIC04Ny4wMjY5OTcsODcuMDI2OTk3YzAsNDguMDY2MzQyIDM4Ljk2NjEzMSw4Ny4wMjY5OTcgODcuMDI2OTk3LDg3LjAyNjk5N2M0OC4wNjYzNDIsMCA4Ny4wMjY5OTcsLTM4Ljk1NTE3OSA4Ny4wMjY5OTcsLTg3LjAyNjk5N2MwLC00OC4wNjA4NjUgLTM4Ljk2MTI2NCwtODcuMDI2OTk3IC04Ny4wMjY5OTcsLTg3LjAyNjk5N3ptMCwxNTcuNzM2MTY2Yy0zOS4wNTMxNDIsMCAtNzAuNzA5MTY5LC0zMS42NTYwMjcgLTcwLjcwOTE2OSwtNzAuNzA5MTY5czMxLjY1NjAyNywtNzAuNzA5MTY5IDcwLjcwOTE2OSwtNzAuNzA5MTY5czcwLjcwOTE2OSwzMS42NTYwMjcgNzAuNzA5MTY5LDcwLjcwOTE2OXMtMzEuNjU2MDI3LDcwLjcwOTE2OSAtNzAuNzA5MTY5LDcwLjcwOTE2OXptMC4wMDU0NzYsLTExOS41Njk1NThjLTYuMjMzMTIxLDAgLTEwLjk0OTMzNywzLjI1Mjg1NyAtMTAuOTQ5MzM3LDguNTA2OTU2bDAsNDguMTkxMDc3YzAsNS4yNTk1NzYgNC43MTU2MDgsOC41MDE0OCAxMC45NDkzMzcsOC41MDE0OGM2LjA4MTAwNCwwIDEwLjk0OTMzNywtMy4zNzc1OTIgMTAuOTQ5MzM3LC04LjUwMTQ4bDAsLTQ4LjE5MTA3N2MtMC4wMDA2MDgsLTUuMTI5MzY0IC00Ljg2ODMzMywtOC41MDY5NTYgLTEwLjk0OTMzNywtOC41MDY5NTZ6bTAsNzYuMDU2MzY0Yy01Ljk4ODUxOCwwIC0xMC44NjIzMjYsNC44NzM4MDkgLTEwLjg2MjMyNiwxMC44NjcxOTRjMCw1Ljk4MzA0MSA0Ljg3MzgwOSwxMC44NTY4NSAxMC44NjIzMjYsMTAuODU2ODVzMTAuODU2ODUsLTQuODczODA5IDEwLjg1Njg1LC0xMC44NTY4NWMtMC4wMDA2MDgsLTUuOTkzOTk0IC00Ljg2ODMzMywtMTAuODY3MTk0IC0xMC44NTY4NSwtMTAuODY3MTk0eiIvPgogIDwvZz4KICA8ZyBpZD0ic3ZnXzMiLz4KICA8ZyBpZD0ic3ZnXzQiLz4KICA8ZyBpZD0ic3ZnXzUiLz4KICA8ZyBpZD0ic3ZnXzYiLz4KICA8ZyBpZD0ic3ZnXzciLz4KICA8ZyBpZD0ic3ZnXzgiLz4KICA8ZyBpZD0ic3ZnXzkiLz4KICA8ZyBpZD0ic3ZnXzEwIi8+CiAgPGcgaWQ9InN2Z18xMSIvPgogIDxnIGlkPSJzdmdfMTIiLz4KICA8ZyBpZD0ic3ZnXzEzIi8+CiAgPGcgaWQ9InN2Z18xNCIvPgogIDxnIGlkPSJzdmdfMTUiLz4KICA8ZyBpZD0ic3ZnXzE2Ii8+CiAgPGcgaWQ9InN2Z18xNyIvPgogPC9nPgo8L3N2Zz4=" alt="img">
-                <span>${err[i]}</span>
-            </div>`)
-        }
-        const errNods = e.target.parentNode.parentNode.querySelectorAll('.btcd-files>.btcd-f-err')
-        for (let i = 0; i < errNods.length; i += 1) {
-            unfade(errNods[i])
-            setTimeout(() => { fade(errNods[i]) }, 3000);
-            setTimeout(() => { errNods[i].remove() }, 4000);
-        }
-        err = []
-    }
-
-}
-
-
-    </script>
+  </script>
+  
 </body>
-
 </html>

@@ -44,28 +44,28 @@
                                           @csrf
                                           <div class="form-group mb-3">
                                               <label for="company_name" class="form-label">Kompaniya nomi</label>
-                                              <input class="form-control" name="company_name" type="text" id="company_name" required="" placeholder="Kompaniya nomi kiriting">
+                                              <input class="form-control" name="company_name" value="{{old('company_name')}}" type="text" id="company_name" required="" placeholder="Kompaniya nomi kiriting">
                                           </div>
                                             <div class="form-group mb-3">
                                                 <label for="username" class="form-label">Ismingiz</label>
-                                                <input class="form-control" name="name" type="text" id="username" required="" placeholder="Ismingiz kiriting">
+                                                <input class="form-control" name="name" type="text" value="{{old('name')}}" id="username" required="" placeholder="Ismingiz kiriting">
                                             </div>
 
                                             <div class="form-group mb-3">
                                                 <label for="emailaddress" class="form-label">Telefon raqam</label>
                                                 <div class="input-group">
                                                   <span class="input-group-text" id="basic-addon1">+998</span>
-                                                  <input class="form-control" type="text" name="phone" maxlength="9" id="emailaddress" required="" placeholder="Telefon raqam kiriting">
+                                                  <input class="form-control" type="text" value="{{old('phone')}}" name="phone" maxlength="9" id="emailaddress" required="" placeholder="Telefon raqam kiriting">
                                                 </div>
                                             </div>
                 
                                             <div class="form-group mb-3">
                                               <label for="password" class="form-label">Parolni kiriting</label>
-                                              <input class="form-control" name="password" type="password" required="" id="password" placeholder="Parolni kiriting">
+                                              <input class="form-control" name="password" value="{{old('password')}}" type="password" required="" id="password" placeholder="Parolni kiriting">
                                           </div>
                                           <div class="form-group mb-3">
                                               <label for="password" class="form-label">Parolni yana kiriting</label>
-                                              <input class="form-control" name="password_confirmation" type="password" required="" id="password" placeholder="Parolni yana kiriting">
+                                              <input class="form-control" name="password_confirmation" value="{{old('password_confirmation')}}" type="password" required="" id="password" placeholder="Parolni yana kiriting">
                                           </div>
                 
                                             <div class="form-group d-flex mb-3">

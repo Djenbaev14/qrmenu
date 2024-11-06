@@ -52,7 +52,6 @@ class CategoryController extends Controller
         $count = Category::where('company_id',auth()->user()->company->first()->id)->where('slug', 'LIKE', "{$slug}%")->count();
         $slug = $count ? "{$slug}-{$count}" : $slug;
 
-        if($request->main_category_id=="none"){
             $category=new Category;
             $category->user_id =  auth()->user()->id;
             $category->company_id =  auth()->user()->company->first()->id;
@@ -60,24 +59,11 @@ class CategoryController extends Controller
             $category->name_ru =  $request->name_ru;
             $category->name_kr =  $request->name_kr;
             $category->photo =  $fileName;
-            $category->main_category_id =  null;
+            $category->main_category_id =  ($request->main_category_id=="none") ? null : $request->main_category_id;
             $category->slug= $slug;
             $category->save();
             
-            // event(new AttachmentEvent($request->photo, $category->icon(), 'categories'));
-        }else{
-            $category=new Category;
-            $category->user_id =  auth()->user()->id;
-            $category->company_id =  auth()->user()->company->first()->id;
-            $category->name_uz =  $request->name_uz;
-            $category->name_ru =  $request->name_ru;
-            $category->name_kr =  $request->name_kr;
-            $category->photo =  $fileName;
-            $category->main_category_id =  $request->main_category_id;
-            // $category->slug= $slug;
-            $category->save();
-            // event(new AttachmentEvent($request->photo, $category->icon(), 'categories'));
-        }
+            event(new AttachmentEvent($request->photo, $category->icon(), 'categories'));
 
         return redirect()->route('categories.index')->with('success', 'Category created successfully');
     }

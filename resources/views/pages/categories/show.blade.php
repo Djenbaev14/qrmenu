@@ -17,10 +17,11 @@
                         <span>{{$products->count()}} Mahsulot</span>
                       </div>
                       <div class="row  justify-content-between p-2" style="background-color: #F9F9FC;border-radius:10px;" >
-                        <div class="col-4">
+                        <div class="col-5">
                           <form action="{{ route('categories.show',$category->id) }}" class="d-flex" method="GET">
                             <input type="search" class="form-control"  name="search" value="{{ request('search') }}" placeholder="Mahsulot nomini qidirish"/>
                             <button type="submit" class="btn btn-primary mx-2">Izlash</button>
+                            <a href="{{route('categories.show',$category->id)}}" class="btn btn-success mx-2">Tozalash</a>
                         </form>
                         </div>
                         <div class="col-3 ">
@@ -46,10 +47,17 @@
                               <tbody>
                                 @foreach ($products as $product)
                                     <tr class="align-middle">
-                                      <td><img src="{{asset('images/products/'.json_decode($product->photos)[0])}}" class="rounded" width="70px" height="40px" alt="">&nbsp;&nbsp;{{$product->name_uz}}</td>
+                                      <td><img src="{{asset('images/products/'.$product->photos[0])}}" class="rounded" width="70px" height="40px" alt="">&nbsp;&nbsp;{{$product->name_uz}}</td>
                                       <td>{{$product->price}}</td>
                                       <td>{{$product->created_at->format('Y.m.d , H:i')}}</td>
-                                      <td>{{$product->is_active}}</td>
+                                      <td>
+                                        <div class="form-check form-switch ">
+                                          <input class="form-check-input is-active-checkbox" 
+                                                type="checkbox" 
+                                                role="switch" 
+                                                style="transform: scale(1.8);cursor: pointer;" data-id="{{ $product->id }}" {{ $product->is_active ? 'checked' : '' }}>
+                                        </div>
+                                      </td>
                                       <td>
                                         <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target=".bs-example-modal-{{$product->id}}">
                                           <i data-feather="edit"></i></button>
@@ -530,5 +538,47 @@
         },
         false
       );
+      </script>
+      
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script>
+        $(document).ready(function() {
+            $('.is-active-checkbox').on('change', function() {
+                var isChecked = $(this).is(':checked');
+                var productId = $(this).data('id');
+    
+                $.ajax({
+                    url: '/products/is_active', // marshrut manzili
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}', // CSRF tokeni
+                        id: productId,
+                        is_active: isChecked ? 1 : 0
+                    },
+                    success: function(response) {
+                      
+                      const Toast = Swal.mixin({
+                      toast: true,
+                      position: "top-end",
+                      showConfirmButton: false,
+                      timer: 3000,
+                      timerProgressBar: true,
+                      didOpen: (toast) => {
+                        toast.onmouseenter = Swal.stopTimer;
+                        toast.onmouseleave = Swal.resumeTimer;
+                      }
+                    });
+                    Toast.fire({
+                      icon: "success",
+                      title: "Действие успешно изменено"
+                    });
+                    },
+                    error: function(xhr) {
+                      alert('error','error');
+                    }
+                });
+            });
+        });
       </script>
 @endpush
