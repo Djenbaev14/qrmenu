@@ -6,7 +6,7 @@ use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProductResource extends JsonResource
+class ShowProductResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,6 +22,9 @@ class ProductResource extends JsonResource
             'name_uz'=>$this->name_uz,
             'name_ru'=>$this->name_ru,
             'name_kr'=>$this->name_kr,
+            'description_uz'=>$this->description_uz,
+            'description_ru'=>$this->description_ru,
+            'description_kr'=>$this->description_kr,
             'slug'=>$this->slug,
             'price'=>$this->price,
             'unit'=>new UnitResource(Unit::where('id',$this->unit_id)->first()),

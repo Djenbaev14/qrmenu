@@ -17,7 +17,6 @@ class CompanyResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'=>$this->id,
             'name'=>$this->name,
             'logo'=>$this->logo,
             'slug'=>$this->slug,
@@ -28,7 +27,6 @@ class CompanyResource extends JsonResource
             'telegram'=>$this->telegram,
             'instagram'=>$this->instagram,
             'address'=>$this->address,
-            'categories'=>OnlyCategoryResource::collection(Category::where('company_id',$this->id)->where('main_category_id',null)->where('deleted_at',null)->orderBy('id','desc')->get())
         ];
     }
 }

@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\CompanyResource;
 use App\Http\Resources\CompCamProductsResource;
+use App\Http\Resources\ProductResource;
 use App\Models\Category;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
 {
@@ -18,18 +21,29 @@ class CategoryController extends Controller
      */
     public function index($company_slug,$category_slug)
     {
-        return new CompCamProductsResource(Company::where('slug',$company_slug)->where('deleted_at',null)->with(['category' => function ($query) use($category_slug) {
-            $query->where('slug', $category_slug)->first();
-        }])
-        ->orderBy('id','desc')->first());
+        try {
+            $company = new CompanyResource(Company::where('slug',$company_slug)->where('deleted_at',null)->firstOrFail());
+    
+            $category = new CategoryResource($company->category()->where('slug',$category_slug)->where('deleted_at',null)->firstOrFail());
+    
+            $products = $category->product()->where('is_active',1)->where('deleted_at',null)->orderBy('id','desc')->paginate(10); // Sahifada 10 ta mahsulot
+            ProductResource::collection(($products));
+            
+            return response()->json([
+                'company' => $company,
+                'category' => $category,
+                'products' => $products
+            ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Resource not found',
+                'message' => 'The specified company or category does not exist'
+            ], 404);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
     }
 
     /**

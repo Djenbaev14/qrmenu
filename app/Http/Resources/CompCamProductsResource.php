@@ -27,7 +27,7 @@ class CompCamProductsResource extends JsonResource
             'telegram'=>$this->telegram,
             'instagram'=>$this->instagram,
             'address'=>$this->address,
-            'categories'=>new CategoryResource(Category::where('id',$this->category[0]->id)->where('main_category_id',null)->where('deleted_at',null)->orderBy('id','desc')->get())
+            'categories'=>new CategoryResource(Category::where('id',$this->category[0]->id)->where('main_category_id',null)->where('deleted_at',null)->orderBy('id','desc')->first())
         ];
     }
 }
