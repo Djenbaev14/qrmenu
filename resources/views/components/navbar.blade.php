@@ -53,7 +53,7 @@
             <li>
                 <a class='tp-link' href="{{route('clients.index')}}">
                     <i data-feather="users"></i>
-                    <span> Clints<span class="mx-2 badge text-bg-danger">{{is_answered()}}</span> </span>
+                    <span> Clients<span class="mx-2 badge text-bg-danger">{{is_answered()}}</span> </span>
                     
                 </a>
             </li>
