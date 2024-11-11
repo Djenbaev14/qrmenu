@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\CompanyController;
 use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
@@ -34,3 +35,5 @@ Route::prefix('companies/{company_slug}')->group(function () {
     });
 });
 
+// clients
+Route::apiResource('/clients',ClientController::class);

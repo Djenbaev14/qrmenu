@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -11,7 +12,8 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $clients=Client::where('deleted_at',null)->orderBy('id','desc')->paginate(20);
+        return view('pages.clients.index',compact('clients'));
     }
 
     /**

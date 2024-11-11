@@ -20,12 +20,13 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-8">
-                              <form action="{{route('products.store')}}" method="POST" enctype="multipart/form-data">
-                                  @csrf
-                                {{-- <div class="wrap-custom-file" >
-                                    <input type="file" name="photos[]" id="image1" accept=".gif, .jpg, .png" />
-                                    <label  for="image1" style='background-image: url("{{asset('images/products/'.$arrayData['photos'][0]['photo'])}}")' class="custom-label-1"><i data-feather="camera" class="fa"></i></label>
-                                </div> --}}
+                              <form action="{{route('products.update',$product->id)}}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                                <div class="wrap-custom-file" >
+                                    <input type="file" name="photos[]" value="{{old('photos[0]',$product->photos[0])}}" id="image1" accept=".gif, .jpg, .png" />
+                                    <label  for="image1" style='background-image: url("{{asset('images/products/'.$product->photos[0])}}")' class="custom-label-1 file-ok"><i data-feather="camera" class="fa"></i></label>
+                                </div>
                                 
                                 <div class="wrap-custom-file">
                                     <input type="file" name="photos[]" id="image2" accept=".gif, .jpg, .png" />

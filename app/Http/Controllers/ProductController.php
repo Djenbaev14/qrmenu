@@ -94,7 +94,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        return $request->all();
     }
 
     /**
