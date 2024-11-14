@@ -35,7 +35,7 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
-        
+        // return $request->file('banner_image');
         $request->validate([
             'name' => 'required',
             'telephones' => 'required|array',
@@ -50,10 +50,10 @@ class SettingController extends Controller
             if(Company::where('user_id',auth()->user()->id)->exists()){
                 $company = Company::where('user_id',auth()->user()->id)->first();
 
-                if($request->hasFile('logo') && file_exists(public_path('images/company-logo/' . $company->logo))){
-                    unlink(public_path('images/company-logo/' . $company->logo));
-                }
                 if($request->hasFile('logo')){
+                    if(!empty($company->logo) && file_exists(public_path('images/company-logo/' . $company->logo))){
+                        unlink(public_path('images/company-logo/' . $company->logo));
+                    }
                     $file = $request->file('logo');
                     $fileName = 'logo-'.time().'.'.$file->getClientOriginalExtension();
                     $file->move(public_path('images/company-logo'), $fileName);
@@ -61,10 +61,10 @@ class SettingController extends Controller
                     $fileName = $company->logo;
                 }
 
-                if($request->hasFile( 'banner_image') && file_exists(public_path('images/banner/' . $company->banner_image))){
-                    unlink(public_path('images/banner/' . $company->banner_image));
-                }
                 if($request->hasFile('banner_image')){
+                    if(!empty($company->banner_image) &&  file_exists(public_path('images/banner/' . $company->banner_image))){
+                        unlink(public_path('images/banner/' . $company->banner_image));
+                    }
                     $file_banner = $request->file('banner_image');
                     $fileName_banner = 'banner-'.time().'.'.$file_banner->getClientOriginalExtension();
                     $file_banner->move(public_path('images/banner'), $fileName_banner);
