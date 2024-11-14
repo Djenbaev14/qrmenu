@@ -21,7 +21,7 @@ class ShowCompanyResource extends JsonResource
             'banner_image'=>$this->banner_image,
             'banner_text_uz'=>$this->banner_text_uz,
             'banner_text_ru'=>$this->banner_text_ru,
-            'banner_text_qr'=>$this->banner_text_qr,
+            'banner_text_kr'=>$this->banner_text_kr,
             'description_uz'=>$this->description_uz,
             'description_ru'=>$this->description_ru,
             'description_kr'=>$this->description_kr,
