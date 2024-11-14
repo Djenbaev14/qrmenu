@@ -2,11 +2,10 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProComCamResource extends JsonResource
+class ShowCompanyResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,19 +15,22 @@ class ProComCamResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'=>$this->id,
             'name'=>$this->name,
             'logo'=>$this->logo,
             'slug'=>$this->slug,
+            'banner_image'=>$this->banner_image,
+            'banner_text_uz'=>$this->banner_text_uz,
+            'banner_text_ru'=>$this->banner_text_ru,
+            'banner_text_qr'=>$this->banner_text_qr,
             'description_uz'=>$this->description_uz,
             'description_ru'=>$this->description_ru,
             'description_kr'=>$this->description_kr,
             'telephones'=>$this->telephones,
             'telegram'=>$this->telegram,
             'instagram'=>$this->instagram,
+            'youtube'=>$this->youtube,
+            'facebook'=>$this->facebook,
             'address'=>$this->address,
-            'categories'=>$this->category
-            // 'categories'=>CategoryResource::collection(Category::where('company_id',$this->id)->where('main_category_id',null)->where('deleted_at',null)->orderBy('id','desc')->get())
         ];
     }
 }

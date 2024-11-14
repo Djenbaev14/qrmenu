@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\CompanyResource;
-use App\Http\Resources\ProComCamResource;
 use App\Http\Resources\ShowProductResource;
 use App\Models\Company;
 use App\Models\Product;
