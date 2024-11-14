@@ -14,17 +14,12 @@ class CompanyController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($company_slug)
+    public function index()
     {
-        
-        $company = new ShowCompanyResource(Company::where('slug',$company_slug)->where('deleted_at',null)->first());
-        
-        $category = CategoryResource::collection($company->category()->where('deleted_at',null)->orderBy('id','desc')->get());
+        $companies = CompanyResource::collection(Company::where('deleted_at',null)->orderBy('id','desc')->get());
         return response()->json([
-            'company' => $company,
-            'category' => $category,
-        ]);
-
+            'companies' => $companies,
+        ]); 
     }
 
     /**
@@ -38,8 +33,15 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($company_slug)
     {
+        $company = new ShowCompanyResource(Company::where('slug',$company_slug)->where('deleted_at',null)->first());
+        
+        $category = CategoryResource::collection($company->category()->where('deleted_at',null)->orderBy('id','desc')->get());
+        return response()->json([
+            'company' => $company,
+            'category' => $category,
+        ]);
     }
 
     /**
