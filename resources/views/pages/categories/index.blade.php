@@ -76,9 +76,13 @@
                                                             @csrf
                                                             @method('PATCH')
                                                               <div class="mb-3">
-                                                                  <input type="file" name="photo" id="logoInput" accept="image/*" class="form-control">
-                                                                  
-                                                                  <img id="preview2" src="{{asset('images/categories/'.$category->photo)}}" width="50px" alt="Logotip oldindan ko'rish">
+                                                                <div id="upload-container-2" >
+                                                                  <label for="logo-upload-2" id="upload-label-2">
+                                                                      <span id="change-icon-2" style="display: inline-block">&#8635;</span> <!-- Unicode for a refresh icon -->
+                                                                      <img id="logo-preview-2" src="{{asset('images/categories/'.$category->photo)}}" alt="Yuklangan rasm" style="display: block;" />
+                                                                    </label>
+                                                                    <input type="file" name="photo" id="logo-upload-2" accept="image/png, image/webp, image/jpeg,image/jpg" style="display: none;" />
+                                                                </div>
                                                               </div>
                                                               
                                                               <ul class="nav nav-pills nav-justified bg-light" role="tablist">
@@ -190,8 +194,20 @@
                         <form action="{{route('categories.store')}}" method="POST" enctype="multipart/form-data">
                           @csrf
                             <div class="mb-3">
-                                <input type="file"  name="photo" id="logoInput" accept="image/*" class="form-control">
-                                <img id="preview" alt="Logotip oldindan ko'rish">
+                              <div id="upload-container" >
+                                        <label for="logo-upload" id="upload-label">
+                                              <span id="change-icon">&#8635;</span> <!-- Unicode for a refresh icon -->
+                                              <img id="logo-preview" src="" style="display:none" alt="Yuklangan rasm"/>
+                                              <div id="upload-area">
+                                                  <div id="placeholder">
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                                      <p>Logotipni shu yerga o'tkazing yoki <span class="select-text">tanlang</span></p>
+                                                      <p>Fayl o‘lchami 10 MB'gacha</p>
+                                                  </div>
+                                              </div>
+                                      </label>
+                                      <input type="file" name="photo" id="logo-upload" accept="image/png, image/webp, image/jpeg,image/jpg" style="display: none;" />
+                              </div>
                             </div>
                             
                             <ul class="nav nav-pills nav-justified bg-light rounded shadow-sm" role="tablist">
@@ -239,3 +255,87 @@
 		</div> <!-- container-fluid -->
 	</div> 
 @endsection
+@push('css')
+<style>
+  #upload-label{
+      width: 100%;
+  }
+  #upload-area{
+      border: 2px dashed #ccc;
+      border-radius: 20px;
+      background-color: #FAFAFF;
+      padding: 20px;
+      width: 100%;
+      margin: 0 auto 20px auto;
+      cursor: pointer;
+      position: relative;
+  }
+
+  #logo-preview,#logo-preview-2 {
+      border-radius: 8px;
+      width: 200px;
+      height: 100px;
+  }
+
+  #placeholder{
+      color: #333;
+      text-align: center;
+  }
+
+  .select-text {
+      color: #6c63ff; /* Link rang */
+      cursor: pointer;
+      text-decoration: underline;
+  }
+
+  #change-icon,#change-icon-2{
+      display: none;
+      margin-bottom: 5px;
+      object-fit: fill;
+      cursor: pointer;
+      font-size: 20px;
+      color: #6c63ff;
+      background-color: white;
+      border-radius: 50%;
+      padding: 2px 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+</style>
+@endpush
+@push('js')
+  <script>
+    document.getElementById("logo-upload").addEventListener("change", function (event) {
+        const file = event.target.files[0];
+        if (file && file.size <= 10 * 1024 * 1024) { // 10 MB
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const logoPreview = document.getElementById("logo-preview");
+                logoPreview.src = e.target.result;
+                logoPreview.style.display = "block";
+                
+                // Placeholderni yashirish
+                document.getElementById("placeholder").style.display = "none";
+                document.getElementById("change-icon").style.display = "inline-block";
+                document.getElementById("upload-area").style.display = "none";
+            };
+            reader.readAsDataURL(file);
+        } 
+    });
+    
+    document.getElementById("logo-upload-2").addEventListener("change", function (event) {
+                const file = event.target.files[0];
+                if (file && file.size <= 10 * 1024 * 1024) { // 10 MB
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        const logoPreview = document.getElementById("logo-preview-2");
+                        logoPreview.src = e.target.result;
+                        logoPreview.style.display = "block";
+                        
+                        document.getElementById("change-icon-2").style.display = "inline-block";
+                    };
+                    reader.readAsDataURL(file);
+                } 
+            });
+        </script>
+  </script>
+@endpush

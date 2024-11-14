@@ -101,15 +101,25 @@ class CategoryController extends Controller
             'name_kr' => 'required',
             'photo'=>'required'
         ]);
-        
-        $file = $request->file('photo');
-        $fileName = time().'.'.$file->getClientOriginalExtension();
-        $file->move(public_path('images/categories'), $fileName);
-
+        $category=Category::find($id);
+        if($request->hasFile('photo') && file_exists(public_path('images/categories/' . $category->photo))){
+            unlink(public_path('images/categories/' . $category->photo));
+        }
+        if($request->hasFile('photo')){
+            $file = $request->file('photo');
+            $fileName = time().'.'.$file->getClientOriginalExtension();
+            $file->move(public_path('images/categories'), $fileName);
+        }else{
+            $fileName=$category->photo;
+        }
         // slug
-        // $slug = Str::slug($request->name_kr);
-        // $count = Category::where('deleted_at','!=',null)->where('slug', 'LIKE', "{$slug}%")->count();
-        // $slug = $count ? "{$slug}-{$count}" : $slug;
+        $slug = Str::slug($request->name_kr);
+        if($slug==Category::find($id)->slug){
+            $slug=Category::find($id)->slug;
+        }else{
+            $count = Category::where('deleted_at','!=',null)->where('slug', 'LIKE', "{$slug}%")->count();
+            $slug = $count ? "{$slug}-{$count}" : $slug;
+        }
 
         if($request->main_category_id=="none"){
             $category = Category::find($id)->update([
@@ -118,6 +128,7 @@ class CategoryController extends Controller
                 'name_kr' => $request->name_kr,
                 'main_category_id' => null,
                 'photo'=>$fileName,
+                'slug'=>$slug,
             ]);
         }else{
             $category = Category::find($id)->update([
@@ -126,6 +137,7 @@ class CategoryController extends Controller
                 'name_kr' => $request->name_kr,
                 'main_category_id' => $request->main_category_id,
                 'photo'=>$fileName,
+                'slug'=>$slug,
             ]);
         }
 

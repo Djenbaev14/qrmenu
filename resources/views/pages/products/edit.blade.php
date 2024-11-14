@@ -23,25 +23,19 @@
                               <form action="{{route('products.update',$product->id)}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
-                                <div class="wrap-custom-file" >
-                                    <input type="file" name="photos[]" value="{{old('photos[0]',$product->photos[0])}}" id="image1" accept=".gif, .jpg, .png" />
-                                    <label  for="image1" style='background-image: url("{{asset('images/products/'.$product->photos[0])}}")' class="custom-label-1 file-ok"><i data-feather="camera" class="fa"></i></label>
-                                </div>
-                                
-                                <div class="wrap-custom-file">
-                                    <input type="file" name="photos[]" id="image2" accept=".gif, .jpg, .png" />
-                                    <label  for="image2" class="custom-label-1"><i data-feather="camera" class="fa"></i></label>
-                                </div>
-                                
-                                <div class="wrap-custom-file">
-                                    <input type="file" name="photos[]" id="image3" accept=".gif, .jpg, .png" />
-                                    <label  for="image3" class="custom-label-1"><i data-feather="camera" class="fa"></i></label>
-                                </div>
-                                
-                                <div class="wrap-custom-file">
-                                    <input type="file" name="photos[]" id="image4" accept=".gif, .jpg, .png" />
-                                    <label  for="image4" class="custom-label-1"><i data-feather="camera" class="fa"></i></label>
-                                </div>
+                                @for ($i = 0; $i < 4; $i++)
+                                  @if ($i < count($product->photos))
+                                    <div class="wrap-custom-file" >
+                                        <input type="file" name="photos[]" id="image{{$i}}" accept=".gif, .jpg, .png" />
+                                        <label  for="image{{$i}}" style='background-image: url("{{asset('images/products/'.$product->photos[$i])}}")' class="custom-label-1 file-ok"><i data-feather="camera" class="fa"></i></label>
+                                    </div>
+                                  @else
+                                  <div class="wrap-custom-file" >
+                                      <input type="file" name="photos[]" id="image{{$i}}" accept=".gif, .jpg, .png" />
+                                      <label  for="image{{$i}}" class="custom-label-{{$i}} file-ok"><i data-feather="camera" class="fa"></i></label>
+                                  </div>
+                                  @endif
+                                @endfor
                                     <ul class="nav nav-pills nav-justified bg-light mt-3" role="tablist">
                                       @foreach (config('app.languages') as $i => $item)
                                           <li class="nav-item" role="presentation">

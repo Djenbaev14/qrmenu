@@ -57,7 +57,7 @@ class AuthController extends Controller
         ]);
         // auth
         auth()->login($user);
-        return redirect()->route('home')->with('success','Success');
+        return redirect()->route('settings.index')->with('success','Success');
     }
 
     

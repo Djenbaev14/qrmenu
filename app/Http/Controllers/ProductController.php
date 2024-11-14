@@ -20,7 +20,6 @@ class ProductController extends Controller
         $units=Unit::all();
         return view('pages.products.index',compact('products','categories','units','search'));
     }
-
     public function create()
     {
     }
@@ -94,7 +93,52 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        return $request->all();
+        $request->validate([
+            'name_uz'=>'required|string|max:255',
+            'name_ru'=>'required|string|max:255',
+            'name_kr'=>'required|string|max:255',
+            'category_id'=>'required|exists:categories,id',
+        ]);
+        $product = Product::find($id);
+        $keys=array_keys($product->photos);
+        $req_keys=array_keys($request->photos);
+        $photos=[];
+
+        if($request->hasFile('photos') ){
+            foreach ($request->photos as $key => $photo) {
+                if(in_array($key,$keys)){
+                    if(file_exists(public_path('images/products/' . $product->photos[$key]))){
+                        unlink(public_path('images/products/' . $product->photos[$key]));
+                    }
+                }
+            }
+        }
+        if($request->hasFile('photos') ){
+            for ($i=0; $i < 4; $i++) { 
+                if(in_array($i,$req_keys)){
+                    $photo = $request->photos[$i];
+                    $photoName = time().$i.'.'.$photo->getClientOriginalExtension();
+                    $photo->move(public_path('images/products'), $photoName);
+                    $photos[$i] = $photoName;
+                }elseif(in_array($i,$keys) && !in_array($i,$req_keys)){
+                    $photos[$i] = $product->photos[$i];
+                }
+            }
+        }
+                $product->update([
+                    'name_uz'=>$request->name_uz,
+                    'name_ru'=>$request->name_ru,
+                    'name_kr'=>$request->name_kr,
+                    'category_id'=>$request->category_id,
+                    'price'=>$request->price,
+                    'unit_id'=>is_numeric($request->unit_id) ? $request->unit_id : null , 
+                    'description_uz'=>$request->description_uz,
+                    'description_ru'=>$request->description_ru,
+                    'description_kr'=>$request->description_kr,
+                    'photos'=>$photos,
+                    ]);
+                    return redirect()->route('products.index')->with('success','Product updated successfully');
+
     }
 
     /**

@@ -21,9 +21,15 @@ return new class extends Migration
             $table->longText('description_uz')->nullable();
             $table->longText('description_ru')->nullable();
             $table->longText('description_kr')->nullable();
+            $table->longText('banner_text_uz')->nullable();
+            $table->longText('banner_text_ru')->nullable();
+            $table->longText('banner_text_kr')->nullable();
+            $table->string('banner_image')->nullable();
             $table->json('telephones')->nullable();
             $table->string('telegram')->nullable();
             $table->string('instagram')->nullable();
+            $table->string('youtube')->nullable();
+            $table->string('facebook')->nullable();
             $table->string('address')->nullable();
             $table->softDeletes();
             $table->timestamps();
