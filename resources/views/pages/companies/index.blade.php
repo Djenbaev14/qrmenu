@@ -40,7 +40,7 @@
                               <tbody>
                                 @foreach ($companies as $company)
                                     <tr class="align-middle">
-                                      <td >{{$company->name}}</td>
+                                      <td ><img src="{{asset('images/company-logo/'.$company->logo)}}" width="100px" style="object-fit: cover" height="50px" alt=""> {{$company->name}}</td>
                                       <td >{{$company->category->count()}}</td>
                                       <td >{{$company->product->count()}}</td>
                                       <td>{{$company->created_at->format('Y.m.d , H:i')}}</td>
