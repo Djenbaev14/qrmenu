@@ -13,6 +13,9 @@ class Company extends Model
     use SoftDeletes;
     // guarded
     protected $guarded = ['id'];
+    protected $casts = [
+        'telephones' => 'array', // JSON maydonni array sifatida olish
+    ];
 
     public function user(): BelongsTo
     {
