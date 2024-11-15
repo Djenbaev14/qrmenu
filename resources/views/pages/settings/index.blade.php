@@ -267,7 +267,7 @@
             color: #6c63ff;
             background-color: white;
             border-radius: 50%;
-            padding: 2px 8px;
+            padding: 2px 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
         
