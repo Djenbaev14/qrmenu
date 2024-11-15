@@ -28,7 +28,6 @@
                         </div>
                       </div>
                   </div><!-- end card header -->
-                  
                   <div class="card-body">
                       <div class="table-responsive mb-3">
                           <table class="table mb-0" id="clients-table">
@@ -51,7 +50,7 @@
                                       <td >{{$client->name}}</td>
                                       <td>{{$client->phone}}</td>
                                       <td >{{$client->address}}</td>
-                                      <td><?=($client->product) ? $client->product->name_uz : '';?></td>
+                                      <td><?=($client->order[0]) ? $client->order[0]->product->name_uz : '';?></td>
                                       <td><?=($client->is_answered) ?  "<span class='text-success'>Javob qaytarilgan</span>" : "<span class='text-danger'>Javob qaytarilmagan</span>";?></td>
                                       
                                       <td>{{$client->created_at->format('Y.m.d , H:i')}}</td>

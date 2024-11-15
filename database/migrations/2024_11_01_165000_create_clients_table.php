@@ -13,17 +13,9 @@ return new class extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('company_id');
-            $table->foreign('company_id')->references('id')->on('companies');
-            $table->unsignedBigInteger('category_id')->nullable();
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->unsignedBigInteger('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products');
             $table->string('name');
             $table->string('phone');
-            $table->string('description')->nullable();
             $table->string('address')->nullable();
-            $table->boolean('is_answered')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
