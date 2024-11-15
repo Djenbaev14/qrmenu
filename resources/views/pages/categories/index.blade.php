@@ -14,15 +14,19 @@
                   <div class="card-header">
                       <h4 class="fw-bold mb-3">Kategoriyalar ro'yxati</h4>
                       <div class="row  justify-content-between p-2" style="background-color: #F9F9FC;border-radius:10px;" >
-                        <div class="col-5">
-                          <form action="{{ url('/categories') }}" class="d-flex" method="GET">
-                            <input type="search" class="form-control"  name="search" value="{{ request('search') }}" placeholder="Kategoriya nomini qidirish"/>
-                            <button type="submit" class="btn btn-primary mx-2">Izlash</button>
-                            <a href="{{route('categories.index')}}" class="btn btn-success mx-2">Tozalash</a>
-                        </form>
+                        <div class="col-lg-6 col-sm-12">
+                          <form action="{{ url('/categories') }}" class="row " method="GET">
+                            <div class="col-sm-12 col-lg-7 mb-2">
+                              <input type="search" class="form-control"  name="search" value="{{ request('search') }}" placeholder="Kategoriya nomini qidirish"/>
+                            </div>
+                            <div class="col-sm-12 col-lg-5 mb-2">
+                              <button type="submit" class="btn btn-primary">Izlash</button>
+                              <a href="{{route('categories.index')}}" class="btn btn-success">Tozalash</a>
+                            </div>
+                          </form>
                         </div>
-                        <div class="col-3 ">
-                          <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
+                        <div class="col-lg-3 col-sm-12">
+                          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 6V18M18 12L6 12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 6V18M18 12L6 12" stroke="url(#paint0_linear_1494_22742)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><defs><linearGradient id="paint0_linear_1494_22742" x1="11.8537" y1="4.97561" x2="12.1463" y2="20.0488" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"></stop><stop offset="1" stop-color="#fff"></stop></linearGradient></defs></svg>
                             Kategoriya qo'shish</button>
                         </div>
@@ -113,7 +117,7 @@
                                                               <label for="">Asosiy Kategoriya</label>
                                                               <select name="main_category_id" class="form-select">
                                                                 <option hidden value="none">Asosiy Kategoriyani tanlang</option>
-                                                                @foreach ($categories as $c)
+                                                                @foreach ($select_categories as $c)
                                                                 @if ($c->id == $category->main_category_id)
                                                                     <option selected value="{{$c->id}}">{{$c->name_uz}}</option>
                                                                 @elseif($c->id != $category->id)
@@ -235,7 +239,7 @@
                             <label for="">Asosiy Kategoriya</label>
                             <select name="main_category_id" class="form-select">
                               <option hidden value="none">Asosiy Kategoriyani tanlang</option>
-                              @foreach ($categories as $category)
+                              @foreach ($select_categories as $category)
                                   <option value="{{$category->id}}">{{$category->name_uz}}</option>
                               @endforeach
                             </select>

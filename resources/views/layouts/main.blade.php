@@ -28,6 +28,9 @@
 
         @stack('css')
         <style>
+            .table td, .table th {
+                white-space: nowrap;
+            }
             #preview {
             width: 150px;
             height: 150px;

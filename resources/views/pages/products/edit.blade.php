@@ -23,19 +23,22 @@
                               <form action="{{route('products.update',$product->id)}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
-                                @for ($i = 0; $i < 4; $i++)
-                                  @if ($i < count($product->photos))
-                                    <div class="wrap-custom-file" >
-                                        <input type="file" name="photos[]" id="image{{$i}}" accept=".gif, .jpg, .png" />
-                                        <label  for="image{{$i}}" style='background-image: url("{{asset('images/products/'.$product->photos[$i])}}")' class="custom-label-1 file-ok"><i data-feather="camera" class="fa"></i></label>
+                                    <div class="row">
+                                      @for ($i = 0; $i < 4; $i++)
+                                        @if ($i < count($product->photos))
+                                          <div class="col-sm-6 col-lg-3 wrap-custom-file mb-2" >
+                                              <input type="file" name="photos[]" id="image{{$i}}" accept=".gif, .jpg, .png" />
+                                              <label  for="image{{$i}}" style='background-image: url("{{asset('images/products/'.$product->photos[$i])}}")' class="custom-label-1 file-ok"><i data-feather="camera" class="fa"></i></label>
+                                          </div>
+                                        @else
+                                        
+                                        <div class="wrap-custom-file col-lg-3 col-sm-6 mb-2">
+                                          <input type="file" name="photos[]" id="image{{$i}}" accept=".gif, .jpg, .png" />
+                                          <label  for="image{{$i}}" class="custom-label-{{$i}}"><i data-feather="camera" class="fa"></i></label>
+                                        </div>
+                                        @endif
+                                      @endfor
                                     </div>
-                                  @else
-                                  <div class="wrap-custom-file" >
-                                      <input type="file" name="photos[]" id="image{{$i}}" accept=".gif, .jpg, .png" />
-                                      <label  for="image{{$i}}" class="custom-label-{{$i}} file-ok"><i data-feather="camera" class="fa"></i></label>
-                                  </div>
-                                  @endif
-                                @endfor
                                     <ul class="nav nav-pills nav-justified bg-light mt-3" role="tablist">
                                       @foreach (config('app.languages') as $i => $item)
                                           <li class="nav-item" role="presentation">

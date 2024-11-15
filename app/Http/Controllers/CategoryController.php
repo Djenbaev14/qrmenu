@@ -17,10 +17,10 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search', '');
-
+        $select_categories=Category::where('deleted_at',null)->orderBy('id','desc')->get();
         $categories = Category::where('name_uz','LIKE','%'.$search.'%')->where('deleted_at',null)->orderBy('id', 'DESC')->paginate(10);
         $categories->appends(request()->query());
-        return view('pages.categories.index',compact('categories','search'));
+        return view('pages.categories.index',compact('categories','search','select_categories'));
     }
 
     /**

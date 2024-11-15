@@ -23,9 +23,6 @@
                                 <form method="POST" action="{{route('settings.store')}}" enctype="multipart/form-data">
                                   @csrf
                                   <div class="mb-3">
-                                      {{-- <label for="simpleinput" class="form-label">Company Logo</label>
-                                      <input type="file" <?=($company && $company->logo) ? 'hidden' : ''?> name="logo" id="logoInput" accept="image/*" class="form-control">
-                                      <img id="preview" <?=($company && $company->logo) ? "src='".asset('images/company-logo/'.$company->logo)."' class='d-block'" : ''?>   alt="Logotip oldindan ko'rish"> --}}
                                     <div id="upload-container" >
                                         <label for="logo-upload" id="upload-label">
                                             @if ($company->logo)
@@ -136,16 +133,16 @@
                                     </div>
                                     @endforeach
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-2">
                                     <label for="phone" class="form-label">Aloqa uchun telefon raqami:</label>
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-lg-6 col-sm-12 mb-2">
                                             <div class="input-group">
                                                 <span class="input-group-text" id="inputGroup-sizing-default">+998</span>
                                                 <input name="telephones[]" maxlength="9" placeholder="1234567" value="<?=($company && $company->telephones) ? $company->telephones[0] : ''   ?>" class="form-control" type="tel" />
                                             </div>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-lg-6 col-sm-12 mb-2">
                                             <div class="input-group">
                                                 <span class="input-group-text" id="inputGroup-sizing-default">+998</span>
                                                 <input name="telephones[]" maxlength="9" placeholder="1234567" value="<?=($company && $company->telephones) ? $company->telephones[1] : ''   ?>" class="form-control" type="tel" />
@@ -156,27 +153,27 @@
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Ijtimoiy tarmoqlarga havola:</label>
                                     <div class="row">
-                                        <div class="col-6 mb-2">
+                                        <div class="col-lg-6 col-sm-12 mb-2 mb-2">
                                             <div class="input-group">
                                                 <div class="input-group-text"><img width="20px" src="https://img.icons8.com/ios-filled/50/instagram-new.png" alt="Instagram"></div>
                                                 <input id="Instagram" class="form-control" type="url" name="instagram" value="<?=($company) ? $company->instagram : ''   ?>" placeholder="Instagram"/>
                                             </div>
                                         </div>
                                         
-                                        <div class="col-6 mb-2">
+                                        <div class="col-lg-6 col-sm-12 mb-2 mb-2">
                                             <div class="input-group">
                                                 <div class="input-group-text"><img width="20px" src="https://img.icons8.com/ios-filled/50/telegram-app.png" alt="Telegram"></div>
                                                 <input id="Telegram" class="form-control" value="<?=($company) ? $company->telegram : ''   ?>" name="telegram" type="url" placeholder="Telegram"/>
                                             </div>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-lg-6 col-sm-12 mb-2">
                                             <div class="input-group">
                                                 <div class="input-group-text"><img width="20px" src="https://img.icons8.com/ios-filled/50/facebook-new.png" alt="Facebook"></div>
                                                 <input id="Facebook" class="form-control" type="url" name="facebook" value="<?=($company) ? $company->facebook : ''   ?>" placeholder="Facebook"/>
                                             </div>
                                         </div>
                                         
-                                        <div class="col-6">
+                                        <div class="col-lg-6 col-sm-12 mb-2">
                                             <div class="input-group">
                                                 <div class="input-group-text"><img width="20px" src="https://img.icons8.com/?size=100&id=25654&format=png&color=000000" alt="youtube"></div>
                                                 <input id="youtube" class="form-control" value="<?=($company) ? $company->youtube : ''   ?>" name="youtube" type="url" placeholder="Youtube"/>
@@ -276,34 +273,6 @@
     </style>
 @endpush
 @push('js')
-
-        <script>
-            const logoInput = document.getElementById('logoInput');
-            const preview = document.getElementById('preview');
-
-            logoInput.addEventListener('change', (event) => {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        preview.src = e.target.result;
-                        preview.style.display = 'block';
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        </script>
-
-        <!-- JavaScript -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-        <script>
-            const phoneInputField = document.querySelector("#phone");
-            const phoneInput = window.intlTelInput(phoneInputField, {
-                initialCountry: "uz",
-                utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js" // formatlash uchun kerak
-            });
-            
-        </script>
         <script>
             document.getElementById("logo-upload").addEventListener("change", function (event) {
                 const file = event.target.files[0];

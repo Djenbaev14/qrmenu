@@ -14,15 +14,19 @@
                 <div class="card-header">
                     <h4 class="fw-bold mb-3">Maxsulotlar ro'yxati</h4>
                     <div class="row  justify-content-between p-2" style="background-color: #F9F9FC;border-radius:10px;" >
-                      <div class="col-5 ">
-                        <form action="{{ url('/products') }}" class="d-flex" method="GET">
-                          <input type="search" class="form-control"  name="search" value="{{ request('search') }}" placeholder="Maxsulot nomini qidirish"/>
-                          <button type="submit" class="btn btn-primary mx-2">Izlash</button>
-                          <a href="{{route('products.index')}}" class="btn btn-success mx-2">Tozalash</a>
-                      </form>
+                      <div class="col-lg-6 col-sm-12">
+                        <form action="{{ url('/products') }}" class="row " method="GET">
+                          <div class="col-sm-12 col-lg-7 mb-2">
+                            <input type="search" class="form-control"  name="search" value="{{ request('search') }}" placeholder="Maxsulot nomini qidirish"/>
+                          </div>
+                          <div class="col-sm-12 col-lg-5 mb-2">
+                            <button type="submit" class="btn btn-primary">Izlash</button>
+                            <a href="{{route('products.index')}}" class="btn btn-success">Tozalash</a>
+                          </div>
+                        </form>
                       </div>
-                      <div class="col-3 ">
-                        <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
+                      <div class="col-lg-3 col-sm-12">
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 6V18M18 12L6 12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 6V18M18 12L6 12" stroke="url(#paint0_linear_1494_22742)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><defs><linearGradient id="paint0_linear_1494_22742" x1="11.8537" y1="4.97561" x2="12.1463" y2="20.0488" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"></stop><stop offset="1" stop-color="#fff"></stop></linearGradient></defs></svg>
                           Maxsulot qo'shish</button>
                       </div>
@@ -124,25 +128,27 @@
                       <div class="col-12">
                         <form action="{{route('products.store')}}" method="POST" enctype="multipart/form-data">
                           @csrf
-                        <div class="wrap-custom-file" >
-                            <input type="file" name="photos[]" id="image1" accept=".gif, .jpg, .png" />
-                            <label  for="image1" class="custom-label-1"  ><i data-feather="camera" class="fa"></i></label>
-                        </div>
-                        
-                        <div class="wrap-custom-file">
-                            <input type="file" name="photos[]" id="image2" accept=".gif, .jpg, .png" />
-                            <label  for="image2" class="custom-label-2"><i data-feather="camera" class="fa"></i></label>
-                        </div>
-                        
-                        <div class="wrap-custom-file">
-                            <input type="file" name="photos[]" id="image3" accept=".gif, .jpg, .png" />
-                            <label  for="image3" class="custom-label-3"><i data-feather="camera" class="fa"></i></label>
-                        </div>
-                        
-                        <div class="wrap-custom-file">
-                            <input type="file" name="photos[]" id="image4" accept=".gif, .jpg, .png" />
-                            <label  for="image4" class="custom-label-4"><i data-feather="camera" class="fa"></i></label>
-                        </div>
+                          <div class="row">
+                            <div class="wrap-custom-file col-lg-3 col-sm-6 mb-2" >
+                              <input type="file" name="photos[]" id="image1" accept=".gif, .jpg, .png" />
+                              <label  for="image1" class="custom-label-1"  ><i data-feather="camera" class="fa"></i></label>
+                            </div>
+                            
+                            <div class="wrap-custom-file col-lg-3 col-sm-6 mb-2">
+                                <input type="file" name="photos[]" id="image2" accept=".gif, .jpg, .png" />
+                                <label  for="image2" class="custom-label-2"><i data-feather="camera" class="fa"></i></label>
+                            </div>
+                            
+                            <div class="wrap-custom-file col-lg-3 col-sm-6">
+                                <input type="file" name="photos[]" id="image3" accept=".gif, .jpg, .png" />
+                                <label  for="image3" class="custom-label-3"><i data-feather="camera" class="fa"></i></label>
+                            </div>
+                            
+                            <div class="wrap-custom-file col-lg-3 col-sm-6">
+                                <input type="file" name="photos[]" id="image4" accept=".gif, .jpg, .png" />
+                                <label  for="image4" class="custom-label-4"><i data-feather="camera" class="fa"></i></label>
+                            </div>
+                          </div>
                             <ul class="nav nav-pills nav-justified bg-light mt-3" role="tablist">
                               @foreach (config('app.languages') as $i => $item)
                                   <li class="nav-item" role="presentation">
@@ -169,7 +175,7 @@
                                 <?php
                                     $desc='description_'.$item['code'];
                                 ?>
-                                {{-- <textarea class="form-control" id="description_{{$item['code']}}" name="description_{{$item['code']}}" rows="10" placeholder="Введите текст">{{old('description_'.$item['code'])}}</textarea> --}}
+                                <textarea class="form-control" id="description_{{$item['code']}}" name="description_{{$item['code']}}" rows="10" placeholder="Введите текст">{{old('description_'.$item['code'])}}</textarea>
                               </div>
                             </div>
                             @endforeach
