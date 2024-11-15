@@ -20,13 +20,6 @@ class DatabaseSeeder extends Seeder
         
         $permissions = [
             'dashboard-list',
-            'dashboard-create',
-            'dashboard-edit',
-            'dashboard-delete',
-            'role-list',
-            'role-create',
-            'role-edit',
-            'role-delete',
             'company-list',
             'company-create',
             'company-edit',
@@ -42,10 +35,13 @@ class DatabaseSeeder extends Seeder
             'subcategory-list',
             'subcategory-create',
             'subcategory-edit',
-            'subcategory-delete'
+            'subcategory-delete',
+            'order-list',
+            'order-edit',
          ];
-        foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+
+        for ($i = 0; $i < count($permissions); $i++) {
+            $permission = Permission::create(['name' => $permissions[$i]]);
         }
         
         $roles = [
@@ -54,7 +50,7 @@ class DatabaseSeeder extends Seeder
         ];
         foreach ($roles as $role_name) {
             $role=Role::create(['name' => $role_name]);
-            if($role_name=='Gl_admin' && $role_name=='Admin'){
+            if($role_name=='Gl_admin'){
                 $role->givePermissionTo($permissions);
             }
         }

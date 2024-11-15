@@ -31,8 +31,7 @@
                     <span> Dashboard </span>
                 </a>
             </li>
-            
-            <li>
+            @if (auth()->user()->role_id==2)<li>
                 <a href="#sidebarProducts" data-bs-toggle="collapse">
                     <i data-feather="home"></i>
                     <span> Products </span>
@@ -48,23 +47,33 @@
                         </li>
                     </ul>
                 </div>
-            </li>
+                </li>
+                
+                <li>
+                    <a class='tp-link' href="{{route('clients.index')}}">
+                        <i data-feather="users"></i>
+                        <span> Clients <?=(is_answered()) ? "<span class='mx-2 badge text-bg-danger'>".is_answered()."</span>" : '';?> </span>
+                        
+                    </a>
+                </li>
+                
+                <li>
+                    <a class='tp-link' href="{{route('settings.index')}}">
+                        <i data-feather="settings"></i>
+                        <span> Settings </span>
+                    </a>
+                </li>
+            @elseif(auth()->user()->role_id)
+                <li>
+                    <a class='tp-link' href="{{route('companies.index')}}">
+                        <i data-feather="home"></i>
+                        <span> Kompaniyalar </span>
+                    </a>
+                </li>
+            @endif
             
-            <li>
-                <a class='tp-link' href="{{route('clients.index')}}">
-                    <i data-feather="users"></i>
-                    <span> Clients <?=(is_answered()) ? "<span class='mx-2 badge text-bg-danger'>".is_answered()."</span>" : '';?> </span>
-                    
-                </a>
-            </li>
-            
-            <li>
-                <a class='tp-link' href="{{route('settings.index')}}">
-                    <i data-feather="settings"></i>
-                    <span> Settings </span>
-                </a>
-            </li>
           </ul>
+            
 
       </div>
       <!-- End Sidebar -->

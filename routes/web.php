@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
@@ -41,3 +42,7 @@ Route::post('/products/is_active', [ProductController::class, 'isActive'])->name
 
 
 Route::resource('clients', ClientController::class)->middleware('auth');
+
+
+Route::resource('companies', CompanyController::class)->middleware('auth');
+Route::post('/companies/key/{user}', [CompanyController::class, 'key'])->name('companies.key')->middleware('auth');
