@@ -16,9 +16,6 @@ class SettingController extends Controller
     public function index()
     {
         $company = Company::where('deleted_at',null)->where('user_id',auth()->user()->id)->first();
-        if($company){
-            $company->telephones = json_decode($company->telephones);
-        }
         return view('pages.settings.index',compact('company'));
     }
 
