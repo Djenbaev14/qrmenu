@@ -80,7 +80,7 @@ class SettingController extends Controller
                     'banner_text_kr'=>$request->banner_text_kr,
                     'banner_image'=>$fileName_banner,
                     'logo'=>$fileName,
-                    'telephones'=>json_encode($request->telephones),
+                    'telephones'=>$request->telephones,
                     'instagram'=>$request->instagram,
                     'telegram'=>$request->telegram,
                     'facebook'=>$request->facebook,
