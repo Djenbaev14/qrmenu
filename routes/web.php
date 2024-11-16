@@ -35,14 +35,17 @@ Route::post('/login', [AuthController::class, 'login'])->name('login')->middlewa
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // resource
-Route::resource('settings', SettingController::class)->middleware('auth');
-Route::resource('categories', CategoryController::class)->middleware('auth');
-Route::resource('products', ProductController::class)->middleware('auth');
-Route::post('/products/is_active', [ProductController::class, 'isActive'])->name('isActive')->middleware('auth');
+// role admin permission middleware
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('settings', SettingController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('products', ProductController::class);
+    Route::post('/products/is_active', [ProductController::class, 'isActive'])->name('isActive');
+    Route::resource('clients', ClientController::class);
 
+    
 
-Route::resource('clients', ClientController::class)->middleware('auth');
+    Route::resource('companies', CompanyController::class);
+    Route::post('/companies/key/{user}', [CompanyController::class, 'key'])->name('companies.key');
+});
 
-
-Route::resource('companies', CompanyController::class)->middleware('auth');
-Route::post('/companies/key/{user}', [CompanyController::class, 'key'])->name('companies.key')->middleware('auth');

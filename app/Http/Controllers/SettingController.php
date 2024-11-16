@@ -10,9 +10,9 @@ use Illuminate\Support\Str;
 
 class SettingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // public function __construct(){
+    //     $this->middleware(['role:Admin','permission:company-list|company-edit|company-delete|company-create']);
+    // }
     public function index()
     {
         $company = Company::where('deleted_at',null)->where('user_id',auth()->user()->id)->first();
