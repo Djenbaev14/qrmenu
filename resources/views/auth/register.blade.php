@@ -6,7 +6,7 @@
 <head>
 
         <meta charset="utf-8" />
-        <title>Register | Tapeli - Responsive Admin Dashboard Template</title>
+        <title>Register</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc."/>
         <meta name="author" content="Zoyothemes"/>
@@ -43,53 +43,41 @@
                                         <form action="{{route('register.post')}}" method="POST" class="my-4">
                                           @csrf
                                           <div class="form-group mb-3">
-                                              <label for="company_name" class="form-label">Kompaniya nomi</label>
-                                              <input class="form-control" name="company_name" value="{{old('company_name')}}" type="text" id="company_name" required="" placeholder="Kompaniya nomi kiriting">
+                                              <label for="company_name" class="form-label">Название компании</label>
+                                              <input class="form-control" name="company_name" value="{{old('company_name')}}" type="text" id="company_name" required="" placeholder="Введите название компании">
                                           </div>
                                             <div class="form-group mb-3">
-                                                <label for="username" class="form-label">Ismingiz</label>
-                                                <input class="form-control" name="name" type="text" value="{{old('name')}}" id="username" required="" placeholder="Ismingiz kiriting">
+                                                <label for="username" class="form-label">Ваше имя</label>
+                                                <input class="form-control" name="name" type="text" value="{{old('name')}}" id="username" required="" placeholder="Введите свое имя">
                                             </div>
 
                                             <div class="form-group mb-3">
-                                                <label for="emailaddress" class="form-label">Telefon raqam</label>
+                                                <label for="emailaddress" class="form-label">Номер телефона</label>
                                                 <div class="input-group">
                                                   <span class="input-group-text" id="basic-addon1">+998</span>
-                                                  <input class="form-control" type="text" value="{{old('phone')}}" name="phone" maxlength="9" id="emailaddress" required="" placeholder="Telefon raqam kiriting">
+                                                  <input class="form-control" type="text" value="{{old('phone')}}" name="phone" maxlength="9" id="emailaddress" required="" placeholder="Введите номер телефона">
                                                 </div>
                                             </div>
                 
                                             <div class="form-group mb-3">
-                                              <label for="password" class="form-label">Parolni kiriting</label>
-                                              <input class="form-control" name="password" value="{{old('password')}}" type="password" required="" id="password" placeholder="Parolni kiriting">
+                                              <label for="password" class="form-label">Введите пароль</label>
+                                              <input class="form-control" name="password" value="{{old('password')}}" type="password" required="" id="password" placeholder="Введите пароль">
                                           </div>
                                           <div class="form-group mb-3">
-                                              <label for="password" class="form-label">Parolni yana kiriting</label>
-                                              <input class="form-control" name="password_confirmation" value="{{old('password_confirmation')}}" type="password" required="" id="password" placeholder="Parolni yana kiriting">
+                                              <label for="password" class="form-label">Введите пароль еще раз</label>
+                                              <input class="form-control" name="password_confirmation" value="{{old('password_confirmation')}}" type="password" required="" id="password" placeholder="Введите пароль еще раз">
                                           </div>
-                
-                                            <div class="form-group d-flex mb-3">
-                                                <div class="col-12">
-                                                    <div class="form-check">
-                                                        <input type="checkbox" class="form-check-input" id="checkbox-signin">
-                                                        <label class="form-check-label" for="checkbox-signin">I agree to the <a href="#" class="text-primary fw-medium"> Terms and Conditions</a></label>
-                                                    </div>
-                                                </div><!--end col-->
-                                            </div>
-                                            
                                             <div class="form-group mb-0 row">
                                                 <div class="col-12">
                                                     <div class="d-grid">
-                                                        <button class="btn btn-primary" type="submit"> Register</button>
+                                                        <button class="btn btn-primary" type="submit"> Зарегистрировать</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
 
-                                        <div class="saprator my-4"><span>or sign in with</span></div>
-
                                         <div class="text-center text-muted mb-4">
-                                            <p class="mb-0">Already have an account ?<a class='text-primary ms-2 fw-medium' href='auth-login.html'>Login here</a></p>
+                                            <p class="mb-0">У вас уже есть учетная запись ?<a class='text-primary ms-2 fw-medium' href='auth-login.html'>Войдите в систему здесь</a></p>
                                         </div>
 
                                     </div>
@@ -102,7 +90,7 @@
                     <div class="col-xl-7">
                         <div class="account-page-bg p-md-5 p-4">
                             <div class="text-center">
-                                <h3 class="text-dark mb-3 pera-title">Quick, Effective, and Productive With Tapeli Admin Dashboard</h3>
+                                {{-- <h3 class="text-dark mb-3 pera-title">Quick, Effective, and Productive With Tapeli Admin Dashboard</h3> --}}
                                 <div class="auth-image">
                                     <img src="assets/images/authentication.svg" class="mx-auto img-fluid"  alt="images">
                                 </div>

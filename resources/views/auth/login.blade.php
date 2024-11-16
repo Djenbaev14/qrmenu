@@ -42,28 +42,27 @@
                                         <form action="{{route('login')}}" class="my-4" method="POST">
 																					@csrf
                                             <div class="form-group mb-3">
-                                                <label for="login" class="form-label">Phone</label>
-                                                <input class="form-control" type="text" id="phone" required="" name="phone" placeholder="Enter your phone">
+                                                <label for="login" class="form-label">Телефон номер</label>
+                                                <input class="form-control" type="text" id="phone" required="" name="phone" placeholder="Введите свой номер телефона">
                                             </div>
                 
                                             <div class="form-group mb-3">
-                                                <label for="password" class="form-label">Password</label>
-                                                <input class="form-control" type="password" required="" id="password" name="password" placeholder="Enter your password">
+                                                <label for="password" class="form-label">Пароль</label>
+                                                <input class="form-control" type="password" required="" id="password" name="password" placeholder="Введите свой пароль">
                                             </div>
                                             
                                             <div class="form-group mb-0 row">
                                                 <div class="col-12">
                                                     <div class="d-grid">
-                                                        <button class="btn btn-primary" type="submit"> Log In </button>
+                                                        <button class="btn btn-primary" type="submit"> Авторизоваться </button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </form>
     
-                                        <div class="saprator my-4"><span>or sign in with</span></div>
     
                                         <div class="text-center text-muted mb-4">
-                                            <p class="mb-0">Don't have an account ?<a class='text-primary ms-2 fw-medium' href="{{asset('register')}}">Sing up</a></p>
+                                            <p class="mb-0">У вас нет учетной записи ?<a class='text-primary ms-2 fw-medium' href="{{asset('register')}}">Зарегистрировать</a></p>
                                         </div>
     
 

@@ -34,16 +34,16 @@
             @if (auth()->user()->role_id==2)<li>
                 <a href="#sidebarProducts" data-bs-toggle="collapse">
                     <i data-feather="home"></i>
-                    <span> Products </span>
+                    <span> Продукты </span>
                     <span class="menu-arrow"></span>
                 </a>
                 <div class="collapse" id="sidebarProducts">
                     <ul class="nav-second-level">
                         <li>
-                            <a class='tp-link' href='{{route('categories.index')}}'>Categories</a>
+                            <a class='tp-link' href='{{route('categories.index')}}'>Категории</a>
                         </li>
                         <li>
-                            <a class='tp-link' href='{{route('products.index')}}'>Products</a>
+                            <a class='tp-link' href='{{route('products.index')}}'>Продукты</a>
                         </li>
                     </ul>
                 </div>
@@ -52,7 +52,7 @@
                 <li>
                     <a class='tp-link' href="{{route('clients.index')}}">
                         <i data-feather="users"></i>
-                        <span> Clients <?=(is_answered()) ? "<span class='mx-2 badge text-bg-danger'>".is_answered()."</span>" : '';?> </span>
+                        <span> Клиенты <?=(is_answered()) ? "<span class='mx-2 badge text-bg-danger'>".is_answered()."</span>" : '';?> </span>
                         
                     </a>
                 </li>
@@ -60,14 +60,14 @@
                 <li>
                     <a class='tp-link' href="{{route('settings.index')}}">
                         <i data-feather="settings"></i>
-                        <span> Settings </span>
+                        <span> Настройки </span>
                     </a>
                 </li>
             @elseif(auth()->user()->role_id)
                 <li>
                     <a class='tp-link' href="{{route('companies.index')}}">
                         <i data-feather="home"></i>
-                        <span> Kompaniyalar </span>
+                        <span> Компании </span>
                     </a>
                 </li>
             @endif

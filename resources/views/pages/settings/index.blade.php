@@ -1,7 +1,8 @@
 @extends('layouts.main')
 
-@section('title', 'Dashboard')
+@section('title', 'Настройки')
 
+@yield('title', 'Dashboard')
 @section('content')
 
 <div class="content">
@@ -9,7 +10,7 @@
 
 				<div class="py-3 d-flex align-items-sm-center flex-sm-row flex-column">
 						<div class="flex-grow-1">
-								<h4 class="fs-18 fw-semibold m-0">Settings</h4>
+								<h4 class="fs-18 fw-semibold m-0">Настройки</h4>
 						</div>
 				</div>
         <!-- General Form -->
@@ -34,8 +35,8 @@
                                                 <div id="upload-area">
                                                     <div id="placeholder">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                                                        <p>Logotipni shu yerga o'tkazing yoki <span class="select-text">tanlang</span></p>
-                                                        <p>Fayl o‘lchami 10 MB'gacha</p>
+                                                        <p>Перенесите логотип сюда или <span class="select-text">выбрать</span></p>
+                                                        <p>Размер файла до 10 МБ</p>
                                                     </div>
                                                 </div>
                                             @endif
@@ -47,7 +48,7 @@
                                   <div class="mb-5">
                                     <div class="card" style="background-color: #EEF9F2">
                                         <div class="mt-3 mx-3">
-                                            <p class="d-flex align-items-top"><svg class="mx-2" width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11.4998" cy="6.70833" r="0.958333" fill="#5DC983"></circle><path d="M10.5415 9.58366H11.4998V16.292M21.0832 11.5003C21.0832 16.7931 16.7926 21.0837 11.4998 21.0837C6.20711 21.0837 1.9165 16.7931 1.9165 11.5003C1.9165 6.2076 6.20711 1.91699 11.4998 1.91699C16.7926 1.91699 21.0832 6.2076 21.0832 11.5003Z" stroke="#5DC983" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"></path></svg> Agar siz logotipni saytda ko'rsatishni istasangiz, uni yuklashingizni tavsiya qilamiz
+                                            <p class="d-flex align-items-top"><svg class="mx-2" width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11.4998" cy="6.70833" r="0.958333" fill="#5DC983"></circle><path d="M10.5415 9.58366H11.4998V16.292M21.0832 11.5003C21.0832 16.7931 16.7926 21.0837 11.4998 21.0837C6.20711 21.0837 1.9165 16.7931 1.9165 11.5003C1.9165 6.2076 6.20711 1.91699 11.4998 1.91699C16.7926 1.91699 21.0832 6.2076 21.0832 11.5003Z" stroke="#5DC983" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"></path></svg> Если вы хотите отобразить логотип на сайте, мы рекомендуем вам загрузить его 
                                             </p>
                                                 <img src="{{asset('assets/images/logo.png')}}" width="200px" alt="">
                                             </div>
