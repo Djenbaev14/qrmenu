@@ -12,23 +12,23 @@
           <div class="col-12">
               <div class="card">
                   <div class="card-header">
-                      <h4 class="fw-bold mb-3">Kategoriyalar ro'yxati</h4>
+                      <h4 class="fw-bold mb-3">Список категорий</h4>
                       <div class="row  justify-content-between p-2" style="background-color: #F9F9FC;border-radius:10px;" >
                         <div class="col-lg-6 col-sm-12">
                           <form action="{{ url('/categories') }}" class="row " method="GET">
                             <div class="col-sm-12 col-lg-7 mb-2">
-                              <input type="search" class="form-control"  name="search" value="{{ request('search') }}" placeholder="Kategoriya nomini qidirish"/>
+                              <input type="search" class="form-control"  name="search" value="{{ request('search') }}" placeholder="Поиск по названию категории"/>
                             </div>
                             <div class="col-sm-12 col-lg-5 mb-2">
-                              <button type="submit" class="btn btn-primary">Izlash</button>
-                              <a href="{{route('categories.index')}}" class="btn btn-success">Tozalash</a>
+                              <button type="submit" class="btn btn-primary">Поиск</button>
+                              <a href="{{route('categories.index')}}" class="btn btn-success">Очистка</a>
                             </div>
                           </form>
                         </div>
                         <div class="col-lg-3 col-sm-12">
                           <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 6V18M18 12L6 12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 6V18M18 12L6 12" stroke="url(#paint0_linear_1494_22742)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><defs><linearGradient id="paint0_linear_1494_22742" x1="11.8537" y1="4.97561" x2="12.1463" y2="20.0488" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"></stop><stop offset="1" stop-color="#fff"></stop></linearGradient></defs></svg>
-                            Kategoriya qo'shish</button>
+                            Добавить категорию</button>
                         </div>
                       </div>
                   </div><!-- end card header -->
@@ -38,12 +38,12 @@
                           <table class="table mb-0" id="categories-table">
                               <thead>
                                   <tr>
-                                      <th scope="col">Kategoriya nomi</th>
-                                      <th scope="col">Asosiy kategoriya</th>
-                                      <th scope="col">Mahsulotlar</th>
-                                      <th scope="col">Yaratilgan sana
+                                      <th scope="col">название категории</th>
+                                      <th scope="col">основная категория</th>
+                                      <th scope="col">продукты</th>
+                                      <th scope="col">дата создания
                                       </th>
-                                      <th scope="col">Harakat</th>
+                                      <th scope="col">действие</th>
                                   </tr>
                               </thead>
                               <tbody>
@@ -68,7 +68,7 @@
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="myLargeModalLabel">Kategoriyani o'zgartirish
+                                                        <h5 class="modal-title" id="myLargeModalLabel">Изменить категорию
                                                         </h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                                                         </button>
@@ -107,16 +107,16 @@
                                                                 <?php
                                                                   $name="name_".$item['code'];
                                                                 ?>
-                                                                  <label for="">Kategoriya nomi ({{$item['name']}})</label>
+                                                                  <label for="">Название категории ({{$item['name']}})</label>
                                                                   <input type="text" name="name_{{$item['code']}}" class="form-control" placeholder="Kategoriyaning nomini kiriting" value="{{$category->$name}}">
                                                               </div>
                                                               @endforeach
                                                             </div>
                                                             
                                                             <div class="mb-3">
-                                                              <label for="">Asosiy Kategoriya</label>
+                                                              <label for="">Основная Категория</label>
                                                               <select name="main_category_id" class="form-select">
-                                                                <option hidden value="none">Asosiy Kategoriyani tanlang</option>
+                                                                <option hidden value="none">Выберите основную категорию</option>
                                                                 @foreach ($select_categories as $c)
                                                                 @if ($c->id == $category->main_category_id)
                                                                     <option selected value="{{$c->id}}">{{$c->name_uz}}</option>
@@ -128,9 +128,7 @@
                                                               </select>
                                                             </div>
                                                             <div class="d-flex align-items-center justify-content-end">
-                                                                {{-- <button type="button" class="btn btn-light" data-bs-dismiss="modal">Bekor qilish</button> --}}
-                                                                {{-- <button type="button" class="btn btn-primary">Qo'shish</button> --}}
-                                                                <input type="submit" value="Tahrirlash" class="btn btn-primary">
+                                                                <input type="submit" value="Изменение" class="btn btn-primary">
                                                             </div>
                                                           </form>
                                                         </div>
@@ -187,7 +185,7 @@
           <div class="modal-dialog modal-lg">
               <div class="modal-content">
                   <div class="modal-header">
-                      <h5 class="modal-title" id="myLargeModalLabel">Kategoriya qo‘shish
+                      <h5 class="modal-title" id="myLargeModalLabel">Добавить категорию
                       </h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                       </button>
@@ -205,8 +203,8 @@
                                               <div id="upload-area">
                                                   <div id="placeholder">
                                                       <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                                                      <p>Logotipni shu yerga o'tkazing yoki <span class="select-text">tanlang</span></p>
-                                                      <p>Fayl o‘lchami 10 MB'gacha</p>
+                                                      <p>Перенесите логотип сюда или <span class="select-text">выбрать</span></p>
+                                                      <p>Размер файла до 10 МБ</p>
                                                   </div>
                                               </div>
                                       </label>
@@ -229,25 +227,23 @@
                           <div class="tab-content pt-3 text-muted mb-3">
                             @foreach (config('app.languages') as $i => $item)
                             <div class="tab-pane <?=($i==0) ? 'show active' : '';?>" id="tab_{{$item['code']}}" role="tabpanel">
-                                <label for="">Kategoriya nomi ({{$item['name']}})</label>
+                                <label for="">Название категории ({{$item['name']}})</label>
                                 <input type="text" name="name_{{$item['code']}}" class="form-control" placeholder="Kategoriyaning nomini kiriting">
                             </div>
                             @endforeach
                           </div>
                           
                           <div class="mb-3">
-                            <label for="">Asosiy Kategoriya</label>
+                            <label for="">Основная Категория</label>
                             <select name="main_category_id" class="form-select">
-                              <option hidden value="none">Asosiy Kategoriyani tanlang</option>
+                              <option hidden value="none">Выберите основную категорию</option>
                               @foreach ($select_categories as $category)
                                   <option value="{{$category->id}}">{{$category->name_uz}}</option>
                               @endforeach
                             </select>
                           </div>
                           <div class="d-flex align-items-center justify-content-end">
-                              {{-- <button type="button" class="btn btn-light" data-bs-dismiss="modal">Bekor qilish</button> --}}
-                              {{-- <button type="button" class="btn btn-primary">Qo'shish</button> --}}
-                              <input type="submit" value="Qo'shish" class="btn btn-primary">
+                              <input type="submit" value="Добавить" class="btn btn-primary">
                           </div>
                         </form>
                       </div>

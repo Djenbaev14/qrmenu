@@ -1,8 +1,6 @@
 @extends('layouts.main')
 
 @section('title', 'Настройки')
-
-@yield('title', 'Dashboard')
 @section('content')
 
 <div class="content">
@@ -71,11 +69,11 @@
                                     <div class="tab-content pt-3 text-muted mb-3">
                                         @foreach (config('app.languages') as $i => $item)
                                         <div class="tab-pane <?=($i==0) ? 'show active' : '';?>" id="banner_{{$item['code']}}" role="tabpanel">
-                                            <label for="">Banner teksti ({{$item['name']}})</label>
+                                            <label for="">Баннерные тексты ({{$item['name']}})</label>
                                             <?php
                                                 $desc='banner_text_'.$item['code'];
                                             ?>
-                                            <input type="text" class="form-control" id="banner_{{$item['code']}}" placeholder="Banner Tekstini kiriting" name="banner_text_{{$item['code']}}" rows="10" placeholder="Введите текст" value="<?=($company) ? $company->$desc : ''   ?>">
+                                            <input type="text" class="form-control" id="banner_{{$item['code']}}" placeholder="Введите текст баннера" name="banner_text_{{$item['code']}}" rows="10" placeholder="Введите текст" value="<?=($company) ? $company->$desc : ''   ?>">
                                         </div>
                                         @endforeach
                                     </div>
@@ -90,8 +88,8 @@
                                                 <div id="upload-area-2">
                                                     <div id="placeholder-2">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                                                        <p>Bannerni shu yerga o'tkazing yoki <span class="select-text">tanlang</span></p>
-                                                        <p>Fayl o‘lchami 10 MB'gacha</p>
+                                                        <p>Переместите баннер сюда или <span class="select-text">выбрать</span></p>
+                                                        <p>Размер файла до 10 МБ</p>
                                                     </div>
                                                 </div>
                                             @endif
@@ -102,7 +100,7 @@
                                 <div class="mb-5">
                                   <div class="card" style="background-color: #EEF9F2">
                                       <div class="mt-3 mx-3">
-                                          <p class="d-flex align-items-top"><svg class="mx-2" width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11.4998" cy="6.70833" r="0.958333" fill="#5DC983"></circle><path d="M10.5415 9.58366H11.4998V16.292M21.0832 11.5003C21.0832 16.7931 16.7926 21.0837 11.4998 21.0837C6.20711 21.0837 1.9165 16.7931 1.9165 11.5003C1.9165 6.2076 6.20711 1.91699 11.4998 1.91699C16.7926 1.91699 21.0832 6.2076 21.0832 11.5003Z" stroke="#5DC983" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"></path></svg> Agar siz bannerni saytda ko'rsatishni istasangiz, uni yuklashingizni tavsiya qilamiz
+                                          <p class="d-flex align-items-top"><svg class="mx-2" width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11.4998" cy="6.70833" r="0.958333" fill="#5DC983"></circle><path d="M10.5415 9.58366H11.4998V16.292M21.0832 11.5003C21.0832 16.7931 16.7926 21.0837 11.4998 21.0837C6.20711 21.0837 1.9165 16.7931 1.9165 11.5003C1.9165 6.2076 6.20711 1.91699 11.4998 1.91699C16.7926 1.91699 21.0832 6.2076 21.0832 11.5003Z" stroke="#5DC983" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"></path></svg> Если вы хотите показать баннер на сайте, мы рекомендуем вам загрузить его
                                           </p>
                                               <img src="{{asset('assets/images/image.png')}}" width="200px" alt="">
                                           </div>
@@ -124,7 +122,7 @@
                                 <div class="tab-content pt-3 text-muted mb-3">
                                     @foreach (config('app.languages') as $i => $item)
                                     <div class="tab-pane <?=($i==0) ? 'show active' : '';?>" id="tab_{{$item['code']}}" role="tabpanel">
-                                        <label for="">Biz haqimizda ({{$item['name']}})</label>
+                                        <label for="">О нас ({{$item['name']}})</label>
                                         {{-- <div id="quill-editor-{{$item['code']}}" style="height: 100px;">
                                         </div> --}}
                                         <?php
@@ -135,7 +133,7 @@
                                     @endforeach
                                 </div>
                                 <div class="mb-2">
-                                    <label for="phone" class="form-label">Aloqa uchun telefon raqami:</label>
+                                    <label for="phone" class="form-label">Контактный телефон:</label>
                                     <div class="row">
                                         <div class="col-lg-6 col-sm-12 mb-2">
                                             <div class="input-group">
@@ -152,7 +150,7 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="phone" class="form-label">Ijtimoiy tarmoqlarga havola:</label>
+                                    <label for="phone" class="form-label">Ссылка на социальные сети:</label>
                                     <div class="row">
                                         <div class="col-lg-6 col-sm-12 mb-2 mb-2">
                                             <div class="input-group">
@@ -184,15 +182,15 @@
                                     </div>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="filial_nomi">Filial nomi:</label>
-                                    <input id="filial_nomi" class="form-control form-control-lg" value="<?=($company) ? $company->name : ''   ?>" type="text" name="name" placeholder="Filial nomini kiriting">
+                                    <label for="filial_nomi">Название компании:</label>
+                                    <input id="filial_nomi" class="form-control form-control-lg" value="<?=($company) ? $company->name : ''   ?>" type="text" name="name" placeholder="Введите название компании">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="address">Manzilni kiriting:</label>
-                                    <input id="address" class="form-control form-control-lg" value="<?=($company) ? $company->address : ''   ?>" type="text" name="address" placeholder="Manzilni kiriting">
+                                    <label for="address">Введите адрес:</label>
+                                    <input id="address" class="form-control form-control-lg" value="<?=($company) ? $company->address : ''   ?>" type="text" name="address" placeholder="Введите адрес">
                                 </div>
                                 <div class="mb-3">
-                                    <input type="submit" class="btn btn-primary btn-lg" value="O'zgarishlarni saqlash">
+                                    <input type="submit" class="btn btn-primary btn-lg" value="Сохранение изменений">
                                 </div>
 
                                 </form>

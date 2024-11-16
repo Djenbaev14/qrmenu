@@ -11,17 +11,16 @@
         <div class="row mt-4">
           <div class="col-12">
               <div class="card">
-                  <div class="card-header">
-                      <h4 class="fw-bold mb-3">Klientlar ro'yxati</h4>
+                  <div class="card-header"><h4>Список клиентов </h4>
                       <div class="row  justify-content-between p-2" style="background-color: #F9F9FC;border-radius:10px;" >
                         <div class="col-lg-6 col-sm-12">
                           <form action="{{ url('/clients') }}" class="row" method="GET">
                             <div class="col-sm-12  col-lg-7 mb-2">
-                                <input type="search" class="form-control"  name="search" value="{{ request('search') }}" placeholder="Kategoriya nomini qidirish"/>
+                                <input type="search" class="form-control"  name="search" value="{{ request('search') }}" placeholder="Поиск по имени клиента"/>
                             </div>
                             <div class="col-sm-12 col-lg-5">
-                                <button type="submit" class="btn btn-primary">Izlash</button>
-                                <a href="{{route('clients.index')}}" class="btn btn-success">Tozalash</a>
+                                <button type="submit" class="btn btn-primary">Поиск</button>
+                                <a href="{{route('clients.index')}}" class="btn btn-success">Очистка</a>
                             </div>
                         </form>
                         </div>
@@ -32,15 +31,15 @@
                           <table class="table table-hover mb-0 w-100"  id="clients-table">
                               <thead>
                                   <tr>
-                                      <th scope="col">Ism Familyasi</th>
-                                      <th scope="col">Telefon nomeri</th>
-                                      <th scope="col">Address</th>
-                                      <th scope="col">Product nomi</th>
-                                      <th scope="col">Javob qaytarish
+                                      <th scope="col">Имя Фамилия</th>
+                                      <th scope="col">Номер телефона</th>
+                                      <th scope="col">Адрес</th>
+                                      <th scope="col">Название продукта</th>
+                                      <th scope="col">Обратная связь
                                       </th>
-                                      <th scope="col">Yaratilgan sana
+                                      <th scope="col">Дата создания
                                       </th>
-                                      <th scope="col">Harakat</th>
+                                      <th scope="col">Действие</th>
                                   </tr>
                               </thead>
                               <tbody>

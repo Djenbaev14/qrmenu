@@ -59,11 +59,11 @@
                                         $description='description_'.$item['code'] ;
                                       ?>
                                       <div class="mb-3">
-                                        <label for="">Mahsulot nomi ({{$item['name']}})</label>
+                                        <label for="">Название продукта ({{$item['name']}})</label>
                                         <input type="text" value="{{$product->$name}}" name="name_{{$item['code']}}" class="form-control" placeholder="Mahsulotning nomini kiriting">
                                       </div>
                                       <div class="mb-3">
-                                        <label for="">Ta'rif ({{$item['name']}})</label>
+                                        <label for="">Определение ({{$item['name']}})</label>
                                         <?php
                                             $desc='description_'.$item['code'];
                                         ?>
@@ -74,9 +74,9 @@
                                   </div>
                                   
                                   <div class="mb-3">
-                                    <label for="">Kategoriya</label>
+                                    <label for="">Категории</label>
                                     <select name="category_id" class="form-select">
-                                      <option hidden value="none">Kategoriyani tanlang</option>
+                                      <option hidden value="none">Выберите категорию</option>
                                       @foreach ($categories as $cat)
                                           <option <?=($product->category_id==$cat->id) ? 'selected' : '';?> value="{{$cat->id}}">{{$cat->name_uz}}</option>
                                       @endforeach
@@ -85,18 +85,18 @@
                                   <div class=" mb-3">
                                       <div class="form-check">
                                           <input type="checkbox" id="checkbox" class="form-check-input" id="checkmeout0">
-                                          <label class="form-check-label" for="checkmeout0">Narx belgilash</label>
+                                          <label class="form-check-label" for="checkmeout0">Установление цены</label>
                                       </div>
                                   </div>
                                   <div class="justify-content-between mb-3" style="display: none" id="show_price">
                                     <div class="col-5">
-                                      <label for="" style="cursor: pointer">Narx</label>
-                                      <input type="number" id="price" name="price" class="form-control" value="{{old('price')}}" placeholder="Narxni kiriting">
+                                      <label for="" style="cursor: pointer">Цена</label>
+                                      <input type="number" id="price" name="price" class="form-control" value="{{old('price')}}" placeholder="Введите цену">
                                     </div>
                                     <div class="col-5">
-                                      <label for="">O'lchov Birligi</label>
+                                      <label for="">Единица Измерения</label>
                                       <select name="unit_id" id="unit_id" class="form-control">
-                                        <option value="null">O'lchov birligi kiriting</option>
+                                        <option value="null">Введите единицу измерения</option>
                                         @foreach ($units as $unit)
                                             <option value="{{$unit->id}}">{{$unit->name}}</option>
                                         @endforeach
@@ -104,7 +104,7 @@
                                     </div>
                                   </div>
                                   <div class="d-flex align-items-center justify-content-end">
-                                      <input type="submit" value="Qo'shish" class="btn btn-primary">
+                                      <input type="submit" value="Добавить" class="btn btn-primary">
                                   </div>
                               </form>
                             </div>
@@ -174,7 +174,7 @@
     const price = document.getElementById('price');
     const unit_id = document.getElementById('unit_id');
 
-    // Checkbox holatini tekshirish va divni ko'rsatish
+    // Checkbox Состояниеni tekshirish va divni ko'rsatish
     checkbox.addEventListener('change', function() {
         if (checkbox.checked) {
             content.style.display = 'flex';

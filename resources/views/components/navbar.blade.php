@@ -28,7 +28,7 @@
             <li>
                 <a class='tp-link' href="{{route('home')}}">
                     <i data-feather="home"></i>
-                    <span> Dashboard </span>
+                    <span> Home </span>
                 </a>
             </li>
             @if (auth()->user()->role_id==2)<li>

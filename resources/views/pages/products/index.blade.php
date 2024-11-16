@@ -12,7 +12,7 @@
           <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="fw-bold mb-3">Maxsulotlar ro'yxati</h4>
+                    <h4 class="fw-bold mb-3">Список продуктов</h4>
                     <div class="row  justify-content-between p-2" style="background-color: #F9F9FC;border-radius:10px;" >
                       <div class="col-lg-6 col-sm-12">
                         <form action="{{ url('/products') }}" class="row " method="GET">
@@ -20,15 +20,15 @@
                             <input type="search" class="form-control"  name="search" value="{{ request('search') }}" placeholder="Maxsulot nomini qidirish"/>
                           </div>
                           <div class="col-sm-12 col-lg-5 mb-2">
-                            <button type="submit" class="btn btn-primary">Izlash</button>
-                            <a href="{{route('products.index')}}" class="btn btn-success">Tozalash</a>
+                            <button type="submit" class="btn btn-primary">Поиск</button>
+                            <a href="{{route('products.index')}}" class="btn btn-success">Очистка</a>
                           </div>
                         </form>
                       </div>
                       <div class="col-lg-3 col-sm-12">
                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bs-example-modal-lg">
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 6V18M18 12L6 12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 6V18M18 12L6 12" stroke="url(#paint0_linear_1494_22742)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><defs><linearGradient id="paint0_linear_1494_22742" x1="11.8537" y1="4.97561" x2="12.1463" y2="20.0488" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"></stop><stop offset="1" stop-color="#fff"></stop></linearGradient></defs></svg>
-                          Maxsulot qo'shish</button>
+                          Добавление продукта</button>
                       </div>
                     </div>
                 </div><!-- end card header -->
@@ -38,12 +38,12 @@
                             <thead>
                                 <tr>
                                     {{-- <span wire:click="sortBy('name_uz')"  class="text-sm float-right" style="cursor: pointer"><i data-feather="arrow-up"></i><i data-feather="arrow-down" class="text-muted"></i></span> --}}
-                                    <th scope="col">Mahsulot nomi </span>
+                                    <th scope="col">Название продукта </span>
                                     </th>
-                                    <th scope="col">Narx</th>
-                                    <th scope="col">Yaratilgan sana</th>
-                                    <th scope="col">Holati</th>
-                                    <th scope="col">Harakat</th>
+                                    <th scope="col">Цена</th>
+                                    <th scope="col">Дата создания</th>
+                                    <th scope="col">Состояние</th>
+                                    <th scope="col">Действие</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -118,7 +118,7 @@
           <div class="modal-dialog modal-lg">
               <div class="modal-content">
                   <div class="modal-header">
-                      <h5 class="modal-title" id="myLargeModalLabel">Mahsulot qo‘shish
+                      <h5 class="modal-title" id="myLargeModalLabel">Добавление продукта
                       </h5>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                       </button>
@@ -165,11 +165,11 @@
                             @foreach (config('app.languages') as $i => $item)
                             <div class="tab-pane <?=($i==0) ? 'show active' : '';?>" id="tab_{{$item['code']}}" role="tabpanel">
                               <div class="mb-3">
-                                <label for="">Mahsulot nomi ({{$item['name']}})</label>
+                                <label for="">Название продукта ({{$item['name']}})</label>
                                 <input type="text" value="{{old('name_'.$item['code'])}}" name="name_{{$item['code']}}" class="form-control" placeholder="Mahsulotning nomini kiriting">
                               </div>
                               <div class="mb-3">
-                                <label for="">Ta'rif ({{$item['name']}})</label>
+                                <label for="">Определение ({{$item['name']}})</label>
                                 {{-- <div id="quill-editor-{{$item['code']}}" style="height: 100px;">
                                 </div> --}}
                                 <?php
@@ -182,9 +182,9 @@
                           </div>
                           
                           <div class="mb-3">
-                            <label for="">Kategoriya</label>
+                            <label for="">Категории</label>
                             <select name="category_id" class="form-select">
-                              <option hidden value="none">Kategoriyani tanlang</option>
+                              <option hidden value="none">Выберите категорию</option>
                               @foreach ($categories as $category)
                                   <option value="{{$category->id}}">{{$category->name_uz}}</option>
                               @endforeach
@@ -193,18 +193,18 @@
                           <div class=" mb-3">
                               <div class="form-check">
                                   <input type="checkbox" id="checkbox" class="form-check-input" id="checkmeout0">
-                                  <label class="form-check-label" for="checkmeout0">Narx belgilash</label>
+                                  <label class="form-check-label" for="checkmeout0">Установление цены</label>
                               </div>
                           </div>
                           <div class="justify-content-between mb-3" style="display: none" id="show_price">
                             <div class="col-5">
-                              <label for="" style="cursor: pointer">Narx</label>
-                              <input type="number" id="price" name="price" class="form-control" value="{{old('price')}}" placeholder="Narxni kiriting">
+                              <label for="" style="cursor: pointer">Цена</label>
+                              <input type="number" id="price" name="price" class="form-control" value="{{old('price')}}" placeholder="Введите цену">
                             </div>
                             <div class="col-5">
-                              <label for="">O'lchov Birligi</label>
+                              <label for="">Единица Измерения</label>
                               <select name="unit_id" id="unit_id" class="form-control">
-                                <option value="null">O'lchov birligi kiriting</option>
+                                <option value="null">Введите единицу измерения</option>
                                 @foreach ($units as $unit)
                                     <option value="{{$unit->id}}">{{$unit->name}}</option>
                                 @endforeach
@@ -212,7 +212,7 @@
                             </div>
                           </div>
                           <div class="d-flex align-items-center justify-content-end">
-                              <input type="submit" value="Qo'shish" class="btn btn-primary">
+                              <input type="submit" value="Добавить" class="btn btn-primary">
                           </div>
                         </form>
                       </div>
@@ -282,7 +282,7 @@
         const price = document.getElementById('price');
         const unit_id = document.getElementById('unit_id');
 
-        // Checkbox holatini tekshirish va divni ko'rsatish
+        // Checkbox Состояниеni tekshirish va divni ko'rsatish
         checkbox.addEventListener('change', function() {
             if (checkbox.checked) {
                 content.style.display = 'flex';

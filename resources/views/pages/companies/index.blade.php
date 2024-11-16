@@ -32,9 +32,9 @@
                                       <th scope="col">Kompaniya nomi</th>
                                       <th scope="col">Kategoriyalar soni</th>
                                       <th scope="col">Mahsulotlar soni</th>
-                                      <th scope="col">Yaratilgan sana
+                                      <th scope="col">Дата создания
                                       </th>
-                                      <th scope="col">Harakat</th>
+                                      <th scope="col">Действие</th>
                                   </tr>
                               </thead>
                               <tbody>
