@@ -12,7 +12,11 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients=Client::where('deleted_at',null)->orderBy('id','desc')->paginate(20);
+        if(auth()->user()->can('only-thier-clients-list')){
+            $clients=Client::where('deleted_at',null)->orderBy('id','desc')->paginate(20);
+        }elseif(auth()->user()->can('all-clients-list')){
+            $clients=Client::where('deleted_at',null)->orderBy('id','desc')->paginate(20);
+        }
         return view('pages.clients.index',compact('clients'));
     }
 

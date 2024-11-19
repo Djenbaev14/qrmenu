@@ -12,6 +12,10 @@ class CompanyController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct(){
+        // $this->middleware(['permission:company-list|company-edit|company-delete|company-create']);
+        $this->middleware('check.role:Gl_admin');
+    }
     public function index()
     {
         $companies=Company::where('deleted_at',null)->orderBy('id','desc')->paginate(20);

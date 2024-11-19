@@ -18,12 +18,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         
-        $permissions = [
-            'dashboard-list',
+        $gl_admin_permissions=[
             'company-list',
-            'company-create',
-            'company-edit',
-            'company-delete',
+            'all-clients-list',
+        ];
+        $admin_permissions = [
+            'setting-list',
+            'setting-create',
+            'setting-edit',
+            'setting-delete',
             'product-list',
             'product-create',
             'product-edit',
@@ -32,18 +35,15 @@ class DatabaseSeeder extends Seeder
             'category-create',
             'category-edit',
             'category-delete',
-            'subcategory-list',
-            'subcategory-create',
-            'subcategory-edit',
-            'subcategory-delete',
-            'order-list',
-            'order-edit',
+            'only-thier-clients-list',
          ];
 
-        for ($i = 0; $i < count($permissions); $i++) {
-            $permission = Permission::create(['name' => $permissions[$i]]);
+        for ($i = 0; $i < count($gl_admin_permissions); $i++) {
+            Permission::create(['name' => $gl_admin_permissions[$i]]);
         }
-        
+        for ($i = 0; $i < count($admin_permissions); $i++) {
+            Permission::create(['name' => $admin_permissions[$i]]);
+        }
         $roles = [
             'Gl_admin',
             'Admin'
@@ -51,16 +51,18 @@ class DatabaseSeeder extends Seeder
         foreach ($roles as $role_name) {
             $role=Role::create(['name' => $role_name]);
             if($role_name=='Gl_admin'){
-                $role->givePermissionTo($permissions);
+                $role->syncPermissions($gl_admin_permissions);
+            }elseif($role_name="Admin"){
+                $role->syncPermissions($admin_permissions);
             }
+
         }
         
-        DB::table('users')->insert([
-            'role_id'=>1,
+        User::create([
             'name'=>'admin',
             'phone'=>'990611470',
             'password'=>Hash::make('admin')
-        ]);
+        ])->assignRole('Gl_admin');
 
 
 

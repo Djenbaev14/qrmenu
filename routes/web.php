@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('home');
+    // return auth()->user()->getRoleNames();
 })->name('home')->middleware('auth');
 
 // register
@@ -36,16 +37,20 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // resource
 // role admin permission middleware
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth','check.role:Admin']], function () {
     Route::resource('settings', SettingController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductController::class);
     Route::post('/products/is_active', [ProductController::class, 'isActive'])->name('isActive');
-    Route::resource('clients', ClientController::class);
+    // Route::resource('clients', ClientController::class);
+});
 
-    
 
+Route::group(['middleware' => ['auth','check.role:Gl_admin']], function () {
     Route::resource('companies', CompanyController::class);
     Route::post('/companies/key/{user}', [CompanyController::class, 'key'])->name('companies.key');
 });
 
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('clients', ClientController::class);
+});

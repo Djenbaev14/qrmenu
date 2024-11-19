@@ -10,9 +10,10 @@ use Illuminate\Support\Str;
 
 class SettingController extends Controller
 {
-    // public function __construct(){
-    //     $this->middleware(['role:Admin','permission:company-list|company-edit|company-delete|company-create']);
-    // }
+    public function __construct(){
+        // $this->middleware(['permission:company-list|company-edit|company-delete|company-create']);
+        $this->middleware('check.role:Admin');
+    }
     public function index()
     {
         $company = Company::where('deleted_at',null)->where('user_id',auth()->user()->id)->first();

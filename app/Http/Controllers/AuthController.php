@@ -39,11 +39,10 @@ class AuthController extends Controller
         ]);
         
         $user=User::create([
-            'role_id'=>2,
             'name'=>$request->name,
             'phone'=>$request->phone,
             'password'=>Hash::make($request->password)
-        ]);
+        ])->assignRole('Admin');
 
         
         $slug = Str::slug($request->company_name);
