@@ -49,8 +49,6 @@
                         </ul>
                     </div>
                 </li>
-                
-                
                 <li>
                     <a class='tp-link' href="{{route('settings.index')}}">
                         <i data-feather="settings"></i>

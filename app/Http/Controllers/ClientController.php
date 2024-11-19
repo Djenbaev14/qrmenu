@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -13,11 +14,11 @@ class ClientController extends Controller
     public function index()
     {
         if(auth()->user()->can('only-thier-clients-list')){
-            $clients=Client::where('deleted_at',null)->orderBy('id','desc')->paginate(20);
+            $orders=Order::where('deleted_at',null)->orderBy('id','desc')->paginate(20);
         }elseif(auth()->user()->can('all-clients-list')){
-            $clients=Client::where('deleted_at',null)->orderBy('id','desc')->paginate(20);
+            $orders=Order::where('deleted_at',null)->orderBy('id','desc')->paginate(20);
         }
-        return view('pages.clients.index',compact('clients'));
+        return view('pages.clients.index',compact('orders'));
     }
 
     /**

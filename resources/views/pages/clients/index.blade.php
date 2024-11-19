@@ -28,7 +28,7 @@
                   </div><!-- end card header -->
                   <div class="card-body">
                       <div class="table-responsive mb-3">
-                          <table class="table table-hover mb-0 w-100"  id="clients-table">
+                          <table class="table table-hover mb-0 w-100"  id="orders-table">
                               <thead>
                                   <tr>
                                       <th scope="col">Имя Фамилия</th>
@@ -43,18 +43,18 @@
                                   </tr>
                               </thead>
                               <tbody>
-                                @foreach ($clients as $client)
+                                @foreach ($orders as $order)
                                     <tr class="align-middle">
-                                      <td >{{$client->name}}</td>
-                                      <td>{{$client->phone}}</td>
-                                      <td >{{$client->address}}</td>
-                                      <td><?=($client->order[0]) ? $client->order[0]->product->name_uz : '';?></td>
-                                      <td><?=($client->is_answered) ?  "<span class='text-success'>Javob qaytarilgan</span>" : "<span class='text-danger'>Javob qaytarilmagan</span>";?></td>
+                                      <td >{{$order->client->name}}</td>
+                                      <td>{{$order->client->phone}}</td>
+                                      <td >{{$order->client->address}}</td>
+                                      <td>{{$order->product->name_uz}}</td>
+                                      <td><?=($order->client->is_answered) ?  "<span class='text-success'>Javob qaytarilgan</span>" : "<span class='text-danger'>Javob qaytarilmagan</span>";?></td>
                                       
-                                      <td>{{$client->created_at->format('Y.m.d , H:i')}}</td>
+                                      <td>{{$order->created_at->format('Y.m.d , H:i')}}</td>
                                       <td>
-                                        <a href="{{route('clients.show',$client->id)}}" class="btn btn-sm btn-primary" style="margin-right: 10px" ><i data-feather="eye"></i></a>
-                                        <form class="d-inline-block " action="{{ route('clients.destroy', $client->id) }}" method="POST">
+                                        <a href="{{route('clients.show',$order->id)}}" class="btn btn-sm btn-primary" style="margin-right: 10px" ><i data-feather="eye"></i></a>
+                                        <form class="d-inline-block " action="{{ route('clients.destroy', $order->id) }}" method="POST">
                                           @csrf
                                           @method("DELETE")
                                           <button class="btn btn-sm btn-danger"><i class="mdi mdi-delete  fs-18"></i></button>
@@ -66,21 +66,21 @@
                               </tbody>
                           </table>
                       </div>
-                      @if ($clients->hasPages())
+                      @if ($orders->hasPages())
                           <nav>
                               <ul class="pagination">
                                   {{-- Артка sahifa tugmasi --}}
-                                  @if ($clients->onFirstPage())
+                                  @if ($orders->onFirstPage())
                                       <li class="page-item disabled"><a class="page-link">&laquo; Артка</a></li>
                                   @else
                                       <li class="page-item">
-                                          <a class="page-link" href="{{ $clients->previousPageUrl() }}" rel="prev">&laquo; Артка</a>
+                                          <a class="page-link" href="{{ $orders->previousPageUrl() }}" rel="prev">&laquo; Артка</a>
                                       </li>
                                   @endif
   
                                   {{-- Sahifa raqamlari --}}
-                                  @foreach ($clients->getUrlRange(1, $clients->lastPage()) as $page => $url)
-                                      @if ($page == $clients->currentPage())
+                                  @foreach ($orders->getUrlRange(1, $orders->lastPage()) as $page => $url)
+                                      @if ($page == $orders->currentPage())
                                           <li class="page-item active" aria-current="page"><a class="page-link">{{ $page }}</a></li>
                                       @else
                                           <li class="page-item"><a class="page-link" href="{{ $url }}">{{ $page }}</a></li>
@@ -88,9 +88,9 @@
                                   @endforeach
   
                                   {{-- Кейинги sahifa tugmasi --}}
-                                  @if ($clients->hasMorePages())
+                                  @if ($orders->hasMorePages())
                                       <li class="page-item">
-                                          <a class="page-link" href="{{ $clients->nextPageUrl() }}" rel="next">Кейинги &raquo;</a>
+                                          <a class="page-link" href="{{ $orders->nextPageUrl() }}" rel="next">Кейинги &raquo;</a>
                                       </li>
                                   @else
                                       <li class="page-item disabled"><a class="page-link">Кейинги &raquo;</a></li>
