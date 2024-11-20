@@ -12,11 +12,12 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
+        $company_id=Company::where('user_id',auth()->user()->id)->first()->id;
+        
         $search = $request->input('search', '');
-
-        $products = Product::where('name_uz','LIKE','%'.$search.'%')->where('deleted_at',null)->orderBy('id', 'DESC')->paginate(10);
+        $products = Product::where('company_id',$company_id)->where('name_uz','LIKE','%'.$search.'%')->where('deleted_at',null)->orderBy('id', 'DESC')->paginate(10);
         $products->appends(request()->query());
-        $categories = Category::where('deleted_at',null)->orderBy('id', 'DESC')->get();
+        $categories = Category::where('company_id',$company_id)->where('deleted_at',null)->orderBy('id', 'DESC')->get();
         $units=Unit::all();
         return view('pages.products.index',compact('products','categories','units','search'));
     }

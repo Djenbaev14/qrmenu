@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Events\AttachmentEvent;
 use App\Models\Category;
+use App\Models\Company;
 use App\Models\Product;
 use App\Models\Unit;
 use Illuminate\Http\Request;
@@ -16,9 +17,10 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
+        $company_id=Company::where('user_id',auth()->user()->id)->first()->id;
         $search = $request->input('search', '');
-        $select_categories=Category::where('deleted_at',null)->orderBy('id','desc')->get();
-        $categories = Category::where('name_uz','LIKE','%'.$search.'%')->where('deleted_at',null)->orderBy('id', 'DESC')->paginate(10);
+        $select_categories=Category::where('company_id',$company_id)->where('deleted_at',null)->orderBy('id','desc')->get();
+        $categories = Category::where('company_id',$company_id)->where('name_uz','LIKE','%'.$search.'%')->where('deleted_at',null)->orderBy('id', 'DESC')->paginate(10);
         $categories->appends(request()->query());
         return view('pages.categories.index',compact('categories','search','select_categories'));
     }
