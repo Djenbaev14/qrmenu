@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Company;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,8 @@ class ClientController extends Controller
     public function index()
     {
         if(auth()->user()->can('only-thier-clients-list')){
-            $orders=Order::where('deleted_at',null)->orderBy('id','desc')->paginate(20);
+            $company_id=Company::where('user_id',auth()->user()->id)->first();
+            $orders=Order::where('company_id',$company_id)->where('deleted_at',null)->orderBy('id','desc')->paginate(20);
         }elseif(auth()->user()->can('all-clients-list')){
             $orders=Order::where('deleted_at',null)->orderBy('id','desc')->paginate(20);
         }
