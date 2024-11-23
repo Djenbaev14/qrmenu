@@ -34,7 +34,7 @@
             @role('Admin')
                 <li>
                     <a href="#sidebarProducts" data-bs-toggle="collapse">
-                        <i data-feather="home"></i>
+                        <i data-feather="archive"></i>
                         <span> Продукты </span>
                         <span class="menu-arrow"></span>
                     </a>
@@ -48,6 +48,12 @@
                             </li>
                         </ul>
                     </div>
+                </li>
+                <li>
+                    <a class='tp-link' href="{{route('feedback.index')}}">
+                        <i data-feather="list"></i>
+                        <span> Отзывы </span>
+                    </a>
                 </li>
                 <li>
                     <a class='tp-link' href="{{route('settings.index')}}">

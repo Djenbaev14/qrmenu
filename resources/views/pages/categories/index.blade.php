@@ -56,8 +56,7 @@
                                       <td>
                                         <a href="{{route('categories.show',$category->id)}}" class="btn btn-sm btn-primary" style="margin-right: 10px" ><i data-feather="eye"></i></a>
                                         <button type="button" class="btn btn-sm btn-success" style="margin-right: 10px" data-bs-toggle="modal" data-bs-target=".bs-example-modal-{{$category->id}}">
-                                          <i class="mdi mdi-pencil  fs-18"></i>
-                                        {{-- <a href="{{route('categories.destroy',$category->id)}}" class="btn btn-sm btn-danger"><i data-feather="trash"></i></a> --}}
+                                          <i class="mdi mdi-pencil  fs-18"></i></button>
                                         <form class="d-inline-block " action="{{ route('categories.destroy', $category->id) }}" method="POST">
                                           @csrf
                                           @method("DELETE")

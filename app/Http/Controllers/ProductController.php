@@ -12,7 +12,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $company_id=Company::where('user_id',auth()->user()->id)->first()->id;
+        $company_id=auth()->user()->company->id;
         
         $search = $request->input('search', '');
         $products = Product::where('company_id',$company_id)->where('name_uz','LIKE','%'.$search.'%')->where('deleted_at',null)->orderBy('id', 'DESC')->paginate(10);
@@ -83,10 +83,15 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = Product::find($id);
-        $categories = Category::where('deleted_at',null)->orderBy('id', 'DESC')->get();
-        $units=Unit::all();
-        return view('pages.products.edit',compact('product','categories','units'));
+        $company_id=auth()->user()->company->id;
+        if(Product::where('id',$id)->where('company_id',$company_id)->exists()){
+            $product = Product::find($id);
+            $categories = Category::where('deleted_at',null)->orderBy('id', 'DESC')->get();
+            $units=Unit::all();
+            return view('pages.products.edit',compact('product','categories','units'));
+        }else{
+            return redirect()->route('products.index')->with('error','Product not found');
+        }
     }
 
     /**

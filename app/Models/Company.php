@@ -25,6 +25,10 @@ class Company extends Model
     {
         return $this->morphOne(Attachment::class, 'attachment');
     }
+    public function feedback()
+    {
+        return $this->hasMany(Opinion::class);
+    }
     public function category()
     {
         return $this->hasMany(Category::class);

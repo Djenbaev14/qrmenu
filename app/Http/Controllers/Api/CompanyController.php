@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryResource;
 use App\Http\Resources\CompanyResource;
+use App\Http\Resources\FeedbackResource;
 use App\Http\Resources\ShowCompanyResource;
 use App\Models\Company;
 use Illuminate\Http\Request;
@@ -38,9 +39,11 @@ class CompanyController extends Controller
         $company = new ShowCompanyResource(Company::where('slug',$company_slug)->where('deleted_at',null)->first());
         
         $category = CategoryResource::collection($company->category()->where('deleted_at',null)->orderBy('id','desc')->get());
+        $feedback = FeedbackResource::collection($company->feedback()->orderBy('id','desc')->get());
         return response()->json([
             'company' => $company,
             'category' => $category,
+            'feedback' => $feedback,
         ]);
     }
 

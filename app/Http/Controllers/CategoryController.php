@@ -17,17 +17,13 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $company_id=Company::where('user_id',auth()->user()->id)->first()->id;
+        $company_id=auth()->user()->company->id;
         $search = $request->input('search', '');
         $select_categories=Category::where('company_id',$company_id)->where('deleted_at',null)->orderBy('id','desc')->get();
         $categories = Category::where('company_id',$company_id)->where('name_uz','LIKE','%'.$search.'%')->where('deleted_at',null)->orderBy('id', 'DESC')->paginate(10);
         $categories->appends(request()->query());
         return view('pages.categories.index',compact('categories','search','select_categories'));
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
@@ -37,7 +33,7 @@ class CategoryController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
+    {   
         $request->validate([
             'name_uz' => 'required',
             'name_ru' => 'required',
@@ -56,7 +52,7 @@ class CategoryController extends Controller
 
             $category=new Category;
             $category->user_id =  auth()->user()->id;
-            $category->company_id =  auth()->user()->company->first()->id;
+            $category->company_id =  auth()->user()->company->id;
             $category->name_uz =  $request->name_uz;
             $category->name_ru =  $request->name_ru;
             $category->name_kr =  $request->name_kr;
@@ -75,14 +71,19 @@ class CategoryController extends Controller
      */
     public function show(Request $request,string $id)
     {
-        $search = $request->input('search', '');
-        
-        $products = Product::where('name_uz','LIKE','%'.$search.'%')->where('category_id',$id)->where('deleted_at',null)->orderBy('id', 'DESC')->paginate(10);
-        $products->appends(request()->query());
-        $category = Category::where('id',$id)->where('deleted_at',null)->orderBy('id', 'DESC')->first();
-        $categories = Category::where('deleted_at',null)->orderBy('id', 'DESC')->get();
-        $units=Unit::all();
-        return view('pages.categories.show',compact('products','categories','category','units','search'));
+        $company_id=auth()->user()->company->id;
+        if(Category::where('id',$id)->where('company_id',$company_id)->exists()){
+            $search = $request->input('search', '');
+            
+            $products = Product::where('name_uz','LIKE','%'.$search.'%')->where('category_id',$id)->where('deleted_at',null)->orderBy('id', 'DESC')->paginate(10);
+            $products->appends(request()->query());
+            $category = Category::where('id',$id)->where('deleted_at',null)->orderBy('id', 'DESC')->first();
+            $categories = Category::where('deleted_at',null)->orderBy('id', 'DESC')->get();
+            $units=Unit::all();
+            return view('pages.categories.show',compact('products','categories','category','units','search'));
+        }else{
+            return redirect()->route('categories.index')->with('error', 'Category not found');
+        }
     }
 
     /**
