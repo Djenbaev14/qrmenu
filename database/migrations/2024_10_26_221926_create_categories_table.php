@@ -22,8 +22,10 @@ return new class extends Migration
             $table->string('name_uz');
             $table->string('name_ru');
             $table->string('name_kr');
+            $table->string('sequence_number');
             $table->string('slug')->unique();
             $table->string('photo');
+            $table->boolean('is_active')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -27,4 +27,12 @@ class Handler extends ExceptionHandler
             //
         });
     }
+    public function render($request, $exception)
+    {
+        if ($exception instanceof \Spatie\Permission\Exceptions\UnauthorizedException) {
+            return back()->with('error','Бул бетке кириу кадаган етилген');
+        }
+
+        return parent::render($request, $exception);
+    }
 }

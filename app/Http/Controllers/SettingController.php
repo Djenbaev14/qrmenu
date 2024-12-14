@@ -10,10 +10,9 @@ use Illuminate\Support\Str;
 
 class SettingController extends Controller
 {
-    public function __construct(){
-        // $this->middleware(['permission:company-list|company-edit|company-delete|company-create']);
-        $this->middleware('check.role:Admin');
-    }
+    // public function __construct(){
+    //     $this->middleware(['permission:setting-list|setting-edit|setting-delete|setting-create']);
+    // }
     public function index()
     {
         $company = Company::where('deleted_at',null)->where('user_id',auth()->user()->id)->first();
@@ -33,14 +32,10 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request->file('banner_image');
         $request->validate([
             'name' => 'required',
-            'telephones' => 'required|array',
+            'telephone' => 'required',
         ]);
-            
-        
-            // slug
             $slug = Str::slug($request->name);
             $count = Company::where('deleted_at','!=',null)->where('slug', 'LIKE', "{$slug}%")->count();
             $slug = $count ? "{$slug}-{$count}" : $slug;
@@ -73,24 +68,15 @@ class SettingController extends Controller
                 $company->update([
                     'name'=>$request->name,
                     'slug'=>$slug,
-                    'description_uz'=>$request->description_uz,
-                    'description_ru'=>$request->description_ru,
-                    'description_kr'=>$request->description_kr,
-                    'banner_text_uz'=>$request->banner_text_uz,
-                    'banner_text_ru'=>$request->banner_text_ru,
-                    'banner_text_kr'=>$request->banner_text_kr,
                     'banner_image'=>$fileName_banner,
                     'logo'=>$fileName,
-                    'telephones'=>$request->telephones,
+                    'telephone'=>$request->telephone,
                     'instagram'=>$request->instagram,
                     'telegram'=>$request->telegram,
-                    'facebook'=>$request->facebook,
-                    'youtube'=>$request->youtube,
                     'address'=>$request->address,
                 ]);
-                return redirect()->route('settings.index')->with('success','Company updated successfully');
+                return redirect()->back()->with('success','Company updated successfully');
             }else{
-                
                 $file_banner = $request->file('banner_image');
                 $fileName_banner = time().'.'.$file_banner->getClientOriginalExtension();
                 $file_banner->move(public_path('images/banner'), $fileName_banner);
@@ -103,26 +89,15 @@ class SettingController extends Controller
                     'user_id' => auth()->user()->id,
                     'name'=>$request->name,
                     'slug'=>$slug,
-                    'description_uz'=>$request->description_uz,
-                    'description_ru'=>$request->description_ru,
-                    'description_kr'=>$request->description_kr,
-                    'banner_text_uz'=>$request->banner_text_uz,
-                    'banner_text_ru'=>$request->banner_text_ru,
-                    'banner_text_kr'=>$request->banner_text_kr,
                     'banner_image'=>$fileName_banner,
-                    'telephones'=>json_encode($request->telephones),
+                    'telephone'=>$request->telephone,
                     'logo'=>$fileName,
                     'instagram'=>$request->instagram,
-                    'telegram'=>$request->telegram,
-                    'facebook'=>$request->facebook,
-                    'youtube'=>$request->youtube,       
+                    'telegram'=>$request->telegram,     
                     'address'=>$request->address,
                 ]);
-                // event(new AttachmentEvent($request->file('logo'), $company->icon(), 'companies'));
-                return redirect()->route('settings.index')->with('success','Company created successfully');
+                return redirect()->back()->with('success','Company created successfully');
             }
-        
-
     }
 
     /**

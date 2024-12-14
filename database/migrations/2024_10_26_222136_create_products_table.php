@@ -30,6 +30,7 @@ return new class extends Migration
             $table->foreign('unit_id')->references('id')->on('units');
             $table->string('slug')->unique();
             $table->json('photos');
+            $table->string('sequence_number');
             $table->boolean('is_active')->default(1);
             $table->softDeletes();
             $table->timestamps();

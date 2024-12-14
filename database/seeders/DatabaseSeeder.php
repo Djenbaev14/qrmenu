@@ -20,21 +20,41 @@ class DatabaseSeeder extends Seeder
         
         $gl_admin_permissions=[
             'company-list',
+            'company-create',
+            'company-edit',
+            'company-show',
+
             'all-clients-list',
+
+            'all-categories-list',
+            'all-categories-edit',
+            'all-categories-create',
+            'all-categories-show',
+            'all-categories-delete',
+            
+            'all-products-list',
+            'all-products-edit',
+            'all-products-create',
+            'all-products-show',
+            'all-products-delete',
         ];
         $admin_permissions = [
             'setting-list',
             'setting-create',
             'setting-edit',
             'setting-delete',
+
             'product-list',
             'product-create',
             'product-edit',
             'product-delete',
+            
             'category-list',
             'category-create',
             'category-edit',
             'category-delete',
+            
+            'feedback-list',
             'only-thier-clients-list',
          ];
 

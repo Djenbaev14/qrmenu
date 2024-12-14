@@ -21,7 +21,7 @@ class AttachmentEvent
     public function __construct(
         public array|UploadedFile $files,
         public MorphOne|MorphMany|MorphToMany|null $relation = null,
-        public string $path = 'files', 
+        public string $path = 'files',
         public ?string $identifier = null
     ) {
     }

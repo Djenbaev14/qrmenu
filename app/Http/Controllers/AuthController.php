@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class AuthController extends Controller
 {
@@ -37,7 +38,6 @@ class AuthController extends Controller
             'password' => 'required',
             'password_confirmation' => 'required|same:password'
         ]);
-        
         $user=User::create([
             'name'=>$request->name,
             'phone'=>$request->phone,
@@ -49,6 +49,12 @@ class AuthController extends Controller
         $count = Company::where('deleted_at','!=',null)->where('slug', 'LIKE', "{$slug}%")->count();
         $slug = $count ? "{$slug}-{$count}" : $slug;
 
+        $data = 'qrmenu.uz/'.$slug; // Data to be encoded in the QR code
+        $path = public_path('images/qrmenu/'); // Directory where the image will be stored
+
+        // Generate QR code and save it as an image file
+        QrCode::format('png')->size(300)->generate($data, $path . $slug.'-qrmenu.png');
+        
         Company::create([
             'user_id'=>$user->id,
             'name'=>$request->company_name,
@@ -58,8 +64,6 @@ class AuthController extends Controller
         auth()->login($user);
         return redirect()->route('settings.index')->with('success','Success');
     }
-
-    
     // logout
     public function logout(){
         auth()->logout();
