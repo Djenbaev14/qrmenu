@@ -3,143 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Rasmlar yuklash</title>
+    <title>Dynamic QR Code Generator with PDF Download</title>
     <style>
-        .container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        .image-box {
-            position: relative;
-            width: 100px;
-            height: 100px;
-            border-radius: 8px;
-            overflow: hidden;
-            background-color: #f5f5f5;
-        }
-        .image-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .image-box .delete-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background-color: #ff4d4d;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-        .add-image-box {
-            width: 100px;
-            height: 100px;
-            border: 2px dashed #9a49f5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: #9a49f5;
-            font-size: 24px;
-            border-radius: 8px;
-        }
+        /* Oddiy uslub */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+input[type="range"], input[type="color"], input[type="text"] {
+    margin: 10px 0;
+    padding: 5px;
+    width: 100%;
+    max-width: 300px;
+}
+
+#qrcode {
+    margin-top: 30px;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
     </style>
 </head>
 <body>
+    <div class="container">
+        <h1>Dynamic QR Code Generator</h1>
 
-<h2>YUKLANGAN RASMLAR</h2>
-<form action="{{route('products.store')}}" method="post" enctype="multipart/form-data">
-    @csrf
-    <div class="container" id="imageContainer">
-        <!-- Yuklangan rasmlar joylashadi -->
-        <div class="add-image-box" onclick="document.getElementById('fileInput').click()">+</div>
+        <!-- Banner uchun sozlamalar -->
+        <label for="size">QR Code Size: </label>
+        <input type="range" id="size" name="size" min="100" max="500" value="300">
+        
+        <label for="bgColor">Background Color: </label>
+        <input type="color" id="bgColor" value="#ffffff">
+        
+        <label for="qrColor">QR Code Color: </label>
+        <input type="color" id="qrColor" value="#000000">
+        
+        <label for="text">Text: </label>
+        <input type="text" id="text" value="https://example.com">
+        
+        <label for="logo">Logo URL: </label>
+        <input type="text" id="logo" placeholder="https://example.com/logo.png">
+        
+        <!-- QR kodini chiqarish uchun joy -->
+        <div id="qrcode"></div>
+
+        <!-- PDF yuklab olish tugmasi -->
+        <button id="downloadBtn">Download PDF</button>
     </div>
-    <input type="file" id="fileInput" name="photos[]" multiple  style="display: none;">
-    <input type="file" id="fileImage" name="images[]" multiple  >
-    {{-- <button onclick="uploadFiles()">Yuklash</button> --}}
-    <button>add</button>
-</form>
-
-{{-- <button onclick="uploadImages()">Yuklash</button> --}}
-
-<script>
-    const imageContainer = document.getElementById('imageContainer');
-    const fileInput = document.getElementById('fileInput');
-    const fileImage = document.getElementById('fileImage');
-    let images = [];
-    const a={};
     
-    fileInput.addEventListener('change', (event) => {
-        const files = event.target.files;
+    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+    const sizeInput = document.getElementById('size');
+    const bgColorInput = document.getElementById('bgColor');
+    const qrColorInput = document.getElementById('qrColor');
+    const textInput = document.getElementById('text');
+    const logoInput = document.getElementById('logo');
+    const qrcodeContainer = document.getElementById('qrcode');
+    const downloadBtn = document.getElementById('downloadBtn');
+    
+    let qrcode;
+
+    // QR kodini yaratish va yangilash
+    function generateQRCode() {
+        const size = sizeInput.value;
+        const bgColor = bgColorInput.value;
+        const qrColor = qrColorInput.value;
+        const text = textInput.value;
+        const logo = logoInput.value;
         
-        
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const imageBox = document.createElement('div');
-                imageBox.className = 'image-box';
-
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                imageBox.appendChild(img);
-
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'delete-btn';
-                deleteBtn.textContent = '×';
-                deleteBtn.onclick = () => {
-                    imageContainer.removeChild(imageBox);
-                    images = images.filter((item) => item !== file);
-                };
-                imageBox.appendChild(deleteBtn);
-
-                imageContainer.insertBefore(imageBox, imageContainer.lastElementChild);
-                images.push(file);
-            };
-            reader.readAsDataURL(file);
+        // Agar oldin yaratilgan QR kod bo'lsa, uni o'chirib yangisini yaratish
+        if (qrcode) {
+            qrcode.clear();
         }
-        fileImage.files=files;
-    });
-    
-    function uploadFiles() {
-        const formData = new FormData();
-        images.forEach((image, index) => {
-            formData.append('images[]', image, `image-${index}.jpg`);
-        });
-        console.log(formData);
-        
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-        fetch('/products', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': csrfToken // CSRF tokenni headerga qo'shamiz
-            },
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          
-            alert('Rasmlar muvaffaqiyatli yuklandi');
-            
-            // Tozalash
-            images = [];
-            imageContainer.querySelectorAll('.image-box').forEach(box => box.remove());
-        })
-        .catch(error => {
-            console.error('Xatolik:', error);
+        // QR kodini yaratish
+        qrcode = new QRCode(qrcodeContainer, {
+            text: text,
+            width: size,
+            height: size,
+            colorDark: qrColor,
+            colorLight: bgColor,
+            correctLevel: QRCode.CorrectLevel.L,
         });
+
+        // Agar logo URL kiritilgan bo'lsa, uni qo'shish
+        if (logo) {
+            // QR kodga logotip qo'shish uchun alohida kodni yozish kerak
+        }
     }
-</script>
+
+    // Har bir input o'zgarishida QR kodni yangilash
+    sizeInput.addEventListener('input', generateQRCode);
+    bgColorInput.addEventListener('input', generateQRCode);
+    qrColorInput.addEventListener('input', generateQRCode);
+    textInput.addEventListener('input', generateQRCode);
+    logoInput.addEventListener('input', generateQRCode);
+
+    // Dastlabki QR kodni yaratish
+    generateQRCode();
+
+    // PDF yuklab olish funksiyasi
+    downloadBtn.addEventListener('click', function () {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        
+        // QR kodni canvasdan olish
+        const qrCanvas = qrcodeContainer.querySelector('canvas');
+        if (qrCanvas) {
+            const qrDataURL = qrCanvas.toDataURL('image/png');
+            
+            // Banner va QR kodni PDFga joylash
+            doc.addImage(qrDataURL, 'PNG', 10, 10, sizeInput.value, sizeInput.value);
+            doc.text(textInput.value, 10, 20 + parseInt(sizeInput.value));
+            
+            // PDFni yuklab olish
+            doc.save('qr-banner.pdf');
+        }
+    });
+});
+
+    </script>
 </body>
 </html>

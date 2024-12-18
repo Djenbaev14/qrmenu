@@ -18,9 +18,9 @@
     <div class="modal right fade " id="basicModal">
       <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
-              <div class="modal-header bg-primary" >
-                  <h5 class="modal-title text-white">Добавить категорию</h5>
-                  <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span>
+              <div class="modal-header " >
+                  <h5 class="modal-title ">Добавить категорию</h5>
+                  <button type="button" class="close " data-dismiss="modal"><span>&times;</span>
                   </button>
               </div>
               <div class="modal-body">
@@ -41,13 +41,13 @@
                                               </div>
                                           </div>
                                   </label>
-                                  <input type="file" name="photo" id="logo-upload" accept="image/png, image/webp, image/jpeg,image/jpg" style="display: none;" />
+                                  <input type="file" required name="photo" id="logo-upload" accept="image/png, image/webp, image/jpeg,image/jpg" style="display: none;" />
                           </div>
                         </div>
                         
                         <ul class="nav nav-tabs" role="tablist">
                           @foreach (config('app.languages') as $i => $item)
-                              <li class="nav-item mx-2 my-1" role="presentation">
+                              <li class="nav-item " role="presentation">
                                   <a class="nav-link <?=($i==0) ? 'active' : '';?>" data-toggle="tab" href="#tab_{{$item['code']}}" role="tab">
                                       <span class="d-flex justify-content-center align-items-center">
                                           <img src="{{asset('images/flags/'.$item['code'].'.'.$item['format'])}}" width="20px"> 
@@ -61,7 +61,7 @@
                         @foreach (config('app.languages') as $i => $item)
                         <div class="tab-pane <?=($i==0) ? 'show active' : '';?>" id="tab_{{$item['code']}}" role="tabpanel">
                             <label for="">Название категории ({{$item['name']}})</label>
-                            <input type="text" name="name_{{$item['code']}}" class="form-control" placeholder="Kategoriyaning nomini kiriting">
+                            <input type="text" required name="name_{{$item['code']}}" class="form-control" placeholder="Kategoriyaning nomini kiriting">
                         </div>
                         @endforeach
                       </div>
@@ -102,7 +102,6 @@
                     <th scope="col">Дата создания
                     </th>
                     <th scope="col">Действие</th>
-                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -113,20 +112,94 @@
                       <td >{{$category->product->count()}}</td>
                       <td>{{$category->created_at->format('Y.m.d , H:i')}}</td>
                     <td>
-                      <div style="cursor: pointer" class="dropdown ml-auto text-right">
+                      <div style="cursor: pointer" class="dropdown ml-auto">
                         <div class="btn-link" data-toggle="dropdown">
                           <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
                         </div>
                         <div class="dropdown-menu dropdown-menu-right">
-                          <a class="dropdown-item" href="{{route('categories.show',$category->id)}}"><i class="flaticon-381-view-2 text-success mr-2"></i> Видение</a>
-                          <a class="dropdown-item"  data-toggle="modal" data-target=".bs-example-modal-{{$category->id}}"><i class="flaticon-381-edit
- text-primary mr-2"></i> редактировать</a>
-                          <a class="dropdown-item" href="{{route('categories.destroy',$category->id)}}"><i class="flaticon-381-trash-1 text-danger mr-2"></i> удалить</a>
+                          <a class="dropdown-item"  data-toggle="modal" data-target=".bs-example-modal-{{$category->id}}">
+                            <i class="flaticon-381-edit text-primary mr-2"></i> Редактировать
+                          </a>
+                          <a class="dropdown-item" href="{{route('categories.destroy',$category->id)}}"><i class="flaticon-381-trash-1 text-danger mr-2"></i> Удалить
+                          </a>
                         </div>
                       </div>
-                      
                     </td>
-                    		
+                                        <!--  Large modal example -->
+                                        <div class="modal right fade bs-example-modal-{{$category->id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                          <div class="modal-dialog modal-lg">
+                                              <div class="modal-content">
+                                                  <div class="modal-header " >
+                                                      <h5 class="modal-title ">Изменить категорию</h5>
+                                                      <button type="button" class="close " data-dismiss="modal"><span>&times;</span>
+                                                      </button>
+                                                  </div>
+                                                  <div class="modal-body">
+                                                    <div class="row">
+                                                      <div class="col-12">
+                                                        <form action="{{route('categories.update',$category->id)}}" method="POST" enctype="multipart/form-data">
+                                                          @csrf
+                                                          @method('PATCH')
+                                                            <div class="mb-3">
+                                                              <div id="upload-container-2" >
+                                                                <label for="logo-upload-2" id="upload-label-2">
+                                                                    <span id="change-icon-2" style="display: inline-block">&#8635;</span> <!-- Unicode for a refresh icon -->
+                                                                    <img id="logo-preview-2" src="{{asset('images/categories/'.$category->photo)}}" alt="Yuklangan rasm" style="display: block;" />
+                                                                  </label>
+                                                                  <input type="file" required name="photo" id="logo-upload-2" accept="image/png, image/webp, image/jpeg,image/jpg" style="display: none;" />
+                                                              </div>
+                                                            </div>
+                                                            <ul class="nav nav-tabs" role="tablist">
+                                                              @foreach (config('app.languages') as $i => $item)
+                                                                  <li class="nav-item " role="presentation">
+                                                                      <a class="nav-link <?=($i==0) ? 'active' : '';?>" data-toggle="tab" href="#update_tab_{{$item['code']}}" role="tab">
+                                                                          <span class="d-flex justify-content-center align-items-center">
+                                                                              <img src="{{asset('images/flags/'.$item['code'].'.'.$item['format'])}}" width="20px"> 
+                                                                              &nbsp;&nbsp;{{$item['name']}}</span> 
+                                                                      </a>
+                                                                  </li>
+                                                              @endforeach
+                                                          </ul>
+                                                          <div class="tab-content pt-3 text-muted mb-3">
+                                                            @foreach (config('app.languages') as $i => $item)
+                                                            <div class="tab-pane <?=($i==0) ? 'show active' : '';?>" id="update_tab_{{$item['code']}}" role="tabpanel">
+                                                              <?php
+                                                                  $name="name_".$item['code'];
+                                                                ?>
+                                                                <label for="">Название категории ({{$item['name']}})</label>
+                                                                <input type="text" required name="name_{{$item['code']}}" value="{{$category->$name}}" class="form-control" placeholder="Kategoriyaning nomini kiriting">
+                                                            </div>
+                                                            @endforeach
+                                                          </div>
+                                                          <div class="mb-3">
+                                                            <label for="">Порядковый номер</label>
+                                                            <input type="number" required value="{{$category->sequence_number}}" name="sequence_number" class="form-control">
+                                                          </div>
+                                                          <div class="mb-3">
+                                                            <label for="">Основная Категория</label>
+                                                            <select required name="main_category_id" class="form-control" id="single-select" >
+                                                              <option value="none">Выберите основную категорию</option>
+                                                              @foreach ($select_categories as $c)
+                                                              @if ($c->id == $category->main_category_id)
+                                                                  <option selected value="{{$c->id}}">{{$c->name_uz}}</option>
+                                                              @elseif($c->id != $category->id)
+                                                                  <option  value="{{$c->id}}">{{$c->name_uz}}</option>
+                                                              @endif
+                                                              @endforeach
+                                                            </select>
+                                                          </div>
+                                                          
+                                                          <div class="d-flex align-items-center justify-content-end">
+                                                              <input type="submit" value="Изменение" class="btn btn-primary">
+                                                          </div>
+                                                        </form>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                              </div><!-- /.modal-content -->
+                                          </div><!-- /.modal-dialog -->
+                                      </div><!-- /.modal -->
+                                
                     </tr>
                   @empty
                     <tr>

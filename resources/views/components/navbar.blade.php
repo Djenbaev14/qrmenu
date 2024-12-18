@@ -7,6 +7,12 @@
                     <span class="nav-text">Home</span>
                 </a>
             </li>
+            <li>
+                <a href="{{route('orders.index')}}" class="ai-icon" aria-expanded="false">
+                    <i class="flaticon-381-list"></i>
+                    <span class="nav-text">Заказы</span>
+                </a>
+            </li>
             @can('category-list')
                 <li>
                     <a href="{{route('categories.index')}}" class="ai-icon" aria-expanded="false">
@@ -15,14 +21,6 @@
                     </a>
                 </li>
             @endif
-            {{-- @can('subcategory-list')
-                <li>
-                    <a href="{{route('feedback.index')}}" class="ai-icon" aria-expanded="false">
-                        <i class="flaticon-381-settings-2"></i>
-                        <span class="nav-text">Под категории</span>
-                    </a>
-                </li>
-            @endif --}}
             @can('product-list') 
                 <li>
                     <a href="{{route('products.index')}}" class="ai-icon" aria-expanded="false">
@@ -31,14 +29,20 @@
                     </a>
                 </li>
             @endif
-            @can('feedback-list')
+            {{-- @can('feedback-list')
                 <li>
                     <a href="{{route('feedback.index')}}" class="ai-icon" aria-expanded="false">
                         <i class="flaticon-381-settings-2"></i>
                         <span class="nav-text">Отзывы</span>
                     </a>
                 </li>
-            @endif
+            @endif --}}
+            <li>
+                <a href="{{route('qr-code.index')}}" class="ai-icon" aria-expanded="false">
+                    <i class="flaticon-381-menu-1"></i>
+                    <span class="nav-text">Qr Меню</span>
+                </a>
+            </li>
             @can('setting-list')
                 <li>
                     <a href="{{route('settings.index')}}" class="ai-icon" aria-expanded="false">
@@ -63,12 +67,12 @@
                     </ul>
                 </li>
             @endcan
-            <li>
+            {{-- <li>
                     <a  href="{{route('clients.index')}}" class="ai-icon" aria-expanded="false">
                         <i class="flaticon-381-settings-2"></i>
                         <span> Клиенты <?=(auth()->user()->can('only-thier-clients-list')) ? "<span class='mx-2 badge text-bg-danger'>".is_answered()."</span>" : '';?> </span>
                     </a>
-            </li>
+            </li> --}}
             @can('all-categories-list')
                 <li>
                     <a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Company;
 use App\Models\Product;
+use App\Models\ProductParameter;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -51,7 +52,7 @@ class ProductController extends Controller
         $slug = Str::slug($request->name_uz);
         $count = Product::where('company_id',auth()->user()->company->first()->id)->where('slug', 'LIKE', "{$slug}%")->count();
         $slug = $count ? "{$slug}-{$count}" : $slug;
-        Product::create([
+        $product=Product::create([
             'user_id'=>auth()->user()->id,
             'company_id'=>Company::where('user_id',auth()->user()->id)->first()->id,
             'category_id'=>$request->category_id,
@@ -62,11 +63,20 @@ class ProductController extends Controller
             'description_ru'=>$request->description_ru,
             'description_kr'=>$request->description_kr,
             'slug'=>$slug,
+            'parameter_name'=>$request->characteristic_name,
             'sequence_number'=>$request->sequence_number,
             'price'=>$request->price,
             'unit_id'=>is_numeric($request->unit_id) ? $request->unit_id : null , 
             'photos'=>$photos
             ]);
+            for ($i=0; $i < count($request->characteristic_names); $i++) { 
+                ProductParameter::create([
+                    'user_id'=>auth()->user()->id,
+                    'product_id'=>$product->id,
+                    'name'=>$request->characteristic_names[$i],
+                    'price'=>$request->prices[$i],
+                ]);
+            }
         return redirect()->route('products.index')
             ->with('success', 'The product was successfully created');
     }

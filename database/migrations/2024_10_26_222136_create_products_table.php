@@ -19,14 +19,15 @@ return new class extends Migration
             $table->foreign('company_id')->references('id')->on('companies');
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
+            $table->longText('parameter_name')->nullable();
             $table->string('name_uz');
             $table->string('name_ru');
             $table->string('name_kr');
             $table->longText('description_uz')->nullable();
             $table->longText('description_ru')->nullable();
             $table->longText('description_kr')->nullable();
-            $table->string('price')->nullable();
-            $table->unsignedBigInteger('unit_id')->nullable();
+            $table->string('price');
+            $table->unsignedBigInteger('unit_id');
             $table->foreign('unit_id')->references('id')->on('units');
             $table->string('slug')->unique();
             $table->json('photos');

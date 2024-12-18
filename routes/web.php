@@ -6,7 +6,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\OpinionController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\QrCodeController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,17 +38,25 @@ Route::post('/login', [AuthController::class, 'login'])->name('login')->middlewa
 // logout
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// resource
-    Route::resource('settings', SettingController::class);
-    Route::resource('categories', CategoryController::class);
-    Route::resource('products', ProductController::class);
-    Route::post('/products/is_active', [ProductController::class, 'isActive'])->name('isActive');
-    Route::resource('feedback', OpinionController::class);
    
 
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::resource('clients', ClientController::class);
+        Route::resource('clients', ClientController::class);
+        // resource
+        Route::resource('settings', SettingController::class);
+        Route::resource('categories', CategoryController::class);
+        Route::resource('products', ProductController::class);
+        Route::post('/products/is_active', [ProductController::class, 'isActive'])->name('isActive');
+        Route::resource('feedback', OpinionController::class);
+        Route::resource('qr-code', QrCodeController::class);
+        // routes/web.php
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/news', [OrderController::class, 'news'])->name('orders.news');
+        Route::get('/orders/process', [OrderController::class, 'process'])->name('orders.process');
+        Route::get('/orders/expired', [OrderController::class, 'expired'])->name('orders.expired');
+        Route::get('/orders/ready', [OrderController::class, 'ready'])->name('orders.ready');
+        Route::get('/orders/history', [OrderController::class, 'history'])->name('orders.history');
 });
 
 Route::prefix('admin')

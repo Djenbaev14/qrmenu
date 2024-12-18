@@ -18,9 +18,9 @@
     <div class="modal right fade " id="basicModal">
       <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
-              <div class="modal-header bg-primary" >
-                  <h5 class="modal-title text-white">Добавить продукта</h5>
-                  <button type="button" class="close text-white" data-dismiss="modal"><span>&times;</span>
+              <div class="modal-header" >
+                  <h5 class="modal-title">Добавить продукта</h5>
+                  <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
                   </button>
               </div>
               <div class="modal-body">
@@ -49,7 +49,7 @@
                             <label  for="image4" class="custom-label-4"><i class="flaticon-381-photo-camera-1"></i></label>
                         </div>
                       </div>
-                        <ul class="nav nav-tabs mt-3" role="tablist">
+                      <ul class="nav nav-tabs mt-3" role="tablist">
                           @foreach (config('app.languages') as $i => $item)
                               <li class="nav-item" role="presentation">
                                   <a class="nav-link <?=($i==0) ? 'active' : '';?>" data-toggle="tab" href="#tab_{{$item['code']}}" role="tab">
@@ -66,7 +66,7 @@
                         <div class="tab-pane <?=($i==0) ? 'show active' : '';?>" id="tab_{{$item['code']}}" role="tabpanel">
                           <div class="mb-3">
                             <label for="">Название продукта ({{$item['name']}})</label>
-                            <input type="text" value="{{old('name_'.$item['code'])}}" name="name_{{$item['code']}}" class="form-control" placeholder="Mahsulotning nomini kiriting">
+                            <input type="text" required value="{{old('name_'.$item['code'])}}" name="name_{{$item['code']}}" class="form-control" placeholder="Mahsulotning nomini kiriting">
                           </div>
                           <div class="mb-3">
                             <label for="">Определение ({{$item['name']}})</label>
@@ -78,23 +78,66 @@
                         </div>
                         @endforeach
                       </div>
-                      
                       <div class="mb-3">
                         <label for="">Категории</label>
-                        <select name="category_id" id="single-select" class="form-select">
+                        <select name="category_id" id="single-select" required class="form-select">
+                          <option value="none" hidden>Выберите категорию</option>
                           @foreach ($categories as $category)
                               <option value="{{$category->id}}">{{$category->name_uz}}</option>
                           @endforeach
                         </select>
                       </div>
-                      <div class=" mb-3">
-                        <label for="" style="cursor: pointer">Цена</label>
-                        <input type="number" id="price" name="price" class="form-control" value="{{old('price')}}" placeholder="Введите цену">
-                        <div class="mb-3">
-                          <label for="">Порядковый номер</label>
-                          <input type="number" value="99" name="sequence_number" class="form-control">
+                      <div class="row mb-3">
+                        <div class="col-6 mb-3">
+                          <label for="">Цена</label>
+                          <input type="number" required id="price" name="price" class="form-control" value="{{old('price')}}" placeholder="Введите цену">
+                        </div>
+                        <div class="col-6 mb-3">
+                          <label for="">Единица измерения</label>
+                          <select name="unit_id" class="form-control" >
+                            <option value="none" hidden>Выберите единицу измерения</option>
+                            @foreach ($units as $unit)
+                                <option value="{{$unit->id}}">{{$unit->name}}</option>
+                            @endforeach
+                          </select>
+                        </div>
+                        <div class="col-6 mb-3">
+                            <label for="">Порядковый номер</label>
+                            <input type="number" value="99" name="sequence_number" class="form-control">
                         </div>
                       </div>
+                        
+                        <h4 class="fw-bold">Добавить характеристику продукта</h4>
+                        <div class="row mb-3">
+                          <div class="col-12 mb-3">
+                            <label for="" class="form-label">Название характеристики</label>
+                            <input type="text" class="form-control " placeholder="Например: порция/объем" required name="characteristic_name" >
+                          </div>
+                          <div class="col-5 mb-3">
+                            <label for="" class="form-label">Название характеристики</label>
+                            <input type="text" class="form-control" placeholder="Например: полная порция/объем" required name="characteristic_names[]" >
+                          </div>
+                          <div class="col-5">
+                            <label for="" class="form-label">Цена</label>
+                            <input type="number" class="form-control quantity-input" placeholder="Введите цену" required name="prices[]" >
+                          </div>
+                        </div>
+                        <div id="form-container">
+                            <div class="form-row row mb-3">
+                              <div class="col-5">
+                                <label for="" class="form-label">Название характеристики</label>
+                                <input type="text" class="form-control" placeholder="Например: полная порция/объем" required name="characteristic_names[]" >
+                              </div>
+                              <div class="col-5">
+                                <label for="" class="form-label">Цена</label>
+                                <input type="number" class="form-control quantity-input" placeholder="Введите цену" required name="prices[]" >
+                              </div>
+                              <div class="col-2 d-flex align-items-center justify-content-center mt-4">
+                                <a type="button" class="remove-row text-danger">Удалить</a>
+                              </div>
+                            </div>
+                        </div>
+                        <a type="button" class="btn text-primary" id="add-row">Добавить параметр</a>
                       <div class="d-flex align-items-center justify-content-end">
                           <input type="submit" value="Добавить" class="btn btn-primary">
                       </div>
@@ -104,7 +147,7 @@
               </div>
           </div>
       </div>
-  </div>
+    </div>
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -127,24 +170,123 @@
                     <td><?=($product->price) ? number_format($product->price)." сум" : ''?></td>
                     <td>{{$product->created_at->format('Y.m.d , H:i')}}</td>
                     <td>
-                      <div class="form-check form-switch ">
-                        <input class="form-check-input is-active-checkbox" 
-                              type="checkbox" 
-                              role="switch" 
-                              style="transform: scale(1.8);cursor: pointer;" data-id="{{ $product->id }}" {{ $product->is_active ? 'checked' : '' }}>
-                      </div>
+                      <?=($product->is_active==1) ? 'Актив' : 'Не активный';?>
                     </td>
                     <td>
-                      {{-- <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target=".bs-example-modal-{{$product->id}}">
-                        <i data-feather="edit"></i></button> --}}
-                        <a href="{{route('products.edit',$product->id)}}" class="btn btn-sm btn-success" ><i data-feather="edit"></i></button></a>
-                      <form class="d-inline-block" action="{{ route('products.destroy', $product->id) }}" method="POST">
-                        @csrf
-                        @method("DELETE")
-                        <button class="btn btn-sm btn-danger"><i data-feather="trash"></i></button>
-                      </form>
-                      <!-- /.modal -->
-                
+                      <div style="cursor: pointer" class="dropdown ml-auto">
+                        <div class="btn-link" data-toggle="dropdown">
+                          <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
+                        </div>
+                        <div class="dropdown-menu dropdown-menu-right">
+                          <a class="dropdown-item"  data-toggle="modal" data-target=".bs-example-modal-{{$product->id}}">
+                            <i class="flaticon-381-edit text-primary mr-2"></i> Редактировать
+                          </a>
+                          <a class="dropdown-item" href="{{route('products.destroy',$product->id)}}"><i class="flaticon-381-trash-1 text-danger mr-2"></i> Удалить
+                          </a>
+                        </div>
+                      </div>
+                      
+                      <div class="modal right fade bs-example-modal-{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" >
+                                    <h5 class="modal-title">Добавить продукта</h5>
+                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="row">
+                                    <div class="col-12">
+                                      <form action="{{route('products.update',$product->id)}}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+                                            <div class="row">
+                                              @for ($i = 0; $i < 4; $i++)
+                                                @if ($i < count($product->photos))
+                                                  <div class="col-sm-6 col-lg-3 wrap-custom-file mb-2" >
+                                                      <input type="file" name="photos[]" id="image{{$i}}" accept=".gif, .jpg, .png" />
+                                                      <label  for="image{{$i}}" style='background-image: url("{{asset('images/products/'.$product->photos[$i])}}")' class="custom-label-1 file-ok"><i data-feather="camera" class="fa"></i></label>
+                                                  </div>
+                                                @else
+                                                
+                                                <div class="wrap-custom-file col-lg-3 col-sm-6 mb-2">
+                                                  <input type="file" name="photos[]" id="image{{$i}}" accept=".gif, .jpg, .png" />
+                                                  <label  for="image{{$i}}" class="custom-label-{{$i}}"><i data-feather="camera" class="fa"></i></label>
+                                                </div>
+                                                @endif
+                                              @endfor
+                                            </div>
+                                          <ul class="nav nav-tabs mt-3" role="tablist">
+                                            @foreach (config('app.languages') as $i => $item)
+                                                <li class="nav-item" role="presentation">
+                                                    <a class="nav-link <?=($i==0) ? 'active' : '';?>" data-toggle="tab" href="#tab_{{$item['code']}}" role="tab">
+                                                        <span class="d-flex justify-content-center align-items-center">
+                                                            <img src="{{asset('images/flags/'.$item['code'].'.'.$item['format'])}}" width="20px"> 
+                                                            &nbsp;&nbsp;{{$item['name']}}</span> 
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                        
+                                        <div class="tab-content pt-3 text-muted mb-3">
+                                          @foreach (config('app.languages') as $i => $item)
+                                          <?php 
+                                          $name='name_'.$item['code'];
+                                          $description='description_'.$item['code'];
+                                          ?>
+                                          <div class="tab-pane <?=($i==0) ? 'show active' : '';?>" id="tab_{{$item['code']}}" role="tabpanel">
+                                            <div class="mb-3">
+                                              <label for="">Название продукта ({{$item['name']}})</label>
+                                              <input type="text" required value="{{$product->$name}}"  name="name_{{$item['code']}}" class="form-control" placeholder="Mahsulotning nomini kiriting">
+                                            </div>
+                                            <div class="mb-3">
+                                              <label for="">Определение ({{$item['name']}})</label>
+                                              <?php
+                                                  $desc='description_'.$item['code'];
+                                              ?>
+                                              <textarea class="form-control" id="description_{{$item['code']}}" name="description_{{$item['code']}}" rows="3" placeholder="">{!! $product->$description !!}</textarea>
+                                            </div>
+                                          </div>
+                                          @endforeach
+                                        </div>
+                                        <div class="mb-3">
+                                          <label for="">Категории</label>
+                                          <select name="category_id" required class="form-select">
+                                            <option value="none" hidden>Выберите категорию</option>
+                                            @foreach ($categories as $category)
+                                                <option value="{{$category->id}}" <?=($category->id == $product->category_id) ? 'selected' : '';?>>{{$category->name_uz}}</option>
+                                            @endforeach
+                                          </select>
+                                        </div>
+                                        <div class="row mb-3">
+                                          <div class="col-6 mb-3">
+                                            <label for="">Цена</label>
+                                            <input type="number" required id="price" name="price" class="form-control" value="{{$product->price}}" placeholder="Введите цену">
+                                          </div>
+                                          <div class="col-6 mb-3">
+                                            <label for="">Единица измерения</label>
+                                            <select name="unit_id" class="form-control" >
+                                              <option value="none" hidden>Выберите единицу измерения</option>
+                                              @foreach ($units as $unit)
+                                                  <option value="{{$unit->id}}" <?=($unit->id==$product->unit_id) ? 'selected':'';?>>{{$unit->name}}</option>
+                                              @endforeach
+                                            </select>
+                                          </div>
+                                          <div class="col-6 mb-3">
+                                              <label for="">Порядковый номер</label>
+                                              <input type="number" value="{{$product->sequence_number}}" name="sequence_number" class="form-control">
+                                          </div>
+                                        </div>
+                                          <div class="d-flex align-items-center justify-content-end">
+                                              <input type="submit" value="Добавить" class="btn btn-primary">
+                                          </div>
+                                      </form>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.modal -->
                     </td>
                   </tr>
                   @empty
@@ -165,25 +307,6 @@
 <link rel="stylesheet" href="{{asset('css/multiphoto.css')}}">
 @endpush
 @push('js')
-
-	<script>
-    (function($) {
-     
-      var table = $('#example5').DataTable({
-        searching: false,
-        paging:true,
-        select: false,
-        //info: false,         
-        lengthChange:false 
-        
-      });
-      $('#example tbody').on('click', 'tr', function () {
-        var data = table.row( this ).data();
-        
-      });
-       
-    })(jQuery);z
-  </script>
 	    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 
       <script>
@@ -228,4 +351,44 @@
         })();
   
         </script>
+        
+  <script>
+    // Form konteynerini topish
+    const formContainer = document.getElementById('form-container');
+    const addRowButton = document.getElementById('add-row');
+
+    // Qator qo‘shish funksiyasi
+    addRowButton.addEventListener('click', () => {
+        const newRow = document.querySelector('.form-row').cloneNode(true); // Birinchi qatordan nusxa olish
+        const inputs = newRow.querySelectorAll('input');
+        const selects = newRow.querySelectorAll('select');
+
+        // Har bir inputni tozalash
+        inputs.forEach(input => {
+            input.value = input.name === 'quantity[]' ? 1 : ''; // Default qiymat sifatida "1" ni saqlash
+        });
+
+        // Selectni tozalash
+        selects.forEach(select => {
+            select.value = '';
+        });
+
+        // Form konteyneriga yangi qator qo‘shish
+        formContainer.appendChild(newRow);
+        updateGrandTotal();
+    });
+
+    // Qatorni o‘chirish funksiyasi
+    formContainer.addEventListener('click', (e) => {
+        if (e.target.classList.contains('remove-row')) {
+            const rows = formContainer.querySelectorAll('.form-row');
+            if (rows.length > 1) {
+                e.target.closest('.form-row').remove();
+                updateGrandTotal(); 
+            } else {
+                alert('Oxirgi qatordan boshqa qatorlarni o‘chirishingiz mumkin!');
+            }
+        }
+    });
+  </script>
 @endpush

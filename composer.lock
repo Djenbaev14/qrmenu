@@ -3635,12 +3635,12 @@
             "type": "library",
             "extra": {
                 "laravel": {
-                    "providers": [
-                        "RealRashid\\SweetAlert\\SweetAlertServiceProvider"
-                    ],
                     "aliases": {
                         "Alert": "RealRashid\\SweetAlert\\Facades\\Alert"
-                    }
+                    },
+                    "providers": [
+                        "RealRashid\\SweetAlert\\SweetAlertServiceProvider"
+                    ]
                 }
             },
             "autoload": {

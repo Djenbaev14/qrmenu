@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Eatio - Restaurant Food Order Bootstrap Admin Dashboard</title>
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('images/favicon.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('logo-image/qr-menu.png')}}">
     <link href="{{asset('vendor/bootstrap-select/dist/css/bootstrap-select.min.css')}}" rel="stylesheet">
     <link href="{{asset('css/style.css')}}" rel="stylesheet">
     {{-- select2 --}}
@@ -20,7 +20,18 @@
         .modal.right .modal-content {
         height:100%;
         overflow:auto;
-        border-radius:0;
+        border-top-left-radius: 20px;
+        border-bottom-left-radius: 20px;
+        transition: right 0.5s ease-in-out;
+        animation: slideIn 0.5s ease-out forwards; /* Animation qo'llanadi */
+        }
+        @keyframes slideIn {
+            0% {
+                right: -100%; /* Modalni to'liq yashirish */
+            }
+            100% {
+                right: 0; /* Modalni o'ngga keltirish */
+            }
         }
         .modal.right .modal-dialog {
         position: fixed;

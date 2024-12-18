@@ -1792,7 +1792,7 @@ pre {
   font-weight: 400;
   line-height: 1.5;
   color: #495057;
-  background-color: #fff;
+  background-color: rgb(249, 249, 252);
   background-clip: padding-box;
   border: 1px solid #f0f1f5;
   border-radius: 0.75rem;
@@ -21513,7 +21513,7 @@ svg text {
   height: 350px; }
 
 .form-control {
-  background: #fff;
+  background: rgb(249, 249, 252);
   border: 1px solid #f0f1f5;
   color: #6e6e6e;
   height: 56px; }
@@ -21522,7 +21522,7 @@ svg text {
       height: 41px; } }
   .form-control:hover, .form-control:focus, .form-control.active {
     box-shadow: none;
-    background: #fff;
+    background: rgb(249, 249, 252);
     color: #6e6e6e; }
 
 .input-rounded {
