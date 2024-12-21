@@ -17,9 +17,9 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = CompanyResource::collection(Company::where('deleted_at',null)->orderBy('id','desc')->get());
+        $restaurants = CompanyResource::collection(Company::where('deleted_at',null)->orderBy('id','desc')->get());
         return response()->json([
-            'companies' => $companies,
+            'restaurants' => $restaurants,
         ]); 
     }
 
@@ -36,12 +36,12 @@ class CompanyController extends Controller
      */
     public function show($restaurant_slug)
     {
-        $company = new ShowCompanyResource(Company::where('slug',$restaurant_slug)->where('deleted_at',null)->first());
+        $restaurant = new ShowCompanyResource(Company::where('slug',$restaurant_slug)->where('deleted_at',null)->first());
         
-        $category = CategoryResource::collection($company->category()->where('deleted_at',null)->orderBy('sequence_number','asc')->get());
+        $category = CategoryResource::collection($restaurant->category()->where('deleted_at',null)->orderBy('sequence_number','asc')->get());
         // $feedback = FeedbackResource::collection($company->feedback()->orderBy('id','desc')->get());
         return response()->json([
-            'company' => $company,
+            'restaurant' => $restaurant,
             'category' => $category,
             // 'feedback' => $feedback,
         ]);

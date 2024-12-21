@@ -22,15 +22,15 @@ class CategoryController extends Controller
     public function index($restaurant_slug,$category_id)
     {
         try {
-            $company = new CompanyResource(Company::where('slug',$restaurant_slug)->where('deleted_at',null)->firstOrFail());
+            $restaurant = new CompanyResource(Company::where('slug',$restaurant_slug)->where('deleted_at',null)->firstOrFail());
     
-            $category = new CategoryResource($company->category()->where('id',$category_id)->where('deleted_at',null)->firstOrFail());
+            $category = new CategoryResource($restaurant->category()->where('id',$category_id)->where('deleted_at',null)->firstOrFail());
     
             $products = $category->product()->where('is_active',1)->where('deleted_at',null)->orderBy('sequence_number','asc')->paginate(50);
             ProductResource::collection(($products));
             
             return response()->json([
-                'company' => $company,
+                'restaurant' => $restaurant,
                 'category' => $category,
                 'products' => $products
             ]);
