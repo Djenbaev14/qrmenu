@@ -47,12 +47,6 @@ class AuthController extends Controller
         $count = Company::where('deleted_at','!=',null)->where('slug', 'LIKE', "{$slug}%")->count();
         $slug = $count ? "{$slug}-{$count}" : $slug;
 
-        $data = 'qrmenu.uz/'.$slug; // Data to be encoded in the QR code
-        $path = public_path('images/qrmenu/'); // Directory where the image will be stored
-
-        // Generate QR code and save it as an image file
-        QrCode::format('png')->size(300)->generate($data, $path . $slug.'-qrmenu.png');
-        
         Company::create([
             'user_id'=>$user->id,
             'name'=>$request->company_name,

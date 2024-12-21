@@ -13,7 +13,7 @@ class QrCodeController extends Controller
     public function index()
     {
         $slug=Company::where('user_id',auth()->user()->id)->first()->slug;
-        return view('pages.qr_code.index2',compact('slug'));
+        return view('pages.qr_code.index',compact('slug'));
     }
 
     /**
