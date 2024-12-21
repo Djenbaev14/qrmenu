@@ -34,16 +34,33 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($restaurant_slug)
+    public function show($restaurant_slug,Request $request)
     {
-        $restaurant = new ShowCompanyResource(Company::where('slug',$restaurant_slug)->where('deleted_at',null)->first());
+        $restaurant = Company::where('slug',$restaurant_slug)->where('deleted_at',null)->first();
+        if (!$restaurant) {
+            return response()->json([
+                'error' => 'Restoran topilmadi',
+                'message' => 'mavjud emas'
+            ], 404);
+        }
+        if($request->has('lang')){
+            $category =$restaurant->category()
+            ->where('name_'.$request->lang,'LIKE','%'.$request->search.'%')->where('is_active',1)->where('deleted_at',null)->orderBy('sequence_number','asc')->get();
+        }else{
+            $category =$restaurant->category()
+            ->where('deleted_at',null)->orderBy('sequence_number','asc')->get();
+        }
+        if ($category->isEmpty()) {
+            $category = ['message' => 'Mavjud emas'];
+        } else {
+            $category = CategoryResource::collection($category);
+        }
+
         
-        $category = CategoryResource::collection($restaurant->category()->where('deleted_at',null)->orderBy('sequence_number','asc')->get());
-        // $feedback = FeedbackResource::collection($company->feedback()->orderBy('id','desc')->get());
         return response()->json([
-            'restaurant' => $restaurant,
+            'restaurant' => new ShowCompanyResource($restaurant),
+            'request'=>$request->all,
             'category' => $category,
-            // 'feedback' => $feedback,
         ]);
     }
 

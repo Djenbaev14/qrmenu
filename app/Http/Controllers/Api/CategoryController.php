@@ -19,27 +19,41 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($restaurant_slug,$category_id)
+    public function index($restaurant_slug,$category_id,Request $request)
     {
-        try {
-            $restaurant = new CompanyResource(Company::where('slug',$restaurant_slug)->where('deleted_at',null)->firstOrFail());
-    
-            $category = new CategoryResource($restaurant->category()->where('id',$category_id)->where('deleted_at',null)->firstOrFail());
-    
-            $products = $category->product()->where('is_active',1)->where('deleted_at',null)->orderBy('sequence_number','asc')->paginate(50);
-            ProductResource::collection(($products));
+            $restaurant = Company::where('slug',$restaurant_slug)->where('deleted_at',null)->firstOrFail();
+            if (!$restaurant) {
+                return response()->json([
+                    'error' => 'Restoran topilmadi',
+                    'message' => 'mavjud emas'
+                ], 404);
+            }
+            
+            $category = $restaurant->category()->where('id',$category_id)->where('is_active',1)->where('deleted_at',null)->firstOrFail();
+            if (!$category) {
+                return response()->json([
+                    'error' => 'Restoran topilmadi',
+                    'message' => 'mavjud emas'
+                ], 404);
+            }
+
+            if($request->has('lang')){
+                $products = $category->product()->where('name_'.$request->lang,'LIKE','%'.$request->search.'%')->where('is_active',1)->where('deleted_at',null)->orderBy('sequence_number','asc')->paginate(50);
+            }else{
+                $products = $category->product()->where('is_active',1)->where('deleted_at',null)->orderBy('sequence_number','asc')->paginate(50);
+            }
+            if ($products->isEmpty()) {
+                $products = ['message' => 'Mavjud emas'];
+            } else {
+                $products = ProductResource::collection(($products));
+            }
+            
             
             return response()->json([
-                'restaurant' => $restaurant,
-                'category' => $category,
+                'restaurant' => new CompanyResource($restaurant),
+                'category' => new CategoryResource($category),
                 'products' => $products
             ]);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'error' => 'Resource not found',
-                'message' => 'The specified company or category does not exist'
-            ], 404);
-        }
     }
 
     public function store(Request $request)
