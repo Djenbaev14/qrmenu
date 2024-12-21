@@ -34,16 +34,16 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($company_slug)
+    public function show($restaurant_slug)
     {
-        $company = new ShowCompanyResource(Company::where('slug',$company_slug)->where('deleted_at',null)->first());
+        $company = new ShowCompanyResource(Company::where('slug',$restaurant_slug)->where('deleted_at',null)->first());
         
-        $category = CategoryResource::collection($company->category()->where('deleted_at',null)->orderBy('id','desc')->get());
-        $feedback = FeedbackResource::collection($company->feedback()->orderBy('id','desc')->get());
+        $category = CategoryResource::collection($company->category()->where('deleted_at',null)->orderBy('sequence_number','asc')->get());
+        // $feedback = FeedbackResource::collection($company->feedback()->orderBy('id','desc')->get());
         return response()->json([
             'company' => $company,
             'category' => $category,
-            'feedback' => $feedback,
+            // 'feedback' => $feedback,
         ]);
     }
 

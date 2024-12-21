@@ -21,7 +21,7 @@
                         <div class="row no-gutters">
                             <div class="col-xl-12">
                                 <div class="auth-form">
-                                    <h4 class="text-center mb-4">Sign in your account</h4>
+                                    <h4 class="text-center mb-4">Выход</h4>
                                     <form action="{{route('login')}}" class="my-4" method="POST">
                                         @csrf
                                         <div class="form-group">
@@ -47,16 +47,8 @@
             </div>
         </div>
     </div>
+    @include('sweetalert::alert')
 
-
-    <!--**********************************
-        Scripts
-    ***********************************-->
-    <!-- Required vendors -->
-    <script src="{{asset('vendor/global/global.min.js')}}"></script>
-	<script src="{{asset('vendor/bootstrap-select/dist/js/bootstrap-select.min.js')}}"></script>
-    <script src="{{asset('js/custom.min.js')}}"></script>
-    <script src="{{asset('js/deznav-init.js')}}"></script>
 
 </body>
 

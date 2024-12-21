@@ -5,9 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Eatio - Restaurant Food Order Bootstrap Admin Dashboard</title>
+    <title>QReat</title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('images/favicon.png')}}">
     <link href="./css/style.css" rel="stylesheet">
 
 </head>
@@ -72,15 +72,6 @@
         </div>
     </div>
 
-    <script src="./vendor/global/global.min.js"></script>
-    <script src="./vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-    <script src="./js/custom.min.js"></script>
-    <script src="./js/deznav-init.js"></script>
-
-    <!-- Jquery Validation -->
-    <script src="./vendor/jquery-validation/jquery.validate.min.js"></script>
-    <!-- Form validate init -->
-    <script src="./js/plugins-init/jquery.validate-init.js"></script>
-
+    @include('sweetalert::alert')
 </body>
 </html>

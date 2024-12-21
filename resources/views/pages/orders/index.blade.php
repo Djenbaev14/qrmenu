@@ -30,7 +30,7 @@
                   $segments = explode('/', parse_url($url, PHP_URL_PATH));
 
                   // Slashedan keyingi birinchi so'zni olish
-                  $firstWordAfterSlash = $segments[2] ?? null; // Agar mavjud bo'lsa
+                  $firstWordAfterSlash = $segments[3] ?? null; // Agar mavjud bo'lsa
               ?>
                 <ul class="nav nav-tabs w-100" id="orderTabs" role="tablist">
                   <li class="col p-0 nav-item">
@@ -80,7 +80,9 @@
                                     <td>{{ $order->payment_method }}</td>
                                   </tr>
                               @empty
-                                  
+                                  <tr>
+                                    <td colspan="8" class="text-center"><h3 class="fw-bold text-danger">Нет заказов</h3></td>
+                                  </tr>
                               @endforelse
                             </tbody>
                           </table>

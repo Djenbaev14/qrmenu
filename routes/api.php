@@ -24,15 +24,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 // prefix
-Route::prefix('companies')->group(function () {
+Route::prefix('restaurants')->group(function () {
     Route::get('/', [CompanyController::class, 'index']);
-    Route::prefix('{company_slug}')->group(function () {
+    Route::prefix('{restaurant_slug}')->group(function () {
         // Route::apiResource('/',CompanyController::class);
         Route::get('/', [CompanyController::class, 'show']);
         // prefix
-        Route::prefix('{category_slug}')->group(function () {
-            Route::apiResource('/',controller: CategoryController::class);
-            Route::prefix('{product_slug}')->group(function () {
+        Route::prefix('{category_id}')->group(function () {
+            Route::apiResource('/', CategoryController::class);
+            Route::prefix('{product_id}')->group(function () {
                 Route::apiResource('/',ProductController::class);
             });
         });

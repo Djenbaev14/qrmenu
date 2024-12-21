@@ -17,15 +17,15 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index($company_slug,$category_slug,$product_slug)
+    public function index($restaurant_slug,$category_id,$product_id)
     {
         
         try {
-            $company = new CompanyResource(Company::where('slug',$company_slug)->where('deleted_at',null)->firstOrFail());
+            $company = new CompanyResource(Company::where('slug',$restaurant_slug)->where('deleted_at',null)->firstOrFail());
     
-            $category = new CategoryResource($company->category()->where('slug',$category_slug)->where('deleted_at',null)->firstOrFail());
+            $category = new CategoryResource($company->category()->where('id',$category_id)->where('deleted_at',null)->firstOrFail());
     
-            $product = new ShowProductResource($category->product()->where('slug',$product_slug)->where('is_active',1)->where('deleted_at',null)->firstOrFail()); // Sahifada 10 ta mahsulot
+            $product = new ShowProductResource($category->product()->where('id',$product_id)->where('is_active',1)->where('deleted_at',null)->firstOrFail()); // Sahifada 10 ta mahsulot
             
             return response()->json([
                 'company' => $company,

@@ -19,10 +19,9 @@ class ProductResource extends JsonResource
             'name_uz'=>$this->name_uz,
             'name_ru'=>$this->name_ru,
             'name_kr'=>$this->name_kr,
-            'slug'=>$this->slug,
             'price'=>$this->price,
-            'unit'=>new UnitResource(Unit::where('id',$this->unit_id)->first()),
-            'photos'=>$this->photos,
+            'unit_name'=>Unit::where('id',$this->unit_id)->first()->name,
+            'photo'=>$this->photo,
         ];
     }
 }

@@ -79,5 +79,15 @@
     {{-- select2 --}}
     <script src="{{asset('vendor/select2/js/select2.full.min.js')}}"></script>
     <script src="{{asset('js/plugins-init/select2-init.js')}}"></script>
+    
+    <script>
+        var delayTimer;
+        function doSearch(text) {
+            clearTimeout(delayTimer);
+            delayTimer = setTimeout(function() {
+              document.getElementById('form').submit();
+            }, 1000); // Will do the ajax stuff after 1000 ms, or 1 s
+        }
+      </script>
 </body>
 </html>

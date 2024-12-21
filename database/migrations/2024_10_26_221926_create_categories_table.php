@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies');
             $table->unsignedBigInteger('main_category_id')->nullable();
@@ -22,8 +20,7 @@ return new class extends Migration
             $table->string('name_uz');
             $table->string('name_ru');
             $table->string('name_kr');
-            $table->string('sequence_number');
-            $table->string('slug')->unique();
+            $table->integer('sequence_number');
             $table->string('photo');
             $table->boolean('is_active')->default(1);
             $table->softDeletes();

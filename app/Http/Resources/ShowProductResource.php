@@ -23,10 +23,9 @@ class ShowProductResource extends JsonResource
             'description_uz'=>$this->description_uz,
             'description_ru'=>$this->description_ru,
             'description_kr'=>$this->description_kr,
-            'slug'=>$this->slug,
             'price'=>$this->price,
-            'unit'=>new UnitResource(Unit::where('id',$this->unit_id)->first()),
-            'photos'=>$this->photos,
+            'unit_name'=>Unit::where('id',$this->unit_id)->first()->name,
+            'photo'=>$this->photo,
         ];
     }
 }

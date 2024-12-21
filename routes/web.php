@@ -12,42 +12,33 @@ use App\Http\Controllers\QrCodeController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
-Route::get('/', function () {
-    return view('home');
-})->name('home')->middleware('auth');
-
 // register
 Route::get('/register', [AuthController::class, 'registerPage'])->name('register')->middleware('guest');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post');
 // login
 Route::get('/login', [AuthController::class, 'loginPage'])->name('loginPage')->middleware('guest');
 Route::post('/login', [AuthController::class, 'login'])->name('login')->middleware('guest');
-
-
 // logout
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-   
+Route::get('/', function () {
+    return view('home');
+})->middleware('auth');
 
+Route::prefix('restaurant')->middleware('auth')->group( function () {
+    
+        Route::get('/', function () {
+            return view('home');
+        })->name('home');
 
-Route::group(['middleware' => ['auth']], function () {
         Route::resource('clients', ClientController::class);
         // resource
         Route::resource('settings', SettingController::class);
         Route::resource('categories', CategoryController::class);
+        Route::post('/categories/import', [CategoryController::class, 'importPdf'])->name('categories.importPdf');
         Route::resource('products', ProductController::class);
         Route::post('/products/is_active', [ProductController::class, 'isActive'])->name('isActive');
+        Route::post('/products/import', [ProductController::class, 'importPdf'])->name('products.importPdf');
         Route::resource('feedback', OpinionController::class);
         Route::resource('qr-code', QrCodeController::class);
         // routes/web.php
@@ -62,6 +53,9 @@ Route::group(['middleware' => ['auth']], function () {
 Route::prefix('admin')
 ->middleware(['auth'])
 ->group(function () {
+    Route::get('/', function () {
+        return view('home');
+    })->name('home');
     Route::resource('all-categories', AllCategoriesController::class);
     Route::post('/get-categories', [AllCategoriesController::class, 'getCategories'])->name('get.categories');
     Route::resource('companies', CompanyController::class);

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Events\AttachmentEvent;
+use App\Imports\CategoryImport;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Unit;
 use App\Services\AttachmentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CategoryController extends Controller
 {
@@ -23,7 +25,7 @@ class CategoryController extends Controller
         $company_id=auth()->user()->company->id;
         $search = $request->input('search', '');
         $select_categories=Category::where('company_id',$company_id)->where('deleted_at',null)->orderBy('id','desc')->get();
-        $categories = Category::where('company_id',$company_id)->where('name_uz','LIKE','%'.$search.'%')->where('deleted_at',null)->orderBy('id', 'DESC')->paginate(10);
+        $categories = Category::where('company_id',$company_id)->where('name_uz','LIKE', '%' . $search . '%')->where('deleted_at',null)->orderBy('id', 'DESC')->paginate(10);
         $categories->appends(request()->query());
         return view('pages.categories.index',compact('categories','select_categories'));
     }
@@ -142,7 +144,7 @@ class CategoryController extends Controller
                 'name_ru' => $request->name_ru,
                 'name_kr' => $request->name_kr,
                 'main_category_id' => $request->main_category_id,
-                'photo'=>$fileName,
+                'photo'=>"images/categories/".$fileName,
                 'slug'=>$slug,
             ]);
         }
@@ -159,5 +161,12 @@ class CategoryController extends Controller
         $category = Category::find($id);
         $category->delete();
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully');
+    }
+    public function importPdf(Request $request)
+    {
+
+        Excel::import(new CategoryImport, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Ma\'lumotlar muvaffaqiyatli import qilindi!');
     }
 }

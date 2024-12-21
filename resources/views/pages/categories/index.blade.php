@@ -11,8 +11,13 @@
       <div class="mr-auto d-none d-lg-block">
         <h2 class="text-black font-w600 mb-0">Список категорий</h2>
       </div>
-        <button type="button" class="btn btn-primary mb-2 btn btn-primary d-flex align-items-center " data-toggle="modal" data-target="#basicModal">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 6V18M18 12L6 12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 6V18M18 12L6 12" stroke="url(#paint0_linear_1494_22742)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><defs><linearGradient id="paint0_linear_1494_22742" x1="11.8537" y1="4.97561" x2="12.1463" y2="20.0488" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"></stop><stop offset="1" stop-color="#fff"></stop></linearGradient></defs></svg>Добавить категорию</button>
+      {{-- <form action="{{route('categories.importPdf')}}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="file" name="file" required>
+        <button type="submit">Import</button>
+    </form> --}}
+      <button type="button" class="btn btn-primary mb-2 btn btn-primary d-flex align-items-center " data-toggle="modal" data-target="#basicModal">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 6V18M18 12L6 12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 6V18M18 12L6 12" stroke="url(#paint0_linear_1494_22742)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><defs><linearGradient id="paint0_linear_1494_22742" x1="11.8537" y1="4.97561" x2="12.1463" y2="20.0488" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"></stop><stop offset="1" stop-color="#fff"></stop></linearGradient></defs></svg>Добавить категорию</button>
     </div>
     
     <div class="modal right fade " id="basicModal">
@@ -91,27 +96,39 @@
     <div class="row">
       <div class="col-12">
         <div class="card">
+          <div class="card-header">
+            <div class="col-7">
+              <form action="{{ url('/restaurant/categories') }}" id="form" class="d-flex" method="GET">
+                      <input type="search" class="form-control mr-3"  name="search" onkeyup="doSearch(this.value)" value="{{ request('search') }}" placeholder="Поиск"/>
+                      <input type="hidden" name="page" value="1">
+                      <a href="{{url('/restaurant/categories')}}" class="tetx-light btn btn-danger">Очистка</a>
+              </form>
+            </div>
+          </div><!-- end card header -->
           <div class="card-body">
             <div class="table-responsive">
               <table class="table table-responsive-sm display mb-4" id="example5"  style="min-width: 845px;">
                 <thead>
                   <tr>
+                    <th scope="col">№</th>
                     <th scope="col">Название категории</th>
                     <th scope="col">Основная категория</th>
                     <th scope="col">Продукты</th>
-                    <th scope="col">Дата создания
-                    </th>
+                    <th scope="col">Порядковый номер</th>
+                    <th scope="col">Дата создания</th>
                     <th scope="col">Действие</th>
                   </tr>
                 </thead>
                 <tbody>
                   @forelse ($categories as $category)
                     <tr class="align-middle">
-                      <td ><img src="{{asset('images/categories/'.$category->photo)}}" class="rounded" width="70px" height="40px" alt="">&nbsp;&nbsp;{{$category->name_uz}}</td>
+                      <td >{{$category->id}}</td>
+                      <td ><img src="{{$category->photo}}" class="rounded" width="70px" height="40px" alt="">&nbsp;&nbsp;{{$category->name_uz}}</td>
                       <td><?=($category->main_category_id) ? $category->main_category->name_uz : ''?></td>
                       <td >{{$category->product->count()}}</td>
+                      <td >{{$category->sequence_number}}</td>
                       <td>{{$category->created_at->format('Y.m.d , H:i')}}</td>
-                    <td>
+                      <td>
                       <div style="cursor: pointer" class="dropdown ml-auto">
                         <div class="btn-link" data-toggle="dropdown">
                           <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
@@ -124,9 +141,8 @@
                           </a>
                         </div>
                       </div>
-                    </td>
-                                        <!--  Large modal example -->
-                                        <div class="modal right fade bs-example-modal-{{$category->id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                      </td>
+                        <div class="modal right fade bs-example-modal-{{$category->id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                           <div class="modal-dialog modal-lg">
                                               <div class="modal-content">
                                                   <div class="modal-header " >
@@ -144,7 +160,7 @@
                                                               <div id="upload-container-2" >
                                                                 <label for="logo-upload-2" id="upload-label-2">
                                                                     <span id="change-icon-2" style="display: inline-block">&#8635;</span> <!-- Unicode for a refresh icon -->
-                                                                    <img id="logo-preview-2" src="{{asset('images/categories/'.$category->photo)}}" alt="Yuklangan rasm" style="display: block;" />
+                                                                    <img id="logo-preview-2" src="{{$category->photo}}" alt="Yuklangan rasm" style="display: block;" />
                                                                   </label>
                                                                   <input type="file" required name="photo" id="logo-upload-2" accept="image/png, image/webp, image/jpeg,image/jpg" style="display: none;" />
                                                               </div>
@@ -198,17 +214,48 @@
                                                   </div>
                                               </div><!-- /.modal-content -->
                                           </div><!-- /.modal-dialog -->
-                                      </div><!-- /.modal -->
-                                
+                                      </div>
                     </tr>
                   @empty
                     <tr>
-                      <td colspan="5" class="text-center"><h3 class="text-danger">Нет ресурса</h3></td>
+                      <td colspan="7" class="text-center"><h3 class="text-danger">Нет ресурса</h3></td>
                     </tr>
                   @endforelse
                 </tbody>
               </table>
             </div>
+            @if ($categories->hasPages())
+              <nav>
+                  <ul class="pagination">
+                      {{-- Назад sahifa tugmasi --}}
+                      @if ($categories->onFirstPage())
+                          <li class="page-item disabled"><a class="page-link">&laquo; Назад</a></li>
+                      @else
+                          <li class="page-item">
+                              <a class="page-link" href="{{ $categories->previousPageUrl() }}" rel="prev">&laquo; Назад</a>
+                          </li>
+                      @endif
+
+                      {{-- Sahifa raqamlari --}}
+                      @foreach ($categories->getUrlRange(1, $categories->lastPage()) as $page => $url)
+                          @if ($page == $categories->currentPage())
+                              <li class="page-item active" aria-current="page"><a class="page-link">{{ $page }}</a></li>
+                          @else
+                              <li class="page-item"><a class="page-link" href="{{ $url }}">{{ $page }}</a></li>
+                          @endif
+                      @endforeach
+
+                      {{-- Следующий sahifa tugmasi --}}
+                      @if ($categories->hasMorePages())
+                          <li class="page-item">
+                              <a class="page-link" href="{{ $categories->nextPageUrl() }}" rel="next">Следующий &raquo;</a>
+                          </li>
+                      @else
+                          <li class="page-item disabled"><a class="page-link">Следующий &raquo;</a></li>
+                      @endif
+                  </ul>
+              </nav>
+            @endif
           </div>
         </div>
       </div>
@@ -221,25 +268,4 @@
 @push('js')
   <script src="{{asset('js/logo-upload.js')}}"></script>
   <script src="{{asset('js/logo-upload2.js')}}"></script>
-	<!-- Datatable -->
-	
-	<script>
-    (function($) {
-     
-      var table = $('#example5').DataTable({
-        searching: false,
-        paging:true,
-        select: false,
-        //info: false,         
-        lengthChange:false 
-        
-      });
-      $('#example tbody').on('click', 'tr', function () {
-        var data = table.row( this ).data();
-        
-      });
-       
-    })(jQuery);z
-  </script>
-	
 @endpush

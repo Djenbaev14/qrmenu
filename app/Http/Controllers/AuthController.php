@@ -22,9 +22,7 @@ class AuthController extends Controller
         if (!auth()->attempt($credentials)) {
             return redirect()->back()->with('error','Invalid login credentials');
         }
-
         return redirect()->route('home')->with('success','Success');
-        
     }
     // register
     public function registerPage(){
@@ -42,7 +40,7 @@ class AuthController extends Controller
             'name'=>$request->name,
             'phone'=>$request->phone,
             'password'=>Hash::make($request->password)
-        ])->assignRole('Admin');
+        ])->assignRole('restaurant_owner');
 
         
         $slug = Str::slug($request->company_name);

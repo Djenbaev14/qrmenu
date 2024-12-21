@@ -21,12 +21,12 @@ class CompanyResource extends JsonResource
             'name'=>$this->name,
             'logo'=>$this->logo,
             'slug'=>$this->slug,
-            'telephones'=>$this->telephones,
-            'telegram'=>$this->telegram,
-            'instagram'=>$this->instagram,
-            'youtube'=>$this->youtube,
-            'facebook'=>$this->facebook,
-            'address'=>$this->address,
+            // 'telephones'=>$this->telephones,
+            // 'telegram'=>$this->telegram,
+            // 'instagram'=>$this->instagram,
+            // 'youtube'=>$this->youtube,
+            // 'facebook'=>$this->facebook,
+            // 'address'=>$this->address,
         ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ProductImport;
 use App\Models\Category;
 use App\Models\Company;
 use App\Models\Product;
@@ -9,14 +10,22 @@ use App\Models\ProductParameter;
 use App\Models\Unit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 class ProductController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:product-list|product-create|product-edit|product-delete', ['only' => ['index','show']]);
+        $this->middleware('permission:product-create', ['only' => ['create','store']]);
+        $this->middleware('permission:product-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:product-delete', ['only' => ['destroy']]);
+   }
     public function index(Request $request)
     {
         $company_id=auth()->user()->company->id;
         
         $search = $request->input('search', '');
-        $products = Product::where('company_id',$company_id)->where('name_uz','LIKE','%'.$search.'%')->where('deleted_at',null)->orderBy('id', 'DESC')->paginate(10);
+        $products = Product::where('company_id',$company_id)->where('name_uz','LIKE','%'.$search.'%')->where('name_uz','LIKE','%'.$search.'%')->where('deleted_at',null)->orderBy('id', 'DESC')->paginate(20);
         $products->appends(request()->query());
         $categories = Category::where('company_id',$company_id)->where('deleted_at',null)->orderBy('id', 'DESC')->get();
         $units=Unit::all();
@@ -26,9 +35,6 @@ class ProductController extends Controller
     {
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -69,13 +75,15 @@ class ProductController extends Controller
             'unit_id'=>is_numeric($request->unit_id) ? $request->unit_id : null , 
             'photos'=>$photos
             ]);
-            for ($i=0; $i < count($request->characteristic_names); $i++) { 
-                ProductParameter::create([
-                    'user_id'=>auth()->user()->id,
-                    'product_id'=>$product->id,
-                    'name'=>$request->characteristic_names[$i],
-                    'price'=>$request->prices[$i],
-                ]);
+            if($request->has('is_parameter') && $request->is_parameter == 1){
+                for ($i=0; $i < count($request->characteristic_names); $i++) { 
+                    ProductParameter::create([
+                        'user_id'=>auth()->user()->id,
+                        'product_id'=>$product->id,
+                        'name'=>$request->characteristic_names[$i],
+                        'price'=>$request->prices[$i],
+                    ]);
+                }
             }
         return redirect()->route('products.index')
             ->with('success', 'The product was successfully created');
@@ -179,5 +187,12 @@ class ProductController extends Controller
         }
 
         return response()->json(['message' => 'Foydalanuvchi topilmadi'], 404);
+    }
+    public function importPdf(Request $request)
+    {
+
+        Excel::import(new ProductImport, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Ma\'lumotlar muvaffaqiyatli import qilindi!');
     }
 }

@@ -13,25 +13,23 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies');
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('categories');
             $table->longText('parameter_name')->nullable();
+            $table->boolean('is_parameter')->default(0);
             $table->string('name_uz');
             $table->string('name_ru');
             $table->string('name_kr');
             $table->longText('description_uz')->nullable();
             $table->longText('description_ru')->nullable();
             $table->longText('description_kr')->nullable();
-            $table->string('price');
-            $table->unsignedBigInteger('unit_id');
+            $table->integer('price');
+            $table->unsignedBigInteger('unit_id')->default(3);
             $table->foreign('unit_id')->references('id')->on('units');
-            $table->string('slug')->unique();
-            $table->json('photos');
-            $table->string('sequence_number');
+            $table->string('photo');
+            $table->integer('sequence_number');
             $table->boolean('is_active')->default(1);
             $table->softDeletes();
             $table->timestamps();
