@@ -234,7 +234,7 @@
                                           <ul class="nav nav-tabs mt-3" role="tablist">
                                             @foreach (config('app.languages') as $i => $item)
                                                 <li class="nav-item" role="presentation">
-                                                    <a class="nav-link <?=($i==0) ? 'active' : '';?>" data-toggle="tab" href="#tab_{{$item['code']}}" role="tab">
+                                                    <a class="nav-link <?=($i==0) ? 'active' : '';?>" data-toggle="tab" href="#tab_update_{{$product->id}}_{{$item['code']}}" role="tab">
                                                         <span class="d-flex justify-content-center align-items-center">
                                                             <img src="{{asset('images/flags/'.$item['code'].'.'.$item['format'])}}" width="20px"> 
                                                             &nbsp;&nbsp;{{$item['name']}}</span> 
@@ -249,7 +249,7 @@
                                           $name='name_'.$item['code'];
                                           $description='description_'.$item['code'];
                                           ?>
-                                          <div class="tab-pane <?=($i==0) ? 'show active' : '';?>" id="tab_{{$item['code']}}" role="tabpanel">
+                                          <div class="tab-pane <?=($i==0) ? 'show active' : '';?>" id="tab_update_{{$product->id}}_{{$item['code']}}" role="tabpanel">
                                             <div class="mb-3">
                                               <label for="">Название продукта ({{$item['name']}})</label>
                                               <input type="text" required value="{{$product->$name}}"  name="name_{{$item['code']}}" class="form-control" placeholder="Mahsulotning nomini kiriting">
@@ -292,9 +292,9 @@
                                               <input type="number" value="{{$product->sequence_number}}" name="sequence_number" class="form-control">
                                           </div>
                                         </div>
-                                          <div class="d-flex align-items-center justify-content-end">
-                                              <input type="submit" value="Добавить" class="btn btn-primary">
-                                          </div>
+                                        <div class="d-flex align-items-center justify-content-end">
+                                          <input type="submit" value="Добавить" class="btn btn-primary">
+                                        </div>
                                       </form>
                                     </div>
                                   </div>

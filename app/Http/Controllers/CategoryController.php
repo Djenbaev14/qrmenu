@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\Unit;
 use App\Services\AttachmentService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -46,29 +47,29 @@ class CategoryController extends Controller
             'photo'=>'required',
             'sequence_number'=>'required'
         ]);
-        
-        $file = $request->file('photo');
-        $fileName = time().'.'.$file->getClientOriginalExtension();
-        $file->move(public_path('images/categories'), $fileName);
-
-        // slug
-        $slug = Str::slug($request->name_uz);
-        $count = Category::where('company_id',auth()->user()->company->first()->id)->where('slug', 'LIKE', "{$slug}%")->count();
-        $slug = $count ? "{$slug}-{$count}" : $slug;
+        DB::beginTransaction();
+        try {
+            
+            $file = $request->file('photo');
+            $fileName = time().'.'.$file->getClientOriginalExtension();
+            $file->move(public_path('images/categories'), $fileName);
 
             $category=new Category;
-            $category->user_id =  auth()->user()->id;
             $category->company_id =  auth()->user()->company->id;
             $category->name_uz =  $request->name_uz;
             $category->name_ru =  $request->name_ru;
             $category->name_kr =  $request->name_kr;
-            $category->photo =  $fileName;
+            $category->photo =  '/images/categories/'.$fileName;
             $category->main_category_id =  ($request->main_category_id=="none") ? null : $request->main_category_id;
-            $category->slug= $slug;
             $category->sequence_number= $request->sequence_number;
             $category->save();
 
-        return redirect()->route('categories.index')->with('success', 'Category created successfully');
+            DB::commit();
+            return redirect()->route('categories.index')->with('success', 'Category created successfully');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Category creation failed');
+        }
     }
 
     /**

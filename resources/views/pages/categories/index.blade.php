@@ -168,7 +168,7 @@
                                                             <ul class="nav nav-tabs" role="tablist">
                                                               @foreach (config('app.languages') as $i => $item)
                                                                   <li class="nav-item " role="presentation">
-                                                                      <a class="nav-link <?=($i==0) ? 'active' : '';?>" data-toggle="tab" href="#update_tab_{{$item['code']}}" role="tab">
+                                                                      <a class="nav-link <?=($i==0) ? 'active' : '';?>" data-toggle="tab" href="#update_tab_{{$category->id}}_{{$item['code']}}" role="tab">
                                                                           <span class="d-flex justify-content-center align-items-center">
                                                                               <img src="{{asset('images/flags/'.$item['code'].'.'.$item['format'])}}" width="20px"> 
                                                                               &nbsp;&nbsp;{{$item['name']}}</span> 
@@ -178,7 +178,7 @@
                                                           </ul>
                                                           <div class="tab-content pt-3 text-muted mb-3">
                                                             @foreach (config('app.languages') as $i => $item)
-                                                            <div class="tab-pane <?=($i==0) ? 'show active' : '';?>" id="update_tab_{{$item['code']}}" role="tabpanel">
+                                                            <div class="tab-pane <?=($i==0) ? 'show active' : '';?>" id="update_tab_{{$category->id}}_{{$item['code']}}" role="tabpanel">
                                                               <?php
                                                                   $name="name_".$item['code'];
                                                                 ?>

@@ -9,6 +9,7 @@ use App\Models\Product;
 use App\Models\ProductParameter;
 use App\Models\Unit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 class ProductController extends Controller
@@ -43,55 +44,52 @@ class ProductController extends Controller
             'name_kr'=>'required|string|max:255',
             'sequence_number'=>'required',
             'category_id'=>'required|exists:categories,id',
+            'unit_id'=>'required|exists:units,id',
+            'photo'=>'required|image|mimes:jpeg,png,jpg,gif,svg',
         ]);
-        $photos=[];
-        for ($i=0; $i < count($request->photos); $i++) { 
-            if($request->photos[$i]){
-                // upload image
-                $photo = $request->photos[$i];
-                $photoName = time().$i.'.'.$photo->getClientOriginalExtension();
+        DB::beginTransaction();
+        try {
+            if($request->photo){
+                $photo = $request->photo;
+                $photoName = time().'.'.$photo->getClientOriginalExtension();
                 $photo->move(public_path('images/products'), $photoName);
-                array_push($photos,$photoName);
             }
-        }
-        
-        $slug = Str::slug($request->name_uz);
-        $count = Product::where('company_id',auth()->user()->company->first()->id)->where('slug', 'LIKE', "{$slug}%")->count();
-        $slug = $count ? "{$slug}-{$count}" : $slug;
-        $product=Product::create([
-            'user_id'=>auth()->user()->id,
-            'company_id'=>Company::where('user_id',auth()->user()->id)->first()->id,
-            'category_id'=>$request->category_id,
-            'name_uz'=>$request->name_uz,
-            'name_ru'=>$request->name_ru,
-            'name_kr'=>$request->name_kr,
-            'description_uz'=>$request->description_uz,
-            'description_ru'=>$request->description_ru,
-            'description_kr'=>$request->description_kr,
-            'slug'=>$slug,
-            'parameter_name'=>$request->characteristic_name,
-            'sequence_number'=>$request->sequence_number,
-            'price'=>$request->price,
-            'unit_id'=>is_numeric($request->unit_id) ? $request->unit_id : null , 
-            'photos'=>$photos
-            ]);
-            if($request->has('is_parameter') && $request->is_parameter == 1){
-                for ($i=0; $i < count($request->characteristic_names); $i++) { 
-                    ProductParameter::create([
-                        'user_id'=>auth()->user()->id,
-                        'product_id'=>$product->id,
-                        'name'=>$request->characteristic_names[$i],
-                        'price'=>$request->prices[$i],
-                    ]);
+            
+            $product=Product::create([
+                'company_id'=>Company::where('user_id',auth()->user()->id)->first()->id,
+                'category_id'=>$request->category_id,
+                'name_uz'=>$request->name_uz,
+                'name_ru'=>$request->name_ru,
+                'name_kr'=>$request->name_kr,
+                'description_uz'=>$request->description_uz,
+                'description_ru'=>$request->description_ru,
+                'description_kr'=>$request->description_kr,
+                'parameter_name'=>$request->characteristic_name,
+                'sequence_number'=>$request->sequence_number,
+                'price'=>$request->price,
+                'unit_id'=>is_numeric($request->unit_id) ? $request->unit_id : null , 
+                'photo'=>"/images/products/".$photoName
+                ]);
+                if($request->has('is_parameter') && $request->is_parameter == 1){
+                    for ($i=0; $i < count($request->characteristic_names); $i++) { 
+                        ProductParameter::create([
+                            'user_id'=>auth()->user()->id,
+                            'product_id'=>$product->id,
+                            'name'=>$request->characteristic_names[$i],
+                            'price'=>$request->prices[$i],
+                        ]);
+                    }
                 }
-            }
-        return redirect()->route('products.index')
-            ->with('success', 'The product was successfully created');
+            DB::commit();
+            return redirect()->route('products.index')
+                ->with('success', 'The product was successfully created');
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return redirect()->back()
+            ->with('error', 'The product was not created');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
     
     public function show(string $id)
     {
@@ -119,6 +117,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        return $request->all();
         $request->validate([
             'name_uz'=>'required|string|max:255',
             'name_ru'=>'required|string|max:255',
