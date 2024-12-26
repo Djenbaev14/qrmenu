@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AllCategoriesController;
+use App\Http\Controllers\Api\ClientAuthController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ClientController;
@@ -50,6 +51,7 @@ Route::prefix('restaurant')->middleware('auth')->group( function () {
         Route::get('/orders/history', [OrderController::class, 'history'])->name('orders.history');
 });
 
+Route::post('/auth/register', [ClientAuthController::class, 'register'])->name('auth.register');
 Route::prefix('admin')
 ->middleware(['auth'])
 ->group(function () {

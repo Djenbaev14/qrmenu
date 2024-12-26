@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\ClientAuthController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\api\OrderController;
 use App\Http\Controllers\Api\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,5 +41,10 @@ Route::prefix('restaurants')->group(function () {
     });
 });
 
-// clients
-Route::apiResource('/clients',ClientController::class);
+
+Route::post('/logout', [ClientAuthController::class, 'logout'])->middleware('auth:sanctum');
+
+Route::post('/register', [ClientAuthController::class, 'register']);
+Route::post('/login', [ClientAuthController::class, 'login']);
+
+Route::apiResource('/orders',OrderController::class)->middleware('auth:sanctum');

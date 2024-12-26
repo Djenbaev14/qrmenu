@@ -15,14 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('company_id');
             $table->foreign('company_id')->references('id')->on('companies');
-            $table->unsignedBigInteger('category_id')->nullable();
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->unsignedBigInteger('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products');
-            $table->unsignedBigInteger('client_id')->nullable();
+            $table->unsignedBigInteger('client_id');
             $table->foreign('client_id')->references('id')->on('clients');
             $table->string('order_number')->unique(); // Buyurtma raqamis
-            $table->timestamp('order_date'); // Buyurtma sanasi
             $table->text('delivery_address'); // Yetkazib berish manzili
             $table->string('payment_status')->default('unpaid'); // To'lov holati
             $table->string('payment_method')->nullable(); // To'lov usuli

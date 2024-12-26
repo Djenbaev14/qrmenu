@@ -32,6 +32,10 @@ class Order extends Model
     {
         return $this->hasMany(OrderStatusLog::class);
     }
+    public function order_list()
+    {
+        return $this->hasMany(OrderList::class);
+    }
 
     // Buyurtmaning oxirgi statusini olish
     public function getLastStatus()
@@ -44,7 +48,7 @@ class Order extends Model
         static::creating(function ($order) {
             // Order raqamini yaratish: "ORDER-YYYY-XXXX"
             $lastOrder = Order::latest()->first(); // Yangi buyurtma raqamiga muvofiq eng oxirgi buyurtmani olish
-            $orderNumber = 'ORDER-' . date('Y') . '-' . str_pad(($lastOrder ? $lastOrder->id + 1 : 1), 4, '0', STR_PAD_LEFT);
+            $orderNumber = 'ORDER-' . date('Y') . '-' . str_pad(($lastOrder ? $lastOrder->id + 1 : 1), 6, '0', STR_PAD_LEFT);
             $order->order_number = $orderNumber;
         });
     }
