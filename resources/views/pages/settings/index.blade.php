@@ -51,7 +51,7 @@
                                         <div class="mt-3 mx-3">
                                             <p class="d-flex align-items-top"><svg class="mx-2" width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="11.4998" cy="6.70833" r="0.958333" fill="#5DC983"></circle><path d="M10.5415 9.58366H11.4998V16.292M21.0832 11.5003C21.0832 16.7931 16.7926 21.0837 11.4998 21.0837C6.20711 21.0837 1.9165 16.7931 1.9165 11.5003C1.9165 6.2076 6.20711 1.91699 11.4998 1.91699C16.7926 1.91699 21.0832 6.2076 21.0832 11.5003Z" stroke="#5DC983" stroke-width="1.4375" stroke-linecap="round" stroke-linejoin="round"></path></svg> Если вы хотите отобразить логотип на сайте, мы рекомендуем вам загрузить его 
                                             </p>
-                                                <img src="{{asset('logo-image/restaurant_logo.png')}}" width="200px" alt="">
+                                                <img src="{{$company->logo}}" width="200px" alt="">
                                             </div>
                                     </div>
                                   </div>
@@ -61,7 +61,7 @@
                                         <label for="logo-upload-2" id="upload-label-2">
                                             @if ($company->banner_image)
                                                 <span id="change-icon-2" style="display: inline-block">&#8635;</span> <!-- Unicode for a refresh icon -->
-                                                <img id="logo-preview-2" src="{{asset('images/banner/'.$company->banner_image)}}" alt="Yuklangan rasm" style="display: block;" />
+                                                <img id="logo-preview-2" src="{{$company->banner_image}}" alt="Yuklangan rasm" style="display: block;" />
                                             @else
                                                 <span id="change-icon-2">&#8635;</span> <!-- Unicode for a refresh icon -->
                                                 <img id="logo-preview-2" src="#" alt="Yuklangan rasm" style="display: none;" />
