@@ -16,7 +16,7 @@ class AllCategoriesController extends Controller
     {
         $search = $request->input('search');
         $page = $request->input('page', 1);
-        $categories = Category::where('name_uz', 'like', '%' . $search . '%')->where('deleted_at',null)->orderBy('id','desc')->paginate(1);
+        $categories = Category::where('name_uz', 'like', '%' . $search . '%')->where('deleted_at',null)->orderBy('id','desc')->paginate(30);
         $categories->appends(request()->query());
         $companies=Company::where('deleted_at',null)->orderBy('id','desc')->get();
         $select_categories=Category::where('deleted_at',null)->orderBy('id','desc')->get();

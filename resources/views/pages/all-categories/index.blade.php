@@ -4,107 +4,32 @@
 
 @section('content')
 
-<div class="content">
-	<div class="container-xxl">
-
-        <div class="row mt-4">
-          <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-12">
-                      <form action="{{route('all-categories.store')}}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                          <div class="col-6 mb-3">
-                            <div id="upload-container" >
-                                      <label for="logo-upload" id="upload-label">
-                                            <span id="change-icon">&#8635;</span> <!-- Unicode for a refresh icon -->
-                                            <img id="logo-preview" src="" style="display:none" alt="Yuklangan rasm"/>
-                                            <div id="upload-area">
-                                                <div id="placeholder">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                                                    <p>Перенесите логотип сюда или <span class="select-text">выбрать</span></p>
-                                                    <p>Размер файла до 10 МБ</p>
-                                                </div>
-                                            </div>
-                                    </label>
-                                    <input type="file" name="photo" id="logo-upload" accept="image/png, image/webp, image/jpeg,image/jpg" style="display: none;" />
-                            </div>
-                          </div>
-                          
-                          <ul class="nav nav-pills nav-justified bg-light rounded shadow-sm" role="tablist">
-                            @foreach (config('app.languages') as $i => $item)
-                                <li class="nav-item mx-2 my-1" role="presentation">
-                                    <a class="nav-link <?=($i==0) ? 'active' : '';?>" data-bs-toggle="tab" href="#tab_{{$item['code']}}" role="tab">
-                                        <span class="d-flex justify-content-center align-items-center">
-                                            <img src="{{asset('images/flags/'.$item['code'].'.'.$item['format'])}}" width="20px"> 
-                                            &nbsp;&nbsp;{{$item['name']}}</span> 
-                                    </a>
-                                </li>
-                            @endforeach
-                        </ul>
-                        
-                        <div class="tab-content pt-3 text-muted mb-3">
-                          @foreach (config('app.languages') as $i => $item)
-                          <div class="tab-pane <?=($i==0) ? 'show active' : '';?>" id="tab_{{$item['code']}}" role="tabpanel">
-                              <label for="">Название категории ({{$item['name']}})</label>
-                              <input type="text" name="name_{{$item['code']}}" class="form-control" placeholder="Kategoriyaning nomini kiriting">
-                          </div>
-                          @endforeach
-                        </div>
-                        
-                        <div class="mb-3">
-                          <label for="">Выберите компанию</label>
-                          <select id="company-select" name="company_id" class="form-select" >
-                            <option value="none" hidden>Выберите компанию</option>
-                            @foreach ($companies as $company)
-                                <option value="{{$company->id}}">{{$company->name}}</option>
-                            @endforeach
-                          </select>
-                        </div>
-                        
-                        <div class="mb-3">
-                          <label for="">Основная Категория</label>
-                          <select name="main_category_id" id="category-select" class="form-select" >
-                            {{-- <option value="none">Выберите основную категорию</option> --}}
-                            {{-- @foreach ($select_categories as $category)
-                                <option value="{{$category->id}}">{{$category->name_uz}}</option>
-                            @endforeach --}}
-                          </select>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-end">
-                            <input type="submit" value="Добавить" class="btn btn-primary">
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-            </div><!-- /.modal-content -->
+<div class="content-body">
+	<div class="container-fluid">
+        <div class="form-head d-flex mb-3 align-items-start">
+          <div class="mr-auto d-none d-lg-block">
+            <h2 class="text-black font-w600 mb-0">Список категорий</h2>
           </div>
         </div>
-
         <div class="row mt-4">
           <div class="col-12">
               <div class="card">
-                  <div class="card-header">
-                      <h4 class="fw-bold mb-3">Список категорий</h4>
-                      <div class="row  justify-content-between p-2" style="background-color: #F9F9FC;border-radius:10px;" >
-                        <div class="col-lg-6 col-sm-12">
-                          <form action="{{ url('/admin/all-categories') }}" id="form" class="row" method="GET">
-                            <div class="col-sm-12  mb-2">
-                              <input type="search" class="form-control"  name="search" onkeydown="doSearch(this.value)" value="{{ request('search') }}" placeholder="Поиск по названию категории"/>
-                              <input type="hidden" name="page"  value="{{ request('page') }}">
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                  </div><!-- end card header -->
+                <div class="card-header">
+                  <div class="col-7">
+                    <form action="{{ url('/admin/all-categories') }}" id="form" class="d-flex" method="GET">
+                            <input type="search" class="form-control mr-3"  name="search" onkeyup="doSearch(this.value)" value="{{ request('search') }}" placeholder="Поиск"/>
+                            <input type="hidden" name="page" value="1">
+                            <a href="{{url('/admin/all-categories')}}" class="tetx-light btn btn-danger">Очистка</a>
+                    </form>
+                  </div>
+                </div><!-- end card header -->
                   
                   <div class="card-body">
                       <div class="table-responsive mb-3">
                           <table class="table mb-0" id="categories-table">
                               <thead>
                                   <tr>
+                                      <th scope="col">ID</th>
                                       <th scope="col">название категории</th>
                                       <th scope="col">основная категория</th>
                                       <th scope="col">продукты</th>
@@ -116,24 +41,30 @@
                               <tbody>
                                 @forelse ($categories as $category)
                                   <tr class="align-middle">
-                                    <td ><img src="{{asset('images/categories/'.$category->photo)}}" class="rounded" width="70px" height="40px" alt="">&nbsp;&nbsp;{{$category->name_uz}}</td>
+                                    <td >{{$category->id}}</td>
+                                    <td ><img src="{{$category->photo}}" class="rounded" width="70px" height="40px" alt="">&nbsp;&nbsp;{{$category->name_uz}}</td>
                                     <td><?=($category->main_category_id) ? $category->main_category->name_uz : ''?></td>
                                     <td >{{$category->product->count()}}</td>
                                     <td>{{$category->created_at->format('Y.m.d , H:i')}}</td>
                                     <td>
-                                      <a href="{{route('categories.show',$category->id)}}" class="btn btn-sm btn-primary" style="margin-right: 10px" ><i data-feather="eye"></i></a>
-                                      <button type="button" class="btn btn-sm btn-success" style="margin-right: 10px" data-bs-toggle="modal" data-bs-target=".bs-example-modal-{{$category->id}}">
-                                        <i class="mdi mdi-pencil  fs-18"></i></button>
-                                      <form class="d-inline-block " action="{{ route('categories.destroy', $category->id) }}" method="POST">
-                                        @csrf
-                                        @method("DELETE")
-                                        <button class="btn btn-sm btn-danger"><i class="mdi mdi-delete  fs-18"></i></button>
-                                      </form>
+                                      <div style="cursor: pointer" class="dropdown ml-auto">
+                                        <div class="btn-link" data-toggle="dropdown">
+                                          <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
+                                        </div>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                          <a href="{{route('categories.show',$category->id)}}" class="dropdown-item" ><i class="flaticon-381-view-2 text-success mr-2"></i> Видение</a>
+                                          <a class="dropdown-item"  data-toggle="modal" data-target=".bs-example-modal-{{$category->id}}">
+                                            <i class="flaticon-381-edit text-primary mr-2"></i> Редактировать
+                                          </a>
+                                          <a class="dropdown-item" href="{{route('all-categories.destroy',$category->id)}}"><i class="flaticon-381-trash-1 text-danger mr-2"></i> Удалить
+                                          </a>
+                                        </div>
+                                      </div>
                                     </td>
                                   </tr>
                                 @empty
                                   <tr>
-                                    <td colspan="5" class="text-center"><h3 class="text-danger">Нет ресурса</h3></td>
+                                    <td colspan="6" class="text-center"><h3 class="text-danger">Нет ресурса</h3></td>
                                   </tr>
                                 @endforelse
                               </tbody>

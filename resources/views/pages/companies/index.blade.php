@@ -47,12 +47,6 @@
 
                               <div class="d-flex align-items-baseline mb-2">
                                   <div class="fs-22 mb-0 me-2 fw-semibold text-black">0</div>
-                                  <div class="me-auto">
-                                      <span class="text-danger d-inline-flex align-items-center">
-                                          0
-                                          <i data-feather="trending-down" class="ms-1" style="height: 22px; width: 22px;"></i>
-                                      </span>
-                                  </div>
                               </div>
                               <div id="conversion-visitors" class="apex-charts"></div>
                           </div>
@@ -68,12 +62,6 @@
 
                               <div class="d-flex align-items-baseline mb-2">
                                   <div class="fs-22 mb-0 me-2 fw-semibold text-black">0 </div>
-                                  <div class="me-auto">
-                                      <span class="text-success d-inline-flex align-items-center">
-                                          0
-                                          <i data-feather="trending-up" class="ms-1" style="height: 22px; width: 22px;"></i>
-                                      </span>
-                                  </div>
                               </div>
                               <div id="session-visitors" class="apex-charts"></div>
                           </div>
@@ -89,12 +77,6 @@
 
                               <div class="d-flex align-items-baseline mb-2">
                                   <div class="fs-22 mb-0 me-2 fw-semibold text-black">0</div>
-                                  <div class="me-auto">
-                                      <span class="text-success d-inline-flex align-items-center">
-                                          0
-                                          <i data-feather="trending-up" class="ms-1" style="height: 22px; width: 22px;"></i>
-                                      </span>
-                                  </div>
                               </div>
                               <div id="active-users" class="apex-charts"></div>
                           </div>
@@ -107,20 +89,19 @@
         <div class="row ">
           <div class="col-12">
               <div class="card">
-                  <div class="card-header row align-items-center">
-                      <h4 class="card-title fw-bold mb-3">Список компаний</h4>
-                      <div class="row justify-content-between p-2 col-5" style="background-color: #F9F9FC;border-radius:10px;" >
-                        <div class="col-12">
-                          <form action="{{ url('/admin/companies') }}" class="d-flex" method="GET">
-                            <input type="search" class="form-control "  name="search" oninput="this.form.submit()" value="{{ request('search') }}" placeholder="Поиск"/>
-                            </form>
-                        </div>
-                      </div>
-                  </div><!-- end card header -->
+                <div class="card-header">
+                  <div class="col-7">
+                    <form action="{{ url('/admin/companies') }}" id="form" class="d-flex" method="GET">
+                            <input type="search" class="form-control mr-3"  name="search" onkeyup="doSearch(this.value)" value="{{ request('search') }}" placeholder="Поиск"/>
+                            <input type="hidden" name="page" value="1">
+                            <a href="{{url('/admin/companies')}}" class="tetx-light btn btn-danger">Очистка</a>
+                    </form>
+                  </div>
+                </div><!-- end card header -->
                   
                   <div class="card-body">
                       <div class="table-responsive mb-3">
-                          <table class="table table-hover table-bordered table-responsive-sm mb-0">
+                          <table class="table table-hover table-responsive-sm mb-0">
                               <thead>
                                   <tr>
                                       <th scope="col">Название</th>

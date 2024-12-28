@@ -11,11 +11,11 @@
       <div class="mr-auto d-none d-lg-block">
         <h2 class="text-black font-w600 mb-0">Список категорий</h2>
       </div>
-      {{-- <form action="{{route('categories.importPdf')}}" method="POST" enctype="multipart/form-data">
-        @csrf
-        <input type="file" name="file" required>
-        <button type="submit">Import</button>
-    </form> --}}
+        {{-- <form action="{{route('categories.importPdf')}}" method="POST" enctype="multipart/form-data">
+          @csrf
+          <input type="file" name="file" required>
+          <button type="submit">Import</button>
+      </form> --}}
       <button type="button" class="btn btn-primary mb-2 btn btn-primary d-flex align-items-center " data-toggle="modal" data-target="#basicModal">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 6V18M18 12L6 12" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><path d="M12 6V18M18 12L6 12" stroke="url(#paint0_linear_1494_22742)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path><defs><linearGradient id="paint0_linear_1494_22742" x1="11.8537" y1="4.97561" x2="12.1463" y2="20.0488" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"></stop><stop offset="1" stop-color="#fff"></stop></linearGradient></defs></svg>Добавить категорию</button>
     </div>

@@ -27,7 +27,7 @@
                     <li class="nav-item dropdown header-profile">
                         <a class="nav-link" href="#"  role="button" data-toggle="dropdown">
                             <div class="header-info">
-                                <span>Hello, <strong>{{auth()->user()->name}}</strong></span>
+                                <span><strong>{{auth()->user()->name}}</strong></span>
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
