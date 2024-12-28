@@ -117,7 +117,6 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        return $request->all();
         $request->validate([
             'name_uz'=>'required|string|max:255',
             'name_ru'=>'required|string|max:255',
