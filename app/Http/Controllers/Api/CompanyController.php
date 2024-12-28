@@ -59,7 +59,6 @@ class CompanyController extends Controller
         
         return response()->json([
             'restaurant' => new CompanyResource($restaurant),
-            'request'=>$request->all,
             'category' => $category,
         ]);
     }
