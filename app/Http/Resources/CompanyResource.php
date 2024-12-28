@@ -17,16 +17,15 @@ class CompanyResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id'=>$this->id,
+            "id"=>$this->id,
             'name'=>$this->name,
             'logo'=>$this->logo,
             'slug'=>$this->slug,
-            // 'telephones'=>$this->telephones,
-            // 'telegram'=>$this->telegram,
-            // 'instagram'=>$this->instagram,
-            // 'youtube'=>$this->youtube,
-            // 'facebook'=>$this->facebook,
-            // 'address'=>$this->address,
+            'banner_image'=>$this->banner_image,
+            'telephone'=>$this->telephone,
+            'telegram'=>$this->telegram,
+            'instagram'=>$this->instagram,
+            'address'=>$this->address,
         ];
     }
 }
